@@ -46,6 +46,18 @@ def _foil(value: str | None) -> bool | None:
     return None
 
 
+def _parse_quantity(value: str | None, default: int = 1) -> int:
+    if value is None:
+        return default
+    v = value.strip()
+    if not v:
+        return default
+    try:
+        return int(v)
+    except ValueError:
+        return default
+
+
 def _merge(cards: list[CardRequest]) -> list[CardRequest]:
     order: list[str] = []
     totals: dict[str, CardRequest] = {}
@@ -73,14 +85,14 @@ def _parse_csv(text: str, fmt: ParseFormat) -> list[CardRequest]:
             name = row.get("Name", "")
             set_code = row.get("Edition") or None
             collector = row.get("Collector Number") or None
-            qty = int(row.get("Count") or 1)
+            qty = _parse_quantity(row.get("Count"))
             foil = _foil(row.get("Foil"))
             condition = row.get("Condition") or None
         else:
             name = row.get("Name", "")
             set_code = row.get("Set code") or None
             collector = row.get("Collector number") or None
-            qty = int(row.get("Quantity") or 1)
+            qty = _parse_quantity(row.get("Quantity"))
             foil = _foil(row.get("Foil"))
             condition = row.get("Condition") or None
         if not name:
