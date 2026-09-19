@@ -1208,6 +1208,8 @@ git commit -m "feat: scryfall set-name resolver and printing hint normalization"
 
 When `sets` is omitted, the adapter builds its own `SetResolver(http)` so it can turn bracketed set names into codes for `printing_hint`.
 
+**The adapter does not filter by printing.** It returns offers for every name-matching product, each carrying its own `printing_hint`; dropping offers from other printings is `matching.py`'s job (Task 9). The fixture deliberately contains two printings so the contract test pins that behavior.
+
 - [ ] **Step 1: Create fixture** — `tests/fixtures/greyogre/suggest_sol_ring.json`
 
 ```json
@@ -1302,8 +1304,8 @@ def test_search_maps_variants_to_offers():
     adapter = ShopifyAdapter(_config(), http)
     offers = adapter.search(CardRequest(name="Sol Ring", set_code="LTC", collector_number="409"))
 
-    assert len(offers) == 3
-    nm = offers[0]
+    assert len(offers) == 4
+    nm, foil, lp, other = offers
     assert nm.store_id == "greyogre"
     assert str(nm.price_sgd) == "4.50"
     assert nm.condition == "NM"
@@ -1311,16 +1313,19 @@ def test_search_maps_variants_to_offers():
     assert nm.in_stock is True
     assert nm.url == "https://www.greyogregames.com/products/sol-ring-409-ltc-commander"
 
-    foil = offers[1]
     assert foil.finish == "foil"
     assert str(foil.price_sgd) == "9.00"
 
-    lp = offers[2]
     assert lp.condition == "LP"
     assert lp.in_stock is False
 
     # bracketed set name resolved to a code via the Scryfall set resolver
     assert nm.printing_hint == "ltc:409"
+
+    # offers from the other printing are returned unfiltered — matching.py (Task 9)
+    # is responsible for dropping them
+    assert other.printing_hint == "ltc:410"
+    assert str(other.price_sgd) == "5.00"
 
     # the search query was the card name
     assert http.calls[0][1]["q"] == "Sol Ring"
@@ -1405,6 +1410,11 @@ class ShopifyAdapter:
         for variant in product.get("variants", []):
             variant_title = variant.get("title", "")
             combined = f"{title} {variant_title}"
+            finish = parse_finish(combined)
+            if finish == "unknown":
+                # variant titles with no finish keyword (e.g. plain "Near Mint")
+                # are non-foil by card-store convention
+                finish = "nonfoil"
             offers.append(Offer(
                 store_id=self.store_id,
                 store_name=self.store_name,
