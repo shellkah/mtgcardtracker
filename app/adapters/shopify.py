@@ -1,0 +1,98 @@
+from __future__ import annotations
+
+from urllib.parse import urljoin
+
+from app.adapters.base import AdapterError, CardRequest, Offer
+from app.adapters.shopify_parse import (
+    normalize_name,
+    parse_condition,
+    parse_finish,
+    parse_price,
+    parse_printing_hint,
+)
+from app.sets import SetResolver
+
+
+class ShopifyAdapter:
+    """Base adapter for stores running on Shopify.
+
+    Uses the storefront search suggestion endpoint, which returns products with
+    their variants (condition / finish / price / availability) in one request.
+    """
+
+    needs_browser = False
+
+    def __init__(self, config, http, sets=None):
+        self.store_id = config.id
+        self.store_name = config.name
+        self.zone = config.zone
+        self.base_url = config.base_url.rstrip("/")
+        self._config = config
+        self._http = http
+        self._sets = sets or SetResolver(http)
+
+    @property
+    def search_url(self) -> str:
+        return f"{self.base_url}/search/suggest.json"
+
+    def fetch_products(self, query: str) -> list[dict]:
+        params = {
+            "q": query,
+            "resources[type]": "product",
+            "resources[limit]": "10",
+            "resources[options][unavailable_products]": "last",
+        }
+        try:
+            payload = self._http.get_json(self.search_url, params=params)
+        except Exception as exc:  # HttpError and others bubble as AdapterError
+            raise AdapterError(f"{self.store_id}: search failed for {query!r}: {exc}") from exc
+        return (
+            payload.get("resources", {})
+            .get("results", {})
+            .get("products", [])
+        )
+
+    def _product_to_offers(self, product: dict) -> list[Offer]:
+        title = product.get("title", "")
+        handle = product.get("handle", "")
+        url = product.get("url") or f"/products/{handle}"
+        absolute = urljoin(self.base_url + "/", url)
+        printing_hint = parse_printing_hint(title, self._sets.code_for)
+        offers: list[Offer] = []
+        for variant in product.get("variants", []):
+            variant_title = variant.get("title", "")
+            combined = f"{title} {variant_title}"
+            finish = parse_finish(combined)
+            if finish == "unknown":
+                # A variant with no finish keyword is the store's plain
+                # (non-foil) listing.
+                finish = "nonfoil"
+            offers.append(Offer(
+                store_id=self.store_id,
+                store_name=self.store_name,
+                title=title,
+                price_sgd=parse_price(variant.get("price", "0")),
+                currency="SGD",
+                condition=parse_condition(combined),
+                finish=finish,
+                in_stock=bool(variant.get("available", False)),
+                url=absolute,
+                printing_hint=printing_hint,
+            ))
+        return offers
+
+    def search(self, card: CardRequest) -> list[Offer]:
+        products = self.fetch_products(card.name)
+        wanted = normalize_name(card.name)
+        offers: list[Offer] = []
+        for product in products:
+            if normalize_name(product.get("title", "")) != wanted:
+                continue
+            offers.extend(self._product_to_offers(product))
+        if card.set_code and card.collector_number:
+            wanted_hint = card.key
+            offers = [
+                offer for offer in offers
+                if offer.printing_hint is None or offer.printing_hint == wanted_hint
+            ]
+        return offers

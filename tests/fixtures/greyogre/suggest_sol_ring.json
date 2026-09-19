@@ -1,0 +1,28 @@
+{
+  "resources": {
+    "results": {
+      "products": [
+        {
+          "title": "Sol Ring (409) [The Lord of the Rings: Tales of Middle-Earth Commander]",
+          "handle": "sol-ring-409-ltc-commander",
+          "url": "/products/sol-ring-409-ltc-commander",
+          "available": true,
+          "variants": [
+            {"title": "Near Mint", "price": "4.50", "available": true},
+            {"title": "Near Mint Foil", "price": "9.00", "available": true},
+            {"title": "Lightly Played", "price": "3.60", "available": false}
+          ]
+        },
+        {
+          "title": "Sol Ring (410) [The Lord of the Rings: Tales of Middle-Earth Commander]",
+          "handle": "sol-ring-410-ltc-commander",
+          "url": "/products/sol-ring-410-ltc-commander",
+          "available": true,
+          "variants": [
+            {"title": "Near Mint", "price": "5.00", "available": true}
+          ]
+        }
+      ]
+    }
+  }
+}
