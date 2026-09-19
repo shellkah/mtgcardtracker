@@ -23,16 +23,18 @@ class SetResolver:
         if self._by_name is None:
             try:
                 payload = self._http.get_json(SCYRSFALL_SETS_URL)
+                mapping: dict[str, str] = {}
+                if isinstance(payload, dict):
+                    for item in payload.get("data", []):
+                        if not isinstance(item, dict):
+                            continue
+                        name = item.get("name")
+                        code = item.get("code")
+                        if name and code:
+                            mapping[normalize_set_name(name)] = str(code).lower()
+                self._by_name = mapping
             except Exception:
                 self._by_name = {}
-            else:
-                mapping: dict[str, str] = {}
-                for item in payload.get("data", []):
-                    name = item.get("name")
-                    code = item.get("code")
-                    if name and code:
-                        mapping[normalize_set_name(name)] = str(code).lower()
-                self._by_name = mapping
         return self._by_name
 
     def code_for(self, set_name: str) -> str | None:

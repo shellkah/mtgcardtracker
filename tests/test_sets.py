@@ -45,3 +45,16 @@ def test_sets_are_fetched_once():
     resolver.code_for("The Lord of the Rings: Tales of Middle-Earth Commander")
     resolver.code_for("The Lord of the Rings: Tales of Middle-Earth Commander")
     assert http.calls == 1
+
+
+def test_code_for_returns_none_for_non_object_payload():
+    resolver = SetResolver(FakeHttp(payload=["not", "a", "dict"]))
+    assert resolver.code_for("anything") is None
+
+
+def test_http_error_is_cached_and_not_refetched():
+    http = FakeHttp(raise_error=True)
+    resolver = SetResolver(http)
+    assert resolver.code_for("x") is None
+    assert resolver.code_for("x") is None
+    assert http.calls == 1
