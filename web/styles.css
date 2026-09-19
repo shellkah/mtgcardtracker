@@ -1,5 +1,9 @@
 :root { font-family: system-ui, sans-serif; }
 body { margin: 0; background: #0f1115; color: #e6e6e6; }
+a { color: #8ab4f8; text-decoration: none; }
+a:hover { color: #aecbfa; text-decoration: underline; }
+a[aria-disabled="true"] { color: #777; cursor: default; }
+a[aria-disabled="true"]:hover { color: #777; text-decoration: none; }
 header { display: flex; gap: 12px; align-items: baseline; padding: 12px 20px; background: #171a21; }
 main {
   display: grid;
@@ -19,3 +23,4 @@ th, td { text-align: left; padding: 8px; border-bottom: 1px solid #222; vertical
 .offer { display: block; }
 .offer.best { color: #7ddc81; font-weight: 600; }
 .confidence { color: #999; font-size: 0.85em; }
+#total { margin-top: 8px; font-weight: 600; color: #7ddc81; }

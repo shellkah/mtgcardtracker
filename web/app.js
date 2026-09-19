@@ -2,6 +2,7 @@ const statusEl = document.getElementById("status");
 const storePicker = document.getElementById("store-picker");
 const searchButton = document.getElementById("search-button");
 const summaryEl = document.getElementById("summary");
+const totalEl = document.getElementById("total");
 const resultsBody = document.getElementById("results-body");
 
 let stores = [];
@@ -28,6 +29,13 @@ function selectedStoreIds() {
   return [...storePicker.querySelectorAll("input:checked")].map((c) => c.value);
 }
 
+const FINISH_ICONS = { foil: "✨", surge: "💎" };
+
+function finishLabel(finish) {
+  if (!finish || finish === "nonfoil" || finish === "unknown") return "";
+  return FINISH_ICONS[finish] ?? finish;
+}
+
 function applyFilters(offers) {
   const inStockOnly = document.getElementById("filter-in-stock").checked;
   const nmOnly = document.getElementById("filter-nm").checked;
@@ -42,17 +50,21 @@ function applyFilters(offers) {
 
 function render() {
   resultsBody.innerHTML = "";
+  let totalCents = 0;
   for (const { card, offers } of cards.values()) {
     const row = document.createElement("tr");
     const sorted = applyFilters(offers).sort((a, b) => Number(a.offer.price_sgd) - Number(b.offer.price_sgd));
     const best = sorted[0];
+    if (best) totalCents += Math.round(Number(best.offer.price_sgd) * 100);
     const cardCell = document.createElement("td");
     cardCell.textContent = card.name;
     const bestCell = document.createElement("td");
     if (best) {
       const bestSpan = document.createElement("span");
       bestSpan.className = "offer best";
-      bestSpan.textContent = `$${best.offer.price_sgd} ${best.offer.condition ?? ""} ${best.offer.finish}`;
+      bestSpan.textContent = [`$${best.offer.price_sgd}`, best.offer.condition, finishLabel(best.offer.finish)]
+        .filter(Boolean)
+        .join(" ");
       bestCell.append(bestSpan);
     } else {
       bestCell.textContent = "—";
@@ -68,7 +80,15 @@ function render() {
         line.setAttribute("aria-disabled", "true");
         line.title = "unsafe link hidden";
       }
-      line.textContent = `${match.offer.store_name}: $${match.offer.price_sgd} ${match.offer.condition ?? ""} ${match.offer.finish}${match.offer.in_stock ? "" : " (out of stock)"}`;
+      line.textContent = [
+        `${match.offer.store_name}:`,
+        `$${match.offer.price_sgd}`,
+        match.offer.condition,
+        finishLabel(match.offer.finish),
+        match.offer.in_stock ? "" : "(out of stock)",
+      ]
+        .filter(Boolean)
+        .join(" ");
       const meta = document.createElement("div");
       meta.className = "confidence";
       meta.textContent = match.confidence;
@@ -79,6 +99,7 @@ function render() {
     row.append(cardCell, bestCell, offersCell);
     resultsBody.append(row);
   }
+  totalEl.textContent = `Best offers total: $${(totalCents / 100).toFixed(2)}`;
 }
 
 function upsertResult(event) {
@@ -94,6 +115,7 @@ async function startSearch() {
   cards = new Map();
   resultsBody.innerHTML = "";
   summaryEl.textContent = "";
+  totalEl.textContent = "";
   const text = document.getElementById("card-list").value;
   const force = document.getElementById("force-refresh").checked;
   const response = await fetch("/api/runs", {
