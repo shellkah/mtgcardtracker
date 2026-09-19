@@ -37,7 +37,7 @@ def parse_finish(text: str) -> Finish:
         return "surge"
     if "etched" in lowered:
         return "etched"
-    if "non-foil" in lowered or "nonfoil" in lowered:
+    if "non-foil" in lowered or "nonfoil" in lowered or "non foil" in lowered:
         return "nonfoil"
     if "foil" in lowered:
         return "foil"

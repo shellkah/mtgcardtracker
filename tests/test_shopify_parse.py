@@ -26,6 +26,7 @@ def test_parse_finish_priority():
     assert parse_finish("Etched Foil") == "etched"
     assert parse_finish("Foil") == "foil"
     assert parse_finish("Non-Foil") == "nonfoil"
+    assert parse_finish("Survivor: Non Foil") == "nonfoil"
     assert parse_finish("") == "unknown"
 
 
