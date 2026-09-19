@@ -1,0 +1,13 @@
+zones:
+  - id: singapore
+    name: Singapore
+stores:
+  - id: greyogre
+    name: Grey Ogre Games
+    zone: singapore
+    adapter: app.adapters.greyogre:GreyOgreAdapter
+    base_url: https://www.greyogregames.com
+    enabled: true
+    requests_per_second: 1.0
+    concurrency: 2
+    needs_browser: false
