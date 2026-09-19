@@ -5,8 +5,9 @@ exported from Moxfield or ManaBox, searches a configured set of local card
 sellers, and shows which stores stock each card — with price (SGD), condition
 (NM/LP/MP/HP/DMG), and foil status.
 
-Stores are pluggable adapters, grouped by zone. v1 ships with a Singapore store
-(Grey Ogre Games) and a documented procedure for adding more.
+Stores are pluggable adapters, grouped by zone. v1 ships with four Singapore
+stores — Grey Ogre Games, Games Haven, Cards Citadel, and Hideout — and a
+documented procedure for adding more.
 
 ## Requirements
 
@@ -86,6 +87,9 @@ app/
     registry.py      config loading + adapter construction
     shopify.py       shared Shopify adapter base
     greyogre.py      Grey Ogre Games (Shopify)
+    gameshaven.py    Games Haven (Shopify)
+    cardscitadel.py  Cards Citadel (Shopify)
+    hideout.py       Hideout (Shopify)
     shopify_parse.py pure listing parsers (condition/finish/price/hint)
 config/stores.yaml   zones + stores (id, adapter, base_url, concurrency, …)
 cli.py               explore / scaffold / probe / validate
@@ -160,9 +164,10 @@ than merge blockers.
   the HTTP/SSE layer; orchestrator tests cover that below the API.
 - **No logging.** Cache failures and unexpected adapter errors are swallowed and
   only surface via SSE error events.
-- **More Singapore stores.** Games Haven, Cards Citadel, Hideout, Card Arena,
-  Dueller's Point (CrystalCommerce-shaped), and Agora Hobby (custom) still need
-  adapters via the procedure above.
+- **More Singapore stores.** Card Arena, Dueller's Point (CrystalCommerce-shaped),
+  and Agora Hobby (custom) still need adapters via the procedure above.
+  `moxandlotus.sg` is a custom Laravel/Vue SPA with no Shopify-style JSON API, so
+  it needs a bespoke adapter rather than the three-line Shopify subclass.
 
 ## v1 constraints
 

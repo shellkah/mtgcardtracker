@@ -11,3 +11,30 @@ stores:
     requests_per_second: 1.0
     concurrency: 2
     needs_browser: false
+  - id: gameshaven
+    name: Games Haven
+    zone: singapore
+    adapter: app.adapters.gameshaven:GamesHavenAdapter
+    base_url: https://www.gameshaventcg.com
+    enabled: true
+    requests_per_second: 1.0
+    concurrency: 2
+    needs_browser: false
+  - id: cardscitadel
+    name: Cards Citadel
+    zone: singapore
+    adapter: app.adapters.cardscitadel:CardsCitadelAdapter
+    base_url: https://cardscitadel.com
+    enabled: true
+    requests_per_second: 1.0
+    concurrency: 2
+    needs_browser: false
+  - id: hideout
+    name: Hideout
+    zone: singapore
+    adapter: app.adapters.hideout:HideoutAdapter
+    base_url: https://hideoutcg.com
+    enabled: true
+    requests_per_second: 1.0
+    concurrency: 2
+    needs_browser: false
