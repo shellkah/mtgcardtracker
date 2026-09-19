@@ -35,6 +35,17 @@ def test_parse_printing_hint():
     assert parse_printing_hint("Sol Ring [LTC]") is None
 
 
+def test_parse_printing_hint_resolves_set_name_with_lookup():
+    lookup = {"the lord of the rings: tales of middle-earth commander": "ltc"}.get
+    assert parse_printing_hint(
+        "Sol Ring (409) [The Lord of the Rings: Tales of Middle-Earth Commander]", lookup
+    ) == "ltc:409"
+
+
+def test_parse_printing_hint_returns_none_when_lookup_fails():
+    assert parse_printing_hint("Sol Ring (409) [Unknown Set]", lambda name: None) is None
+
+
 def test_parse_price():
     assert parse_price("4.50") == Decimal("4.50")
     assert parse_price(3) == Decimal("3")

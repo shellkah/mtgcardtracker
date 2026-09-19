@@ -44,12 +44,20 @@ def parse_finish(text: str) -> Finish:
     return "unknown"
 
 
-def parse_printing_hint(text: str) -> str | None:
+def parse_printing_hint(text: str, set_code_lookup=None) -> str | None:
     number = _NUMBER_RE.search(text)
     set_match = _SET_RE.search(text)
-    if number and set_match:
-        return f"{set_match.group(1).strip().lower()}:{number.group(1).strip().lower()}"
-    return None
+    if not (number and set_match):
+        return None
+    raw = set_match.group(1).strip()
+    if set_code_lookup is not None:
+        code = set_code_lookup(raw.lower())
+        if not code:
+            return None
+        code = code.lower()
+    else:
+        code = raw.lower()
+    return f"{code}:{number.group(1).strip().lower()}"
 
 
 def parse_price(value: str | int | float) -> Decimal:
