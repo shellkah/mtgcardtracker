@@ -35,3 +35,23 @@ def test_find_printings_maps_set_and_number():
 
 def test_find_printings_empty_on_error():
     assert ScryfallClient(FakeHttp(raise_error=True)).find_printings("Sol Ring") == []
+
+
+def test_validate_printing_false_on_list_payload():
+    client = ScryfallClient(FakeHttp(["not", "a", "dict"]))
+    assert client.validate_printing("LTC", "409") is False
+
+
+def test_find_printings_empty_on_list_payload():
+    client = ScryfallClient(FakeHttp(["not", "a", "dict"]))
+    assert client.find_printings("Sol Ring") == []
+
+
+def test_validate_printing_false_when_set_missing():
+    client = ScryfallClient(FakeHttp({}))
+    assert client.validate_printing("LTC", "409") is False
+
+
+def test_find_printings_skips_non_dict_entries():
+    payload = {"data": ["not a dict"]}
+    assert ScryfallClient(FakeHttp(payload)).find_printings("Sol Ring") == []

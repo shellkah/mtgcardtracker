@@ -6,6 +6,13 @@ API = "https://api.scryfall.com"
 
 
 class ScryfallClient:
+    """Best-effort Scryfall lookups for validation and printings.
+
+    HTTP failures degrade to a negative/empty result (``False`` / ``[]``)
+    rather than raising, and unexpected payload shapes are ignored, so a
+    Scryfall outage or malformed response cannot break enrichment.
+    """
+
     def __init__(self, http):
         self._http = http
 
@@ -14,6 +21,8 @@ class ScryfallClient:
         try:
             payload = self._http.get_json(url)
         except HttpError:
+            return False
+        if not isinstance(payload, dict):
             return False
         return bool(payload.get("set"))
 
@@ -24,8 +33,11 @@ class ScryfallClient:
             payload = self._http.get_json(url, params=params)
         except HttpError:
             return []
+        if not isinstance(payload, dict):
+            return []
         return [
             {"set": str(card.get("set", "")).lower(),
              "collector_number": str(card.get("collector_number", "")).lower()}
             for card in payload.get("data", [])
+            if isinstance(card, dict)
         ]
