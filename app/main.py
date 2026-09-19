@@ -54,7 +54,7 @@ def create_app(config_path: str = "config/stores.yaml", db_path: str = "mtgcardt
         }
 
     @app.post("/api/runs")
-    def create_run(request: RunRequest):
+    async def create_run(request: RunRequest):
         cards = parse_cards(request.text)
         if not cards:
             raise HTTPException(status_code=400, detail="No cards parsed from input")
