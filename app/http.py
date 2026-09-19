@@ -10,7 +10,8 @@ class HttpError(Exception):
 
 
 class HttpClient(Protocol):
-    def get_json(self, url: str, params: dict | None = None) -> dict:
+    def get_json(self, url: str, params: dict | None = None) -> dict | list:
+        """Return the decoded JSON payload unmodified (object or array)."""
         ...
 
     def get_text(self, url: str, params: dict | None = None) -> str:
@@ -26,7 +27,7 @@ class HttpxClient:
             transport=transport,
         )
 
-    def get_json(self, url: str, params: dict | None = None) -> dict:
+    def get_json(self, url: str, params: dict | None = None) -> dict | list:
         try:
             response = self._client.get(url, params=params)
         except httpx.HTTPError as exc:
