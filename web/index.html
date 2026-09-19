@@ -13,8 +13,19 @@
       <label for="card-list">Card list (Moxfield / ManaBox / plain text)</label>
       <textarea id="card-list" rows="12" placeholder="1 Sol Ring&#10;2x Llanowar Elves"></textarea>
       <fieldset id="store-picker"><legend>Stores</legend></fieldset>
+      <fieldset id="filters"><legend>Filters</legend>
+        <label><input type="checkbox" id="filter-in-stock" /> In stock only</label>
+        <label><input type="checkbox" id="filter-nm" checked /> Near Mint only</label>
+        <label><input type="checkbox" id="filter-nonfoil" checked /> Non-foil only</label>
+      </fieldset>
       <label class="inline"><input type="checkbox" id="force-refresh" /> Force refresh (ignore cache)</label>
       <button id="search-button">Search</button>
+    </section>
+    <section id="lists-panel">
+      <h2>Saved lists</h2>
+      <input id="list-name" placeholder="List name" />
+      <button id="save-list">Save current</button>
+      <ul id="saved-lists"></ul>
     </section>
     <section id="results-panel">
       <div id="summary"></div>

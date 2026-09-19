@@ -28,11 +28,23 @@ function selectedStoreIds() {
   return [...storePicker.querySelectorAll("input:checked")].map((c) => c.value);
 }
 
+function applyFilters(offers) {
+  const inStockOnly = document.getElementById("filter-in-stock").checked;
+  const nmOnly = document.getElementById("filter-nm").checked;
+  const nonfoilOnly = document.getElementById("filter-nonfoil").checked;
+  return offers.filter((m) => {
+    if (inStockOnly && !m.offer.in_stock) return false;
+    if (nmOnly && m.offer.condition !== "NM") return false;
+    if (nonfoilOnly && m.offer.finish !== "nonfoil") return false;
+    return true;
+  });
+}
+
 function render() {
   resultsBody.innerHTML = "";
   for (const { card, offers } of cards.values()) {
     const row = document.createElement("tr");
-    const sorted = [...offers].sort((a, b) => Number(a.offer.price_sgd) - Number(b.offer.price_sgd));
+    const sorted = applyFilters(offers).sort((a, b) => Number(a.offer.price_sgd) - Number(b.offer.price_sgd));
     const best = sorted[0];
     const cardCell = document.createElement("td");
     cardCell.textContent = card.name;
@@ -99,5 +111,40 @@ async function startSearch() {
   });
 }
 
+async function loadLists() {
+  const lists = await (await fetch("/api/lists")).json();
+  const ul = document.getElementById("saved-lists");
+  ul.innerHTML = "";
+  for (const list of lists) {
+    const li = document.createElement("li");
+    const load = document.createElement("button");
+    load.textContent = list.name;
+    load.onclick = async () => {
+      const saved = await (await fetch(`/api/lists/${list.id}`)).json();
+      document.getElementById("card-list").value = saved.raw_text;
+    };
+    const del = document.createElement("button");
+    del.textContent = "✕";
+    del.onclick = async () => { await fetch(`/api/lists/${list.id}`, { method: "DELETE" }); loadLists(); };
+    li.append(load, del);
+    ul.append(li);
+  }
+}
+
+document.getElementById("save-list").onclick = async () => {
+  const name = document.getElementById("list-name").value || "Untitled";
+  await fetch("/api/lists", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, text: document.getElementById("card-list").value }),
+  });
+  loadLists();
+};
+
+for (const id of ["filter-in-stock", "filter-nm", "filter-nonfoil"]) {
+  document.getElementById(id).addEventListener("change", render);
+}
+
 searchButton.addEventListener("click", startSearch);
 loadStores();
+loadLists();
