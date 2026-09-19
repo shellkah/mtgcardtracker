@@ -89,10 +89,4 @@ class ShopifyAdapter:
             if normalize_name(product.get("title", "")) != wanted:
                 continue
             offers.extend(self._product_to_offers(product))
-        if card.set_code and card.collector_number:
-            wanted_hint = card.key
-            offers = [
-                offer for offer in offers
-                if offer.printing_hint is None or offer.printing_hint == wanted_hint
-            ]
         return offers

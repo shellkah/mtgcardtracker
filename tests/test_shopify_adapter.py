@@ -43,8 +43,8 @@ def test_search_maps_variants_to_offers():
     adapter = ShopifyAdapter(_config(), http)
     offers = adapter.search(CardRequest(name="Sol Ring", set_code="LTC", collector_number="409"))
 
-    assert len(offers) == 3
-    nm = offers[0]
+    assert len(offers) == 4
+    nm, foil, lp, other = offers
     assert nm.store_id == "greyogre"
     assert str(nm.price_sgd) == "4.50"
     assert nm.condition == "NM"
@@ -52,16 +52,19 @@ def test_search_maps_variants_to_offers():
     assert nm.in_stock is True
     assert nm.url == "https://www.greyogregames.com/products/sol-ring-409-ltc-commander"
 
-    foil = offers[1]
     assert foil.finish == "foil"
     assert str(foil.price_sgd) == "9.00"
 
-    lp = offers[2]
     assert lp.condition == "LP"
     assert lp.in_stock is False
 
     # bracketed set name resolved to a code via the Scryfall set resolver
     assert nm.printing_hint == "ltc:409"
+
+    # offers from the other printing are returned unfiltered — matching.py (Task 9)
+    # is responsible for dropping them
+    assert other.printing_hint == "ltc:410"
+    assert str(other.price_sgd) == "5.00"
 
     # the search query was the card name
     assert http.calls[0][1]["q"] == "Sol Ring"
