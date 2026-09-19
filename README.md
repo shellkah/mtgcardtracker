@@ -10,15 +10,20 @@ Stores are pluggable adapters, grouped by zone. v1 ships with a Singapore store
 
 ## Requirements
 
-- Python >= 3.11
+- [uv](https://docs.astral.sh/uv/) (manages the Python toolchain and venv)
+- Python >= 3.11 (pinned to 3.12 in `.python-version`; uv fetches it if missing)
 - No JS build tooling — the frontend is plain HTML/CSS/JS
 
 ## Setup
 
 ```bash
-python3 -m venv .venv
-.venv/bin/pip install -r requirements.txt   # or: uv pip install --python .venv/bin/python -r requirements.txt
+uv sync   # creates .venv and installs runtime + dev dependencies from uv.lock
 ```
+
+Dependencies live in `pyproject.toml` and are pinned in `uv.lock` (commit this
+file). `uv sync` installs the `dev` group (pytest) by default; use
+`uv sync --no-dev` for a runtime-only environment. To run a bare command inside
+the environment, use `uv run <cmd>`.
 
 ## Run
 
@@ -26,7 +31,7 @@ The app reads `config/stores.yaml` and writes `mtgcardtracker.db` **relative to
 the current working directory**, so run it from the repository root:
 
 ```bash
-.venv/bin/uvicorn app.main:app --reload
+uv run uvicorn app.main:app --reload
 ```
 
 Then open <http://127.0.0.1:8000>. Paste a Moxfield/ManaBox CSV (or a plain
@@ -48,14 +53,14 @@ number, falling back to name-only matches (which may span printings) otherwise.
 Each store is one adapter with an offline contract test backed by recorded
 fixtures.
 
-1. **Recon:** `.venv/bin/python cli.py explore https://<store>` — detects the
+1. **Recon:** `uv run python cli.py explore https://<store>` — detects the
    platform and dumps the response for inspection.
-2. **Scaffold:** `.venv/bin/python cli.py scaffold <store_id> --base-url https://<store> --platform shopify|custom`
+2. **Scaffold:** `uv run python cli.py scaffold <store_id> --base-url https://<store> --platform shopify|custom`
    — appends a disabled entry to `config/stores.yaml`.
 3. **Write the adapter.** Shopify stores extend `app/adapters/shopify.py`; custom
    stores implement the `Adapter` protocol (`app/adapters/base.py`). Adapters are
    synchronous and must not do matching or caching.
-4. **Record fixtures:** `.venv/bin/python cli.py probe <store_id> "<card>"`
+4. **Record fixtures:** `uv run python cli.py probe <store_id> "<card>"`
    and/or save the raw response under `tests/fixtures/<store_id>/`.
 5. **Contract test:** add `tests/test_<store>_adapter.py` replaying the fixture
    and asserting price/condition/finish/stock/printing hint.
@@ -92,11 +97,12 @@ docs/superpowers/    design spec + implementation plan
 ## Testing
 
 ```bash
-.venv/bin/pytest -v
+uv run pytest -v
 ```
 
 Adapter contract tests replay recorded fixtures and run offline. The `live`
-pytest marker is reserved for opt-in network smoke tests (`pytest -m live`).
+pytest marker is reserved for opt-in network smoke tests
+(`uv run pytest -m live`).
 
 ## Shopify adapter: why variants come from `/products/{handle}.js`
 
