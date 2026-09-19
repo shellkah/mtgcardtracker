@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import asyncio
+from datetime import datetime
 from decimal import Decimal
 from typing import AsyncIterator
 
@@ -19,7 +20,7 @@ def _card_dict(card: CardRequest) -> dict:
 
 
 def _offer_from_dict(data: dict) -> Offer:
-    return Offer(
+    kwargs = dict(
         store_id=data["store_id"],
         store_name=data["store_name"],
         title=data["title"],
@@ -31,6 +32,10 @@ def _offer_from_dict(data: dict) -> Offer:
         url=data["url"],
         printing_hint=data.get("printing_hint"),
     )
+    fetched_at = data.get("fetched_at")
+    if fetched_at is not None:
+        kwargs["fetched_at"] = datetime.fromisoformat(fetched_at)
+    return Offer(**kwargs)
 
 
 async def run_search(
@@ -53,11 +58,18 @@ async def run_search(
         async with semaphore:
             cache_key = card.key
             if not force_refresh:
-                cached = await asyncio.to_thread(
-                    db.get_cached, adapter.store_id, cache_key, cache_ttl_seconds
-                )
-                if cached is not None:
-                    offers = [_offer_from_dict(d) for d in cached.get("offers", [])]
+                try:
+                    cached = await asyncio.to_thread(
+                        db.get_cached, adapter.store_id, cache_key, cache_ttl_seconds
+                    )
+                    offers = (
+                        [_offer_from_dict(d) for d in cached.get("offers", [])]
+                        if cached is not None
+                        else None
+                    )
+                except Exception:  # cache is best-effort: treat as a miss
+                    offers = None
+                if offers is not None:
                     return card, adapter, offers, True, None
             try:
                 offers = await asyncio.to_thread(adapter.search, card)
@@ -65,10 +77,13 @@ async def run_search(
                 return card, adapter, [], False, str(exc)
             except Exception as exc:  # defensive: never abort the run
                 return card, adapter, [], False, f"unexpected: {exc}"
-            await asyncio.to_thread(
-                db.set_cached, adapter.store_id, cache_key,
-                {"offers": [o.to_dict() for o in offers]},
-            )
+            try:
+                await asyncio.to_thread(
+                    db.set_cached, adapter.store_id, cache_key,
+                    {"offers": [o.to_dict() for o in offers]},
+                )
+            except Exception:  # cache is best-effort: still return fetched offers
+                pass
             return card, adapter, offers, False, None
 
     tasks = [asyncio.create_task(fetch(a, c)) for c in cards for a in adapters]
