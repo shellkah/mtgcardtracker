@@ -1422,7 +1422,7 @@ class ShopifyAdapter:
                 price_sgd=parse_price(variant.get("price", "0")),
                 currency="SGD",
                 condition=parse_condition(combined),
-                finish=parse_finish(combined),
+                finish=finish,
                 in_stock=bool(variant.get("available", False)),
                 url=absolute,
                 printing_hint=printing_hint,
