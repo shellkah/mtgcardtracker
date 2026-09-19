@@ -1210,6 +1210,8 @@ When `sets` is omitted, the adapter builds its own `SetResolver(http)` so it can
 
 **The adapter does not filter by printing.** It returns offers for every name-matching product, each carrying its own `printing_hint`; dropping offers from other printings is `matching.py`'s job (Task 9). The fixture deliberately contains two printings so the contract test pins that behavior.
 
+**Post-implementation correction (from the final whole-branch review, verified live).** The real Grey Ogre `search/suggest.json` returns `variants: []` — variant data is not available from the suggest endpoint. The correct source is `GET {base_url}/products/{handle}.js`, whose `variants[]` carry `title` = condition (optionally suffixed ` Foil`), `price` = **integer cents**, and `available` = bool. The adapter therefore fetches `.js` per *name-matching* product (never for non-matches, bounding requests) and converts cents to SGD (`Decimal(price) / 100`). Test fixtures are now recorded from the live store rather than synthetic. The original `search/suggest.json`-variants design in this task was the final review's Critical finding C1.
+
 - [ ] **Step 1: Create fixture** — `tests/fixtures/greyogre/suggest_sol_ring.json`
 
 ```json
