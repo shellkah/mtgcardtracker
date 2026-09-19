@@ -6,6 +6,7 @@ const resultsBody = document.getElementById("results-body");
 
 let stores = [];
 let cards = new Map(); // key -> { card, offers: [] }
+let source = null;
 
 async function loadStores() {
   const response = await fetch("/api/stores");
@@ -37,7 +38,10 @@ function render() {
     cardCell.textContent = card.name;
     const bestCell = document.createElement("td");
     if (best) {
-      bestCell.innerHTML = `<span class="offer best">$${best.offer.price_sgd} ${best.offer.condition ?? ""} ${best.offer.finish}</span>`;
+      const bestSpan = document.createElement("span");
+      bestSpan.className = "offer best";
+      bestSpan.textContent = `$${best.offer.price_sgd} ${best.offer.condition ?? ""} ${best.offer.finish}`;
+      bestCell.append(bestSpan);
     } else {
       bestCell.textContent = "—";
     }
@@ -62,12 +66,14 @@ function render() {
 
 function upsertResult(event) {
   const entry = cards.get(event.card.key) || { card: event.card, offers: [] };
-  entry.offers.push(...event.offers);
+  const others = entry.offers.filter((m) => m.offer.store_id !== event.store_id);
+  entry.offers = [...others, ...event.offers];
   cards.set(event.card.key, entry);
   render();
 }
 
 async function startSearch() {
+  if (source) { source.close(); source = null; }
   cards = new Map();
   resultsBody.innerHTML = "";
   summaryEl.textContent = "";
@@ -81,7 +87,7 @@ async function startSearch() {
   if (!response.ok) { statusEl.textContent = "Failed to start run"; return; }
   const { run_id, card_count } = await response.json();
   statusEl.textContent = `Searching ${card_count} cards…`;
-  const source = new EventSource(`/api/runs/${run_id}/stream`);
+  source = new EventSource(`/api/runs/${run_id}/stream`);
   source.addEventListener("result", (e) => upsertResult(JSON.parse(e.data)));
   source.addEventListener("error", (e) => { try { console.warn("adapter error", JSON.parse(e.data)); } catch {} });
   source.addEventListener("done", (e) => {
@@ -89,6 +95,7 @@ async function startSearch() {
     summaryEl.textContent = `${data.summary.offers} offers, ${data.summary.errors} errors`;
     statusEl.textContent = "Done";
     source.close();
+    source = null;
   });
 }
 
