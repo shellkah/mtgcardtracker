@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>MTG Card Tracker</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <header><h1>MTG Card Tracker</h1><span id="status"></span></header>
+  <main>
+    <section id="input-panel">
+      <label for="card-list">Card list (Moxfield / ManaBox / plain text)</label>
+      <textarea id="card-list" rows="12" placeholder="1 Sol Ring&#10;2x Llanowar Elves"></textarea>
+      <fieldset id="store-picker"><legend>Stores</legend></fieldset>
+      <label class="inline"><input type="checkbox" id="force-refresh" /> Force refresh (ignore cache)</label>
+      <button id="search-button">Search</button>
+    </section>
+    <section id="results-panel">
+      <div id="summary"></div>
+      <table id="results">
+        <thead><tr><th>Card</th><th>Best offer</th><th>Offers</th></tr></thead>
+        <tbody id="results-body"></tbody>
+      </table>
+    </section>
+  </main>
+  <script src="/app.js"></script>
+</body>
+</html>
