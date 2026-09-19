@@ -20,13 +20,7 @@ class MatchResult:
 
     def to_dict(self) -> dict:
         return {
-            "card": {
-                "key": self.card.key,
-                "name": self.card.name,
-                "set_code": self.card.set_code,
-                "collector_number": self.card.collector_number,
-                "quantity": self.card.quantity,
-            },
+            "card": _card_dict(self.card),
             "offer": self.offer.to_dict(),
             "confidence": self.confidence.value,
         }
