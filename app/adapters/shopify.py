@@ -46,22 +46,30 @@ class ShopifyAdapter:
             payload = self._http.get_json(self.search_url, params=params)
         except Exception as exc:  # HttpError and others bubble as AdapterError
             raise AdapterError(f"{self.store_id}: search failed for {query!r}: {exc}") from exc
-        return (
-            payload.get("resources", {})
-            .get("results", {})
-            .get("products", [])
-        )
+        if not isinstance(payload, dict):
+            return []
+        resources = payload.get("resources")
+        results = resources.get("results") if isinstance(resources, dict) else None
+        products = results.get("products") if isinstance(results, dict) else None
+        return products if isinstance(products, list) else []
 
     def _product_to_offers(self, product: dict) -> list[Offer]:
-        title = product.get("title", "")
-        handle = product.get("handle", "")
+        title = product.get("title") or ""
+        handle = product.get("handle") or ""
         url = product.get("url") or f"/products/{handle}"
         absolute = urljoin(self.base_url + "/", url)
         printing_hint = parse_printing_hint(title, self._sets.code_for)
         offers: list[Offer] = []
-        for variant in product.get("variants", []):
-            variant_title = variant.get("title", "")
+        for variant in product.get("variants") or []:
+            if not isinstance(variant, dict):
+                continue
+            variant_title = variant.get("title") or ""
             combined = f"{title} {variant_title}"
+            try:
+                price = parse_price(variant.get("price", "0"))
+            except Exception:
+                # null / unparseable price: skip this variant, keep the product
+                continue
             finish = parse_finish(combined)
             if finish == "unknown":
                 # A variant with no finish keyword is the store's plain
@@ -71,7 +79,7 @@ class ShopifyAdapter:
                 store_id=self.store_id,
                 store_name=self.store_name,
                 title=title,
-                price_sgd=parse_price(variant.get("price", "0")),
+                price_sgd=price,
                 currency="SGD",
                 condition=parse_condition(combined),
                 finish=finish,
@@ -86,7 +94,13 @@ class ShopifyAdapter:
         wanted = normalize_name(card.name)
         offers: list[Offer] = []
         for product in products:
-            if normalize_name(product.get("title", "")) != wanted:
+            try:
+                if not isinstance(product, dict):
+                    continue
+                if normalize_name(product.get("title") or "") != wanted:
+                    continue
+                offers.extend(self._product_to_offers(product))
+            except Exception:
+                # one malformed product must not abort the whole search
                 continue
-            offers.extend(self._product_to_offers(product))
         return offers

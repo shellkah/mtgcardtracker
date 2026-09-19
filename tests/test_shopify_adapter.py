@@ -1,10 +1,13 @@
 import json
 from pathlib import Path
 
-from app.adapters.base import CardRequest
+import pytest
+
+from app.adapters.base import AdapterError, CardRequest
 from app.adapters.registry import StoreConfig
 from app.adapters.shopify import ShopifyAdapter
 from app.adapters.greyogre import GreyOgreAdapter
+from app.http import HttpError
 
 FIXTURES = Path(__file__).parent / "fixtures" / "greyogre"
 PRODUCTS = FIXTURES / "suggest_sol_ring.json"
@@ -75,3 +78,51 @@ def test_greyogre_adapter_is_a_shopify_adapter():
     assert isinstance(adapter, ShopifyAdapter)
     assert adapter.store_id == "greyogre"
     assert adapter.zone == "singapore"
+
+
+class RaisingHttp:
+    def get_json(self, url, params=None):
+        raise HttpError("boom")
+
+    def get_text(self, url, params=None):
+        return ""
+
+
+class ListHttp:
+    """Returns a bare JSON list for search — a malformed but non-failing 200."""
+
+    def get_json(self, url, params=None):
+        if url.endswith("/sets"):
+            return {"data": []}
+        return ["not", "a", "dict"]
+
+    def get_text(self, url, params=None):
+        return ""
+
+
+def test_fetch_products_wraps_http_failure_as_adapter_error():
+    adapter = ShopifyAdapter(_config(), RaisingHttp())
+    with pytest.raises(AdapterError):
+        adapter.fetch_products("Sol Ring")
+
+
+def test_malformed_search_payload_does_not_escape():
+    adapter = ShopifyAdapter(_config(), ListHttp())
+    assert adapter.search(CardRequest(name="Sol Ring")) == []
+
+
+def test_null_price_and_variants_are_skipped():
+    payload = {"resources": {"results": {"products": [
+        {"title": "Sol Ring", "handle": "h1", "url": "/products/h1", "variants": None},
+        {"title": "Sol Ring", "handle": "h2", "url": "/products/h2", "variants": [
+            {"title": "Near Mint", "price": None},
+            {"title": "Foil", "price": "9.00"},
+        ]},
+    ]}}}
+    adapter = ShopifyAdapter(_config(), FixtureHttp(payload))
+    offers = adapter.search(CardRequest(name="Sol Ring"))
+
+    assert len(offers) == 1
+    assert str(offers[0].price_sgd) == "9.00"
+    assert offers[0].finish == "foil"
+    assert offers[0].currency == "SGD"
