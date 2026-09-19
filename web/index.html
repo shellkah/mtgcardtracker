@@ -1,41 +1,257 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>MTG Card Tracker</title>
+  <title>MTG Card Tracker — Singapore price hunt</title>
+  <meta name="description" content="Compare Magic: The Gathering card prices across Singapore's card stores. Paste a Moxfield or ManaBox list and hunt the best offer per card." />
+  <meta name="theme-color" content="#0b0e14" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700&family=Hanken+Grotesk:ital,wght@0,400;0,500;0,600;0,700;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet" />
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-  <header><h1>MTG Card Tracker</h1><span id="status"></span></header>
-  <main>
-    <section id="input-panel">
-      <label for="card-list">Card list (Moxfield / ManaBox / plain text)</label>
-      <textarea id="card-list" rows="12" placeholder="1 Sol Ring&#10;2x Llanowar Elves"></textarea>
-      <fieldset id="store-picker"><legend>Stores</legend></fieldset>
-      <fieldset id="filters"><legend>Filters</legend>
-        <label><input type="checkbox" id="filter-in-stock" /> In stock only</label>
-        <label><input type="checkbox" id="filter-nm" checked /> Near Mint only</label>
-        <label><input type="checkbox" id="filter-nonfoil" checked /> Non-foil only</label>
-      </fieldset>
-      <label class="inline"><input type="checkbox" id="force-refresh" /> Force refresh (ignore cache)</label>
-      <button id="search-button">Search</button>
-    </section>
-    <section id="lists-panel">
-      <h2>Saved lists</h2>
-      <input id="list-name" placeholder="List name" />
-      <button id="save-list">Save current</button>
-      <ul id="saved-lists"></ul>
-    </section>
-    <section id="results-panel">
-      <div id="summary"></div>
-      <div id="total"></div>
-      <table id="results">
-        <thead><tr><th>Card</th><th>Best offer</th><th>Offers</th></tr></thead>
-        <tbody id="results-body"></tbody>
-      </table>
+  <!-- ── icon sprite ─────────────────────────────────────────────── -->
+  <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7" /><path d="M20.5 20.5 16.7 16.7" /></symbol>
+    <symbol id="i-hunt" viewBox="0 0 24 24"><path d="M14 3v-1M14 6V5M11.5 4.5H10M18 4.5h-1.5M12 3.2l1 1M16.6 7.8l-1-1M12 7.8l1-1M16.6 3.2l-1 1" /><path d="M9 21 3 15l9.5-9.5M14.5 20.5 21 14l-3.5-3.5" /></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M3 6h18M8 6V4a1 1 0 0 1 1-1h6a1 1 0 0 1 1 1v2M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6M10 11v6M14 11v6" /></symbol>
+    <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" /></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M21 4v5h-5M3 20v-5h5" /><path d="M3.5 9a8.5 8.5 0 0 1 14-3.2L21 9M21 15a8.5 8.5 0 0 1-14 3.2L3 15" /></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m20 6-11 11-5-5" /></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0zM12 9v4M12 17h.01" /></symbol>
+    <symbol id="i-external" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6M15 3h6v6M10 14 21 3" /></symbol>
+    <symbol id="i-shop" viewBox="0 0 24 24"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4zM3 6h18M16 10a4 4 0 0 1-8 0" /></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="M12 2 2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5" /></symbol>
+    <symbol id="i-zap" viewBox="0 0 24 24"><path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z" /></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="M18 6 6 18M6 6l12 12" /></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 21v-7M4 10V3M12 21v-9M12 8V3M20 21v-5M20 12V3M1 14h6M9 8h6M17 16h6" /></symbol>
+    <symbol id="i-sort" viewBox="0 0 24 24"><path d="M8 4v16M8 4 4 8M8 4l4 4M16 20V4M16 20l-4-4M16 20l4-4" /></symbol>
+    <symbol id="i-coins" viewBox="0 0 24 24"><circle cx="9" cy="9" r="6" /><path d="M21 12a6 6 0 0 1-8.4 5.5A6 6 0 0 0 9 6" /></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M1.6 12S5.2 5.4 12 5.4 22.4 12 22.4 12 18.8 18.6 12 18.6 1.6 12 1.6 12z" /><circle cx="12" cy="12" r="3.1" /></symbol>
+    <symbol id="i-stack" viewBox="0 0 24 24"><path d="m12 2 9 5-9 5-9-5 9-5z" /><path d="m3 12 9 5 9-5" opacity=".55" /><path d="m3 17 9 5 9-5" opacity=".3" /></symbol>
+    <symbol id="i-max" viewBox="0 0 24 24"><path d="M3 9V3h6M15 3h6v6M21 15v6h-6M9 21H3v-6" /></symbol>
+    <symbol id="i-grip" viewBox="0 0 24 24"><path d="M9 5v14M15 5v14" /><path d="m6 9-3 3 3 3M18 9l3 3-3 3" /></symbol>
+  </svg>
+
+  <!-- ── top bar ─────────────────────────────────────────────────── -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand__sigil" aria-hidden="true">
+        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" stroke-linecap="round">
+          <path d="M16 2.5 29 10v12L16 29.5 3 22V10z" />
+          <path d="M16 7.5 24.5 12v8L16 24.5 7.5 20v-8z" opacity=".55" />
+          <path d="M16 11.5 20 14v4l-4 2.5L12 18v-4z" />
+        </svg>
+      </span>
+      <div class="brand__text">
+        <h1 class="brand__name">MTG Card Tracker</h1>
+        <p class="brand__tag">Hunt the best price across Singapore&rsquo;s card halls</p>
+      </div>
+    </div>
+    <div class="topbar__status">
+      <span id="status" class="status" data-state="idle">
+        <span class="status__pulse" aria-hidden="true"></span>
+        <span id="status-text">Ready</span>
+      </span>
+    </div>
+  </header>
+
+  <!-- ── workspace ───────────────────────────────────────────────── -->
+  <main class="shell">
+    <aside class="controls" aria-label="Search setup">
+      <!-- step 1 -->
+      <section class="panel" style="--step:1">
+        <header class="panel__head">
+          <span class="panel__index" aria-hidden="true">01</span>
+          <div class="panel__titles">
+            <h2 class="panel__title">Your list</h2>
+            <p class="panel__hint">Moxfield CSV, ManaBox CSV, or a plain list</p>
+          </div>
+        </header>
+
+        <label class="sr-only" for="card-list">Card list</label>
+        <textarea id="card-list" rows="9" spellcheck="false"
+          placeholder="1 Sol Ring&#10;2x Llanowar Elves&#10;4 Arcane Signet"></textarea>
+
+        <div class="input-meta">
+          <span id="format-hint" class="chip chip--ghost">Paste a list to begin</span>
+          <span id="card-count" class="chip chip--ghost">0 cards</span>
+          <button id="clear-list" class="btn btn--quiet btn--xs" type="button" hidden>
+            <svg class="ico"><use href="#i-x" /></svg> Clear
+          </button>
+        </div>
+
+        <div class="saved">
+          <div class="saved__head">
+            <h3 class="saved__title"><svg class="ico"><use href="#i-bookmark" /></svg> Saved lists</h3>
+          </div>
+          <div class="saved__form">
+            <label class="sr-only" for="list-name">List name</label>
+            <input id="list-name" placeholder="Name this list…" autocomplete="off" />
+            <button id="save-list" class="btn btn--quiet btn--sm" type="button">
+              <svg class="ico"><use href="#i-bookmark" /></svg> Save
+            </button>
+          </div>
+          <ul id="saved-lists" class="saved__items"></ul>
+        </div>
+      </section>
+
+      <!-- step 2 -->
+      <section class="panel" style="--step:2">
+        <header class="panel__head">
+          <span class="panel__index" aria-hidden="true">02</span>
+          <div class="panel__titles">
+            <h2 class="panel__title">Stores to search</h2>
+            <p class="panel__hint" id="store-hint">Pick at least one shop</p>
+          </div>
+          <div class="panel__actions">
+            <button id="stores-all" class="btn btn--quiet btn--xs" type="button">All</button>
+            <button id="stores-none" class="btn btn--quiet btn--xs" type="button">None</button>
+          </div>
+        </header>
+        <div id="store-picker" class="stores" role="group" aria-label="Stores"></div>
+      </section>
+
+      <!-- step 3 -->
+      <section class="panel" style="--step:3">
+        <header class="panel__head">
+          <span class="panel__index" aria-hidden="true">03</span>
+          <div class="panel__titles">
+            <h2 class="panel__title">Refinements</h2>
+            <p class="panel__hint">Applied live to the offers below</p>
+          </div>
+        </header>
+        <div id="filters" class="switches">
+          <label class="switch">
+            <input type="checkbox" id="filter-in-stock" checked />
+            <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+            <span class="switch__label">In stock only</span>
+          </label>
+          <label class="switch">
+            <input type="checkbox" id="filter-nm" checked />
+            <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+            <span class="switch__label">Near&nbsp;Mint only</span>
+          </label>
+          <label class="switch">
+            <input type="checkbox" id="filter-nonfoil" />
+            <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+            <span class="switch__label">Non-foil only</span>
+          </label>
+          <label class="switch">
+            <input type="checkbox" id="force-refresh" />
+            <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+            <span class="switch__label">Force refresh <em>(ignore cache)</em></span>
+          </label>
+        </div>
+      </section>
+
+      <div class="searchbar">
+        <button id="search-button" class="btn btn--primary btn--block" type="button">
+          <svg class="ico"><use href="#i-search" /></svg>
+          <span id="search-button-label">Search stores</span>
+        </button>
+        <p class="searchbar__note"><kbd>Ctrl</kbd><span>+</span><kbd>Enter</kbd> to search</p>
+      </div>
+    </aside>
+
+    <!-- results -->
+    <section class="workspace" aria-label="Results">
+      <div class="results-head">
+        <div>
+          <p class="eyebrow">Hunt results</p>
+          <h2 class="results-title" id="results-title">Nothing hunted yet</h2>
+        </div>
+        <div class="results-tools">
+          <label class="select">
+            <svg class="ico"><use href="#i-sort" /></svg>
+            <span class="sr-only">Sort results</span>
+            <select id="sort-mode">
+              <option value="list">List order</option>
+              <option value="price-desc">Best price — high to low</option>
+              <option value="price-asc">Best price — low to high</option>
+              <option value="offers">Most offers</option>
+              <option value="name">Card name A–Z</option>
+            </select>
+          </label>
+        </div>
+      </div>
+
+      <div id="progress" class="progress" hidden>
+        <div class="progress__bar" role="progressbar" aria-label="Search progress" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress__fill" id="progress-fill"></div></div>
+        <span class="progress__pct" id="progress-pct">0%</span>
+      </div>
+
+      <div id="summary" class="stats" hidden></div>
+
+      <div id="results" class="results">
+        <div id="empty-state" class="empty">
+          <span class="empty__sigil" aria-hidden="true">
+            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round" stroke-linecap="round">
+              <path d="M24 4 44 15v18L24 44 4 33V15z" opacity=".7" />
+              <path d="M24 11 37 18.5v13L24 38 11 31.5v-13z" opacity=".45" />
+              <circle cx="24" cy="24" r="5" />
+              <path d="M24 19v-8M24 37v-8M19 24h-8M37 24h-8" opacity=".5" />
+            </svg>
+          </span>
+          <h3 class="empty__title">The ledger is blank</h3>
+          <p class="empty__copy">
+            Paste a card list on the left, choose the stores worth your time, and
+            search. Offers stream in card by card &mdash; sorted, filtered, and
+            priced in SGD.
+          </p>
+          <ul class="empty__list">
+            <li><strong>01</strong> <span>Paste a Moxfield / ManaBox export, or type <code>4x Lightning Bolt</code></span></li>
+            <li><strong>02</strong> <span>Tick the stores worth sweeping</span></li>
+            <li><strong>03</strong> <span>Search &mdash; then refine by condition, finish, and stock</span></li>
+          </ul>
+        </div>
+        <div id="results-list" class="results__list"></div>
+      </div>
+
+      <footer class="footnote">
+        Prices in <strong>SGD</strong> · results cached for 6&nbsp;hours · <a href="https://scryfall.com" target="_blank" rel="noopener">Scryfall</a>-backed printing hints
+      </footer>
     </section>
   </main>
+
+  <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+
+  <!-- ── card art preview ──────────────────────────────────────────
+       A top-layer popover, positioned by the browser via CSS Anchor
+       Positioning: JS only swaps its content and points --art-anchor-name at
+       the hovered button. Flipping and viewport clamping are the browser's
+       job, so the popover stays on screen without any geometry arithmetic. -->
+  <aside id="art-modal" class="art-modal" popover="manual" role="tooltip">
+    <div class="art-modal__glow" aria-hidden="true"></div>
+    <div class="art-modal__frame">
+      <div class="art-modal__stage">
+        <img class="art-modal__img" data-art="img" alt="" decoding="async" />
+        <div class="art-modal__fallback" data-art="fallback" hidden>
+          <svg class="ico" aria-hidden="true"><use href="#i-stack" /></svg>
+          <p>No listing photo</p>
+        </div>
+      </div>
+    </div>
+    <div class="art-modal__meta">
+      <p class="art-modal__eyebrow"><span data-art="store"></span></p>
+      <h3 class="art-modal__name" data-art="name"></h3>
+      <p class="art-modal__printing" data-art="printing"></p>
+      <div class="art-modal__tags" data-art="tags"></div>
+      <div class="art-modal__foot">
+        <span class="art-modal__price" data-art="price"></span>
+        <a class="btn btn--quiet btn--sm" data-art="link" target="_blank" rel="noopener">
+          <svg class="ico"><use href="#i-external" /></svg> Open listing
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <noscript><p class="noscript">This tracker needs JavaScript for live search results.</p></noscript>
   <script src="/app.js"></script>
 </body>
 </html>

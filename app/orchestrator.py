@@ -31,6 +31,7 @@ def _offer_from_dict(data: dict) -> Offer:
         in_stock=data["in_stock"],
         url=data["url"],
         printing_hint=data.get("printing_hint"),
+        image_url=data.get("image_url"),
     )
     fetched_at = data.get("fetched_at")
     if fetched_at is not None:

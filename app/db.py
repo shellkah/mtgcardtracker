@@ -22,6 +22,12 @@ CREATE TABLE IF NOT EXISTS saved_lists (
 );
 """
 
+# Bump when the cached Offer shape changes. The payload is opaque JSON, so an
+# older row deserialises cleanly and silently misses any newly added field
+# (image_url, for one). Stamping the version makes those rows a cache miss and
+# they get refetched instead of serving incomplete offers until the TTL expires.
+CACHE_VERSION = 2
+
 
 class Database:
     def __init__(self, path: str | Path):
@@ -41,14 +47,18 @@ class Database:
             return None
         if ttl_seconds < 0 or time.time() - row["fetched_at"] > ttl_seconds:
             return None
-        return json.loads(row["payload"])
+        payload = json.loads(row["payload"])
+        if not isinstance(payload, dict) or payload.get("v") != CACHE_VERSION:
+            return None
+        return payload
 
     def set_cached(self, store_id: str, card_key: str, payload: dict) -> None:
+        stamped = {**payload, "v": CACHE_VERSION}
         self._conn.execute(
             "INSERT INTO cache (store_id, card_key, payload, fetched_at) VALUES (?,?,?,?) "
             "ON CONFLICT(store_id, card_key) DO UPDATE SET payload=excluded.payload, "
             "fetched_at=excluded.fetched_at",
-            (store_id, card_key, json.dumps(payload), time.time()),
+            (store_id, card_key, json.dumps(stamped), time.time()),
         )
         self._conn.commit()
 

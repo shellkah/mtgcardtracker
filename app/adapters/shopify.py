@@ -39,7 +39,6 @@ class ShopifyAdapter:
 
     def product_url(self, handle: str) -> str:
         return f"{self.base_url}/products/{handle}.js"
-
     def fetch_products(self, query: str) -> list[dict]:
         params = {
             "q": query,
@@ -68,11 +67,27 @@ class ShopifyAdapter:
             ) from exc
         return payload if isinstance(payload, dict) else {}
 
+    @staticmethod
+    def _absolute_image(*sources: dict) -> str | None:
+        """Return the first usable product image as an absolute https URL.
+
+        Shopify serves ``//cdn.shopify.com/...`` protocol-relative URLs, which
+        resolve incorrectly inside a page loaded over a custom scheme, so the
+        scheme is always pinned to https.
+        """
+        for source in sources:
+            for key in ("featured_image", "image"):
+                raw = source.get(key)
+                if isinstance(raw, str) and raw.strip():
+                    return "https:" + raw.strip() if raw.startswith("//") else raw.strip()
+        return None
+
     def _product_to_offers(self, product: dict, variants_product: dict) -> list[Offer]:
         title = variants_product.get("title") or ""
         handle = variants_product.get("handle") or product.get("handle") or ""
         url = product.get("url") or f"/products/{handle}"
         absolute = urljoin(self.base_url + "/", url)
+        image_url = self._absolute_image(variants_product, product)
         printing_hint = parse_printing_hint(title, self._sets.code_for)
         offers: list[Offer] = []
         for variant in variants_product.get("variants") or []:
@@ -102,6 +117,7 @@ class ShopifyAdapter:
                 in_stock=bool(variant.get("available", False)),
                 url=absolute,
                 printing_hint=printing_hint,
+                image_url=image_url,
             ))
         return offers
 
