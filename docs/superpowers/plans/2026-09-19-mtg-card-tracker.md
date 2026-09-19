@@ -2031,13 +2031,18 @@ def test_run_stream_emits_done(tmp_path, monkeypatch):
     monkeypatch.setattr(main_module, "build_adapters", lambda configs, http: [FakeAdapter()])
     monkeypatch.setattr(main_module, "_make_http", lambda: FakeHttp())
     client = _client(tmp_path)
-    run = client.post(
-        "/api/runs",
-        json={"text": "1 Sol Ring", "store_ids": ["greyogre"], "force_refresh": True},
-    ).json()
-    assert run["card_count"] == 1
-    with client.stream("GET", f"/api/runs/{run['run_id']}/stream") as response:
-        body = "".join(response.iter_text())
+    # Keep one event loop alive for the background run task: production ASGI
+    # servers use a single persistent loop, and TestClient does too when used as
+    # a context manager. Without this the POST loop closes and the run task is
+    # torn down before the stream connects.
+    with client:
+        run = client.post(
+            "/api/runs",
+            json={"text": "1 Sol Ring", "store_ids": ["greyogre"], "force_refresh": True},
+        ).json()
+        assert run["card_count"] == 1
+        with client.stream("GET", f"/api/runs/{run['run_id']}/stream") as response:
+            body = "".join(response.iter_text())
     assert '"type": "done"' in body
 ```
 
@@ -2168,7 +2173,7 @@ def create_app(config_path: str = "config/stores.yaml", db_path: str = "mtgcardt
         }
 
     @app.post("/api/runs")
-    def create_run(request: RunRequest):
+    async def create_run(request: RunRequest):
         cards = parse_cards(request.text)
         if not cards:
             raise HTTPException(status_code=400, detail="No cards parsed from input")
