@@ -1,7 +1,16 @@
 :root { font-family: system-ui, sans-serif; }
 body { margin: 0; background: #0f1115; color: #e6e6e6; }
 header { display: flex; gap: 12px; align-items: baseline; padding: 12px 20px; background: #171a21; }
-main { display: grid; grid-template-columns: 360px 1fr; gap: 20px; padding: 20px; }
+main {
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  grid-template-areas: "input results" "lists results";
+  gap: 20px;
+  padding: 20px;
+}
+#input-panel { grid-area: input; }
+#lists-panel { grid-area: lists; }
+#results-panel { grid-area: results; }
 textarea { width: 100%; font-family: ui-monospace, monospace; background: #0b0d10; color: inherit; border: 1px solid #333; border-radius: 6px; padding: 8px; }
 fieldset { border: 1px solid #333; border-radius: 6px; margin-top: 12px; }
 button { margin-top: 12px; padding: 8px 16px; border-radius: 6px; border: 0; background: #4f7cff; color: white; cursor: pointer; }

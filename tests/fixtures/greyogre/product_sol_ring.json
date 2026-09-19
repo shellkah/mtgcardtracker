@@ -1,0 +1,395 @@
+{
+  "id": 7289765888080,
+  "title": "Sol Ring (2467) [Secret Lair Drop Series]",
+  "handle": "sol-ring-2467-secret-lair-drop-series",
+  "description": "<table class=\"singles-description-table\" xmlns=\"http://www.w3.org/1999/html\">\n<tbody>\n      <tr>\n          <td>Set:</td>\n          <td>Secret Lair Drop Series</td>\n      </tr>\n      <tr>\n          <td>Type:</td>\n          <td>Artifact</td>\n      </tr>\n      <tr>\n          <td>Rarity:</td>\n          <td>Rare</td>\n      </tr>\n      <tr>\n          <td>Cost:</td>\n          <td>{1}</td>\n      </tr>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n        <div class=\"oracle-text\">\n            {T}: Add {C}{C}.\n        </div>\n        <div class=\"flavor-text\">\n            A companion and a full bowl turn any ruin into home.\n        </div>\n<table class=\"singles-reverse-description-table\">\n<tbody>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n</div>\n<div class=\"catalogMetaData\" style=\"visibility: hidden;\" data-cardtype=\"mtg\" data-cardid=\"107435\" data-tcgid=\"674640\" data-lastupdated=\"2026-01-28T21:40:25.841Z\">\n</div>\n</div>\n",
+  "published_at": "2026-01-29T05:42:26+08:00",
+  "created_at": "2026-01-29T05:42:01+08:00",
+  "vendor": "Magic: The Gathering",
+  "type": "MTG Single",
+  "tags": [
+    "Artifact",
+    "Colorless",
+    "Commander",
+    "Foil",
+    "Normal",
+    "Predh",
+    "Rare",
+    "Secret Lair Drop Series",
+    "Vintage"
+  ],
+  "price": 650,
+  "price_min": 650,
+  "price_max": 1525,
+  "available": true,
+  "price_varies": true,
+  "compare_at_price": null,
+  "compare_at_price_min": 0,
+  "compare_at_price_max": 0,
+  "compare_at_price_varies": false,
+  "variants": [
+    {
+      "id": 41984399442000,
+      "title": "Near Mint",
+      "option1": "Near Mint",
+      "option2": null,
+      "option3": null,
+      "sku": "SLD-2467-EN-NF-1",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": true,
+      "name": "Sol Ring (2467) [Secret Lair Drop Series] - Near Mint",
+      "public_title": "Near Mint",
+      "options": [
+        "Near Mint"
+      ],
+      "price": 1525,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_quantity": 8,
+      "inventory_management": "shopify",
+      "inventory_policy": "deny",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 41984399474768,
+      "title": "Lightly Played",
+      "option1": "Lightly Played",
+      "option2": null,
+      "option3": null,
+      "sku": "SLD-2467-EN-NF-2",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (2467) [Secret Lair Drop Series] - Lightly Played",
+      "public_title": "Lightly Played",
+      "options": [
+        "Lightly Played"
+      ],
+      "price": 1225,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_quantity": 0,
+      "inventory_management": "shopify",
+      "inventory_policy": "deny",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 41984399507536,
+      "title": "Moderately Played",
+      "option1": "Moderately Played",
+      "option2": null,
+      "option3": null,
+      "sku": "SLD-2467-EN-NF-3",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (2467) [Secret Lair Drop Series] - Moderately Played",
+      "public_title": "Moderately Played",
+      "options": [
+        "Moderately Played"
+      ],
+      "price": 1075,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_quantity": 0,
+      "inventory_management": "shopify",
+      "inventory_policy": "deny",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 41984399540304,
+      "title": "Heavily Played",
+      "option1": "Heavily Played",
+      "option2": null,
+      "option3": null,
+      "sku": "SLD-2467-EN-NF-4",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (2467) [Secret Lair Drop Series] - Heavily Played",
+      "public_title": "Heavily Played",
+      "options": [
+        "Heavily Played"
+      ],
+      "price": 775,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_quantity": 0,
+      "inventory_management": "shopify",
+      "inventory_policy": "deny",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 41984399573072,
+      "title": "Damaged",
+      "option1": "Damaged",
+      "option2": null,
+      "option3": null,
+      "sku": "SLD-2467-EN-NF-5",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (2467) [Secret Lair Drop Series] - Damaged",
+      "public_title": "Damaged",
+      "options": [
+        "Damaged"
+      ],
+      "price": 650,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_quantity": 0,
+      "inventory_management": "shopify",
+      "inventory_policy": "deny",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 41984399605840,
+      "title": "Near Mint Foil",
+      "option1": "Near Mint Foil",
+      "option2": null,
+      "option3": null,
+      "sku": "SLD-2467-EN-FO-1",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": true,
+      "name": "Sol Ring (2467) [Secret Lair Drop Series] - Near Mint Foil",
+      "public_title": "Near Mint Foil",
+      "options": [
+        "Near Mint Foil"
+      ],
+      "price": 1525,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_quantity": 8,
+      "inventory_management": "shopify",
+      "inventory_policy": "deny",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 41984399638608,
+      "title": "Lightly Played Foil",
+      "option1": "Lightly Played Foil",
+      "option2": null,
+      "option3": null,
+      "sku": "SLD-2467-EN-FO-2",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (2467) [Secret Lair Drop Series] - Lightly Played Foil",
+      "public_title": "Lightly Played Foil",
+      "options": [
+        "Lightly Played Foil"
+      ],
+      "price": 1225,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_quantity": 0,
+      "inventory_management": "shopify",
+      "inventory_policy": "deny",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 41984399671376,
+      "title": "Moderately Played Foil",
+      "option1": "Moderately Played Foil",
+      "option2": null,
+      "option3": null,
+      "sku": "SLD-2467-EN-FO-3",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (2467) [Secret Lair Drop Series] - Moderately Played Foil",
+      "public_title": "Moderately Played Foil",
+      "options": [
+        "Moderately Played Foil"
+      ],
+      "price": 1075,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_quantity": 0,
+      "inventory_management": "shopify",
+      "inventory_policy": "deny",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 41984399704144,
+      "title": "Heavily Played Foil",
+      "option1": "Heavily Played Foil",
+      "option2": null,
+      "option3": null,
+      "sku": "SLD-2467-EN-FO-4",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (2467) [Secret Lair Drop Series] - Heavily Played Foil",
+      "public_title": "Heavily Played Foil",
+      "options": [
+        "Heavily Played Foil"
+      ],
+      "price": 775,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_quantity": 0,
+      "inventory_management": "shopify",
+      "inventory_policy": "deny",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 41984399736912,
+      "title": "Damaged Foil",
+      "option1": "Damaged Foil",
+      "option2": null,
+      "option3": null,
+      "sku": "SLD-2467-EN-FO-5",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (2467) [Secret Lair Drop Series] - Damaged Foil",
+      "public_title": "Damaged Foil",
+      "options": [
+        "Damaged Foil"
+      ],
+      "price": 650,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_quantity": 0,
+      "inventory_management": "shopify",
+      "inventory_policy": "deny",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    }
+  ],
+  "images": [
+    "//cdn.shopify.com/s/files/1/1570/7271/files/34b3ea31-85c4-5fa9-890b-9814b47908fe.png?v=1769636523"
+  ],
+  "featured_image": "//cdn.shopify.com/s/files/1/1570/7271/files/34b3ea31-85c4-5fa9-890b-9814b47908fe.png?v=1769636523",
+  "options": [
+    {
+      "name": "Title",
+      "position": 1,
+      "values": [
+        "Near Mint",
+        "Lightly Played",
+        "Moderately Played",
+        "Heavily Played",
+        "Damaged",
+        "Near Mint Foil",
+        "Lightly Played Foil",
+        "Moderately Played Foil",
+        "Heavily Played Foil",
+        "Damaged Foil"
+      ]
+    }
+  ],
+  "url": "/products/sol-ring-2467-secret-lair-drop-series",
+  "media": [
+    {
+      "alt": null,
+      "id": 27105601323088,
+      "position": 1,
+      "preview_image": {
+        "aspect_ratio": 0.716,
+        "height": 1040,
+        "width": 745,
+        "src": "https://cdn.shopify.com/s/files/1/1570/7271/files/34b3ea31-85c4-5fa9-890b-9814b47908fe.png?v=1769636523"
+      },
+      "aspect_ratio": 0.716,
+      "height": 1040,
+      "media_type": "image",
+      "src": "https://cdn.shopify.com/s/files/1/1570/7271/files/34b3ea31-85c4-5fa9-890b-9814b47908fe.png?v=1769636523",
+      "width": 745
+    }
+  ],
+  "requires_selling_plan": false,
+  "selling_plan_groups": []
+}

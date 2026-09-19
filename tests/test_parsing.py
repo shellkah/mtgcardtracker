@@ -70,3 +70,16 @@ def test_parse_moxfield_merges_duplicate_rows():
     assert cards[0].set_code == "LTC"
     assert cards[0].collector_number == "409"
     assert cards[0].quantity == 3
+
+
+def test_parse_moxfield_strips_utf8_bom_from_header():
+    text = (
+        "\ufeffCount,Name,Edition,Condition,Language,Foil,Collector Number\n"
+        "3,Sol Ring,LTC,Near Mint,English,No,409\n"
+    )
+    assert detect_format(text) == ParseFormat.MOXFIELD
+    cards = parse_cards(text)
+    assert len(cards) == 1
+    assert cards[0].name == "Sol Ring"
+    # the BOM must not turn "Count" into "\ufeffCount" and default the qty to 1
+    assert cards[0].quantity == 3

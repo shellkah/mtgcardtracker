@@ -25,6 +25,7 @@ def _header(text: str) -> list[str]:
 
 
 def detect_format(text: str) -> ParseFormat:
+    text = text.lstrip("\ufeff")
     headers = {h.strip().lower() for h in _header(text)}
     if "collector number" in headers and "edition" in headers:
         return ParseFormat.MOXFIELD
@@ -122,6 +123,7 @@ def _parse_plain(text: str) -> list[CardRequest]:
 
 
 def parse_cards(text: str) -> list[CardRequest]:
+    text = text.lstrip("\ufeff")
     fmt = detect_format(text)
     if fmt == ParseFormat.PLAIN:
         return _merge(_parse_plain(text))

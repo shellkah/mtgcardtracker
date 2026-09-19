@@ -61,8 +61,13 @@ function render() {
     for (const match of sorted) {
       const line = document.createElement("a");
       line.className = "offer";
-      line.href = match.offer.url;
-      line.target = "_blank";
+      if (/^https?:/i.test(match.offer.url)) {
+        line.href = match.offer.url;
+        line.target = "_blank";
+      } else {
+        line.setAttribute("aria-disabled", "true");
+        line.title = "unsafe link hidden";
+      }
       line.textContent = `${match.offer.store_name}: $${match.offer.price_sgd} ${match.offer.condition ?? ""} ${match.offer.finish}${match.offer.in_stock ? "" : " (out of stock)"}`;
       const meta = document.createElement("div");
       meta.className = "confidence";
