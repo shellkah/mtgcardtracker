@@ -64,7 +64,7 @@ const state = {
   expanded: new Set(),
   cachedStores: new Set(),
   source: null,
-  cart: { items: [] },
+  cart: { items: [], stores: [] },
 };
 
 const cardEls = new Map(); // card.key -> article element
@@ -1075,6 +1075,9 @@ function renderCart() {
   const dupes = duplicateCartCardKeys();
   let total = 0;
   let excluded = 0;
+  const checkoutUrls = new Map(
+    (state.cart.stores || []).map((store) => [store.store_id, store.checkout_url])
+  );
   els.cartBody.innerHTML = cartGroups().map((group) => {
     let subtotal = 0;
     const lines = group.items.map((item) => {
@@ -1086,12 +1089,17 @@ function renderCart() {
       }
       return cartLineHTML(item, dupes);
     }).join("");
+    const checkoutUrl = checkoutUrls.get(group.store_id);
+    const buy = checkoutUrl
+      ? `<a class="satchel__buy" href="${esc(checkoutUrl)}" target="_blank" rel="noopener" title="Check out these lines at ${esc(group.store_name)}"><svg class="ico"><use href="#i-cart" /></svg> Buy</a>`
+      : `<span class="satchel__buy is-disabled" aria-disabled="true" title="No purchasable variants at ${esc(group.store_name)}"><svg class="ico"><use href="#i-cart" /></svg> Buy</span>`;
     return `
       <section class="satchel__store">
         <header class="satchel__store-head">
           <span class="satchel__store-dot" style="--store-color:${esc(storeColor(group.store_id))}" aria-hidden="true"></span>
           <span class="satchel__store-name">${esc(group.store_name)}</span>
           <span class="satchel__store-sub">${money(subtotal)}</span>
+          ${buy}
         </header>
         <ul class="satchel__lines">${lines}</ul>
       </section>`;
@@ -1115,6 +1123,7 @@ async function loadCart() {
   try {
     const data = await (await fetch("/api/cart")).json();
     state.cart.items = data.items || [];
+    state.cart.stores = data.stores || [];
   } catch {
     toast({ type: "error", title: "Could not load the satchel", msg: "Showing the last known basket." });
   }
@@ -1150,6 +1159,7 @@ async function addOfferToCart(entry, offer) {
       store_name: offer.store_name,
       title: offer.title,
       url: offer.url,
+      variant_id: offer.variant_id ?? null,
       price_sgd: String(offer.price_sgd),
       currency: offer.currency || "SGD",
       condition: offer.condition,
@@ -1187,10 +1197,7 @@ async function patchQuantity(itemId, quantity) {
     body: JSON.stringify({ quantity }),
   });
   if (!res.ok) return;
-  const updated = await res.json();
-  const index = state.cart.items.findIndex((i) => i.id === itemId);
-  if (index >= 0) state.cart.items[index] = updated;
-  renderCart();
+  await loadCart();
   render();
 }
 
@@ -1290,6 +1297,7 @@ function reconcileCart(event, stats) {
       line.in_stock = match.in_stock ? 1 : 0;
       line.offer_fetched_at = match.fetched_at || line.offer_fetched_at;
       line.status = "ok";
+      line.variant_id = match.variant_id ?? line.variant_id;
       line.last_checked_at = Date.now() / 1000;
       if (oldPrice !== Number(match.price_sgd)) {
         stats.changed += 1;
@@ -1318,6 +1326,7 @@ async function pushCartRefresh(line) {
         price_sgd: line.price_sgd,
         condition: line.condition,
         finish: line.finish,
+        variant_id: line.variant_id ?? null,
         in_stock: Boolean(line.in_stock),
         offer_fetched_at: line.offer_fetched_at,
         last_checked_at: line.last_checked_at,

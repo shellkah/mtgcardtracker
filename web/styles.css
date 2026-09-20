@@ -1360,10 +1360,14 @@ textarea:focus {
 .satchel__empty .ico { width: 40px; height: 40px; color: var(--gold-dim); }
 
 .satchel__store { margin-bottom: 18px; }
-.satchel__store-head { display: flex; align-items: center; gap: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--line); }
+.satchel__store-head { display: flex; align-items: center; gap: 8px; padding-bottom: 6px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
 .satchel__store-dot { width: 10px; height: 10px; border-radius: 50%; background: var(--store-color, var(--gold)); }
 .satchel__store-name { font-weight: 600; }
 .satchel__store-sub { margin-left: auto; font-family: var(--font-mono); color: var(--gold-2); }
+.satchel__buy { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; font-size: 0.76rem; font-weight: 600; color: var(--gold-2); background: transparent; border: 1px solid var(--line); border-radius: 999px; text-decoration: none; white-space: nowrap; }
+.satchel__buy .ico { width: 13px; height: 13px; }
+.satchel__buy:hover { border-color: var(--gold); color: var(--gold); }
+.satchel__buy.is-disabled { opacity: 0.4; cursor: default; }
 .satchel__lines { display: flex; flex-direction: column; }
 .satchel__line { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
 .satchel__line.is-dim { opacity: 0.55; }
