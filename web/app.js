@@ -1216,6 +1216,112 @@ els.cartClear.addEventListener("click", async () => {
   toast({ type: "info", title: "Satchel cleared" });
 });
 
+/* ── re-check prices ────────────────────────────────────────── */
+let cartRefreshing = false;
+
+async function refreshCart() {
+  if (cartRefreshing || !state.cart.items.length) return;
+  cartRefreshing = true;
+  els.cartRefresh.disabled = true;
+  els.cartRefresh.dataset.busy = "true";
+
+  let data;
+  try {
+    const res = await fetch("/api/cart/refresh", { method: "POST" });
+    if (!res.ok) {
+      const detail = await res.json().catch(() => ({}));
+      throw new Error(detail.detail || "Could not re-check the satchel.");
+    }
+    data = await res.json();
+  } catch (err) {
+    finishCartRefresh(err.message);
+    return;
+  }
+
+  if (data.skipped_store_ids?.length) {
+    toast({ type: "info", title: "Some stores skipped", msg: data.skipped_store_ids.join(", ") });
+  }
+
+  const stats = { checked: 0, changed: 0, unavailable: 0 };
+  const source = new EventSource(`/api/runs/${data.run_id}/stream`);
+  source.addEventListener("result", (e) => {
+    reconcileCart(JSON.parse(e.data), stats);
+  });
+  source.addEventListener("done", () => {
+    source.close();
+    finishCartRefresh(null, stats);
+  });
+}
+
+function reconcileCart(event, stats) {
+  const lines = state.cart.items.filter(
+    (i) => i.card_key === event.card.key && i.store_id === event.store_id
+  );
+  if (!lines.length) return;
+  const byIdentity = new Map(
+    (event.offers || []).map((m) => [cartIdentity(m.offer), m.offer])
+  );
+  for (const line of lines) {
+    stats.checked += 1;
+    const match = byIdentity.get(cartIdentity(line));
+    if (match) {
+      const oldPrice = Number(line.price_sgd);
+      line.price_sgd = String(match.price_sgd);
+      line.condition = match.condition;
+      line.finish = match.finish;
+      line.in_stock = match.in_stock ? 1 : 0;
+      line.offer_fetched_at = match.fetched_at || line.offer_fetched_at;
+      line.status = "ok";
+      line.last_checked_at = Date.now() / 1000;
+      if (oldPrice !== Number(match.price_sgd)) stats.changed += 1;
+    } else {
+      line.status = "unavailable";
+      line.last_checked_at = Date.now() / 1000;
+      stats.unavailable += 1;
+    }
+    pushCartRefresh(line);
+  }
+  renderCart();
+}
+
+async function pushCartRefresh(line) {
+  try {
+    await fetch(`/api/cart/${line.id}/refresh`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        status: line.status,
+        price_sgd: line.price_sgd,
+        condition: line.condition,
+        finish: line.finish,
+        in_stock: Boolean(line.in_stock),
+        offer_fetched_at: line.offer_fetched_at,
+        last_checked_at: line.last_checked_at,
+      }),
+    });
+  } catch {
+    /* best effort — local state is already updated */
+  }
+}
+
+function finishCartRefresh(message, stats = { checked: 0, changed: 0, unavailable: 0 }) {
+  cartRefreshing = false;
+  els.cartRefresh.disabled = false;
+  els.cartRefresh.dataset.busy = "false";
+  if (message) {
+    toast({ type: "error", title: "Re-check failed", msg: message });
+    return;
+  }
+  renderCart();
+  toast({
+    type: "success",
+    title: "Satchel re-checked",
+    msg: `${stats.checked} line${stats.checked === 1 ? "" : "s"} · ${stats.changed} price change${stats.changed === 1 ? "" : "s"} · ${stats.unavailable} no longer listed`,
+  });
+}
+
+els.cartRefresh.addEventListener("click", refreshCart);
+
 /* ── wiring ─────────────────────────────────────────────────── */
 els.searchButton.addEventListener("click", startSearch);
 els.cardList.addEventListener("input", refreshInputMeta);
