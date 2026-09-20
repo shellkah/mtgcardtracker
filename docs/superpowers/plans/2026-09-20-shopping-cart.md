@@ -753,7 +753,7 @@ Add these routes inside `create_app`, after the cart CRUD routes:
         return item
 
     @app.post("/api/cart/refresh")
-    def refresh_cart():
+    async def refresh_cart():  # async: registry.create calls asyncio.create_task
         items = db.list_cart()
         if not items:
             raise HTTPException(status_code=400, detail="Cart is empty")
