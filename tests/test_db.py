@@ -68,6 +68,7 @@ def _row(**over):
          "title": "Sol Ring [LTC]", "url": "https://example.test/p/sol-ring",
          "price_sgd": "4.50", "currency": "SGD", "condition": "NM",
          "finish": "nonfoil", "in_stock": True,
+         "variant_id": "41984399442000",
          "fetched_at": "2026-09-20T00:00:00+00:00"},
     )
     row.update(over)
@@ -113,4 +114,33 @@ def test_cart_refresh_update_and_clear(tmp_path):
     assert db.update_cart_item(item_id, bogus="x")["id"] == item_id
     db.clear_cart()
     assert db.list_cart() == []
+    db.close()
+
+
+def test_cart_persists_variant_id(tmp_path):
+    db = Database(tmp_path / "t.db")
+    db.init_schema()
+    db.add_cart_item(_row())
+    assert db.list_cart()[0]["variant_id"] == "41984399442000"
+    db.close()
+
+
+def test_init_schema_adds_variant_id_to_an_older_cart_table(tmp_path):
+    db = Database(tmp_path / "t.db")
+    db._conn.executescript(
+        "CREATE TABLE cart_items ("
+        "id INTEGER PRIMARY KEY AUTOINCREMENT, "
+        "identity_key TEXT NOT NULL UNIQUE);"
+    )
+    db._conn.execute("INSERT INTO cart_items (identity_key) VALUES ('old')")
+    db._conn.commit()
+
+    db.init_schema()
+
+    columns = {r["name"] for r in db._conn.execute("PRAGMA table_info(cart_items)")}
+    assert "variant_id" in columns
+    # the pre-existing row survives the ALTER
+    assert db._conn.execute(
+        "SELECT COUNT(*) AS n FROM cart_items"
+    ).fetchone()["n"] == 1
     db.close()

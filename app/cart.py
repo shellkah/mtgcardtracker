@@ -26,6 +26,7 @@ def line_from_offer(card: dict, offer: dict) -> dict:
         "store_name": offer["store_name"],
         "title": offer["title"],
         "url": offer["url"],
+        "variant_id": offer.get("variant_id"),
         "printing_hint": offer.get("printing_hint"),
         "image_url": offer.get("image_url"),
         "condition": offer.get("condition"),

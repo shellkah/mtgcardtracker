@@ -57,12 +57,22 @@ def test_line_from_offer_copies_card_and_offer_fields():
     assert row["price_sgd"] == "4.50"
     assert row["in_stock"] == 1
     assert row["status"] == "ok"
+    assert row["variant_id"] is None
     assert "added_at" not in row
 
 
 def test_line_from_offer_defaults_quantity_to_at_least_one():
     row = line_from_offer({**CARD, "quantity": 0}, _offer())
     assert row["quantity"] == 1
+
+
+def test_line_from_offer_copies_variant_id():
+    row = line_from_offer(CARD, _offer(variant_id="41984399442000"))
+    assert row["variant_id"] == "41984399442000"
+
+
+def test_line_from_offer_variant_id_defaults_to_none():
+    assert line_from_offer(CARD, _offer())["variant_id"] is None
 
 
 def test_group_by_store_groups_and_subtotals():

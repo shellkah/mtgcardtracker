@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS cart_items (
     store_name        TEXT NOT NULL,
     title             TEXT NOT NULL,
     url               TEXT NOT NULL,
+    variant_id        TEXT,
     printing_hint     TEXT,
     image_url         TEXT,
     condition         TEXT,
@@ -52,17 +53,22 @@ CREATE TABLE IF NOT EXISTS cart_items (
 # they get refetched instead of serving incomplete offers until the TTL expires.
 CACHE_VERSION = 3
 
+# Columns added to cart_items after the table first shipped. ``CREATE TABLE IF
+# NOT EXISTS`` will not alter an existing table, so init_schema applies these
+# with ALTER TABLE, preserving any saved satchel rows.
+CART_ADDED_COLUMNS = {"variant_id": "TEXT"}
+
 CART_FIELDS = (
     "id", "identity_key", "card_key", "card_name", "set_code",
     "collector_number", "store_id", "store_name", "title", "url",
-    "printing_hint", "image_url", "condition", "finish", "price_sgd",
-    "currency", "in_stock", "quantity", "status", "added_at",
+    "variant_id", "printing_hint", "image_url", "condition", "finish",
+    "price_sgd", "currency", "in_stock", "quantity", "status", "added_at",
     "offer_fetched_at", "last_checked_at",
 )
 
 CART_UPDATABLE = {
     "price_sgd", "currency", "condition", "finish", "in_stock",
-    "offer_fetched_at", "last_checked_at", "status",
+    "offer_fetched_at", "last_checked_at", "status", "variant_id",
 }
 
 
@@ -77,7 +83,19 @@ class Database:
 
     def init_schema(self) -> None:
         self._conn.executescript(SCHEMA)
+        self._add_missing_cart_columns()
         self._conn.commit()
+
+    def _add_missing_cart_columns(self) -> None:
+        existing = {
+            row["name"]
+            for row in self._conn.execute("PRAGMA table_info(cart_items)")
+        }
+        for name, decl in CART_ADDED_COLUMNS.items():
+            if name not in existing:
+                self._conn.execute(
+                    f"ALTER TABLE cart_items ADD COLUMN {name} {decl}"
+                )
 
     def get_cached(self, store_id: str, card_key: str, ttl_seconds: int) -> dict | None:
         row = self._conn.execute(
@@ -145,18 +163,19 @@ class Database:
             return int(existing["id"]), False
         cur = self._conn.execute(
             "INSERT INTO cart_items (identity_key, card_key, card_name, set_code, "
-            "collector_number, store_id, store_name, title, url, printing_hint, "
-            "image_url, condition, finish, price_sgd, currency, in_stock, quantity, "
-            "status, added_at, offer_fetched_at) "
-            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            "collector_number, store_id, store_name, title, url, variant_id, "
+            "printing_hint, image_url, condition, finish, price_sgd, currency, "
+            "in_stock, quantity, status, added_at, offer_fetched_at) "
+            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
             (
                 item["identity_key"], item["card_key"], item["card_name"],
                 item.get("set_code"), item.get("collector_number"),
                 item["store_id"], item["store_name"], item["title"],
-                item["url"], item.get("printing_hint"), item.get("image_url"),
-                item.get("condition"), item["finish"], item["price_sgd"],
-                item["currency"], int(item["in_stock"]), int(item["quantity"]),
-                item.get("status", "ok"), time.time(), item["offer_fetched_at"],
+                item["url"], item.get("variant_id"), item.get("printing_hint"),
+                item.get("image_url"), item.get("condition"), item["finish"],
+                item["price_sgd"], item["currency"], int(item["in_stock"]),
+                int(item["quantity"]), item.get("status", "ok"), time.time(),
+                item["offer_fetched_at"],
             ),
         )
         self._conn.commit()
