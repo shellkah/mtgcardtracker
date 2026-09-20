@@ -72,3 +72,51 @@ def test_run_stream_emits_done(tmp_path, monkeypatch):
         with client.stream("GET", f"/api/runs/{run['run_id']}/stream") as response:
             body = "".join(response.iter_text())
     assert '"type": "done"' in body
+
+
+CART_PAYLOAD = {
+    "card": {"key": "ltc:409", "name": "Sol Ring", "set_code": "LTC",
+             "collector_number": "409", "quantity": 2},
+    "offer": {"store_id": "greyogre", "store_name": "Grey Ogre Games",
+              "title": "Sol Ring [LTC]", "url": "https://example.test/p/sol-ring",
+              "price_sgd": "4.50", "currency": "SGD", "condition": "NM",
+              "finish": "nonfoil", "in_stock": True, "printing_hint": "ltc:409",
+              "fetched_at": "2026-09-20T00:00:00+00:00"},
+}
+
+
+def test_cart_roundtrip(tmp_path):
+    client = _client(tmp_path)
+    created = client.post("/api/cart", json=CART_PAYLOAD).json()
+    assert created["created"] is True
+
+    again = client.post("/api/cart", json=CART_PAYLOAD).json()
+    assert again["created"] is False
+    assert again["id"] == created["id"]
+
+    cart = client.get("/api/cart").json()
+    assert cart["count"] == 1
+    item = cart["items"][0]
+    assert item["quantity"] == 2
+    assert item["price_sgd"] == "4.50"
+    assert item["card_key"] == "ltc:409"
+
+    patched = client.patch(f"/api/cart/{created['id']}", json={"quantity": 3}).json()
+    assert patched["quantity"] == 3
+    assert client.patch("/api/cart/9999", json={"quantity": 3}).status_code == 404
+
+    client.delete(f"/api/cart/{created['id']}")
+    assert client.get("/api/cart").json()["count"] == 0
+
+
+def test_cart_clear(tmp_path):
+    client = _client(tmp_path)
+    client.post("/api/cart", json=CART_PAYLOAD)
+    other = dict(CART_PAYLOAD)
+    other["card"] = {**CART_PAYLOAD["card"], "key": "war:123", "name": "Shock"}
+    other["offer"] = {**CART_PAYLOAD["offer"], "title": "Shock [WAR]",
+                      "url": "https://example.test/p/shock"}
+    client.post("/api/cart", json=other)
+    assert client.get("/api/cart").json()["count"] == 2
+    client.delete("/api/cart")
+    assert client.get("/api/cart").json()["count"] == 0

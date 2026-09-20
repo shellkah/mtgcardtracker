@@ -9,6 +9,7 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from app.adapters.registry import build_adapters, load_config
+from app.cart import line_from_offer
 from app.db import Database
 from app.http import HttpxClient
 from app.parsing import detect_format, parse_cards
@@ -30,6 +31,38 @@ class RunRequest(BaseModel):
 class ListRequest(BaseModel):
     name: str
     text: str
+
+
+class CartCard(BaseModel):
+    key: str
+    name: str
+    set_code: str | None = None
+    collector_number: str | None = None
+    quantity: int = 1
+
+
+class CartOffer(BaseModel):
+    store_id: str
+    store_name: str
+    title: str
+    url: str
+    price_sgd: str
+    currency: str = "SGD"
+    condition: str | None = None
+    finish: str = "unknown"
+    in_stock: bool = True
+    printing_hint: str | None = None
+    image_url: str | None = None
+    fetched_at: str | None = None
+
+
+class AddCartRequest(BaseModel):
+    card: CartCard
+    offer: CartOffer
+
+
+class QuantityRequest(BaseModel):
+    quantity: int
 
 
 def create_app(config_path: str = "config/stores.yaml", db_path: str = "mtgcardtracker.db") -> FastAPI:
@@ -95,6 +128,34 @@ def create_app(config_path: str = "config/stores.yaml", db_path: str = "mtgcardt
     @app.delete("/api/lists/{list_id}")
     def delete_list(list_id: int):
         db.delete_saved(list_id)
+        return {"ok": True}
+
+    @app.get("/api/cart")
+    def get_cart():
+        items = db.list_cart()
+        return {"items": items, "count": len(items)}
+
+    @app.post("/api/cart")
+    def add_to_cart(request: AddCartRequest):
+        row = line_from_offer(request.card.model_dump(), request.offer.model_dump())
+        item_id, created = db.add_cart_item(row)
+        return {"id": item_id, "created": created}
+
+    @app.patch("/api/cart/{item_id}")
+    def set_cart_quantity(item_id: int, request: QuantityRequest):
+        item = db.update_cart_quantity(item_id, request.quantity)
+        if item is None:
+            raise HTTPException(status_code=404, detail="Not found")
+        return item
+
+    @app.delete("/api/cart/{item_id}")
+    def remove_from_cart(item_id: int):
+        db.remove_cart_item(item_id)
+        return {"ok": True}
+
+    @app.delete("/api/cart")
+    def clear_cart():
+        db.clear_cart()
         return {"ok": True}
 
     if WEB_DIR.exists():
