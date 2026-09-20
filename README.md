@@ -39,7 +39,10 @@ uv run uvicorn app.main:app --reload
 Then open <http://127.0.0.1:8000>. Paste a Moxfield/ManaBox CSV (or a plain
 `1 Sol Ring` list), tick the stores, and press Search. Results stream in per
 card; expand offers and change the condition/finish/in-stock filters live. Saved
-lists persist in SQLite.
+lists persist in SQLite. Add any offer to **the Satchel** — a persistent basket
+in the top bar. It groups your saved offers by store, totals them (SGD), and can
+re-check their prices and stock on demand. There is no checkout; the satchel is
+a saved basket you buy from manually.
 
 ## Card list formats
 
@@ -78,6 +81,7 @@ app/
   matching.py        requested printing <-> offer matching
   parsing.py         Moxfield / ManaBox / plain-text parsing
   db.py              SQLite cache + saved lists
+  cart.py            cart domain helpers (identity, grouping, totals)
   http.py            HttpClient abstraction (identifying User-Agent)
   sets.py            Scryfall set-name -> set-code resolver
   scryfall.py        best-effort printing validation (currently dormant)
@@ -189,6 +193,7 @@ than merge blockers.
 
 - Prices are assumed to be **SGD**; no currency conversion.
 - Response cache TTL defaults to 6 hours (`force refresh` bypasses it).
-- No price history, no cart/checkout automation, no accounts.
+- No price history, no accounts. A cart (the Satchel) saves offers for manual
+  purchase, but there is no checkout or order automation.
 - No proxy rotation or anti-bot evasion — requests are low-rate and use an
   identifying `User-Agent`.
