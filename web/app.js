@@ -1230,6 +1230,7 @@ els.cartClear.addEventListener("click", async () => {
 
 /* ── re-check prices ────────────────────────────────────────── */
 let cartRefreshing = false;
+let cartRefreshPushes = []; // in-flight pushCartRefresh PATCHes, awaited before reloading
 
 async function refreshCart() {
   if (cartRefreshing || !state.cart.items.length) return;
@@ -1255,6 +1256,7 @@ async function refreshCart() {
   }
 
   const stats = { checked: 0, changed: 0, unavailable: 0, seen: new Set() };
+  cartRefreshPushes = [];
   const source = new EventSource(`/api/runs/${data.run_id}/stream`);
   source.addEventListener("result", (e) => {
     reconcileCart(JSON.parse(e.data), stats);
@@ -1311,7 +1313,7 @@ function reconcileCart(event, stats) {
       delete line.was_price_sgd;
       stats.unavailable += 1;
     }
-    pushCartRefresh(line);
+    cartRefreshPushes.push(pushCartRefresh(line));
   }
   renderCart();
 }
@@ -1337,15 +1339,16 @@ async function pushCartRefresh(line) {
   }
 }
 
-function finishCartRefresh(message, stats = { checked: 0, changed: 0, unavailable: 0 }) {
+async function finishCartRefresh(message, stats = { checked: 0, changed: 0, unavailable: 0 }) {
   cartRefreshing = false;
   els.cartRefresh.disabled = false;
   els.cartRefresh.dataset.busy = "false";
+  await Promise.allSettled(cartRefreshPushes); // let the PATCHes land before reloading
   if (message) {
     toast({ type: "error", title: "Re-check failed", msg: message });
     return;
   }
-  renderCart();
+  await loadCart(); // server-recomputed store permalinks keep the Buy links current
   toast({
     type: "success",
     title: "Satchel re-checked",
