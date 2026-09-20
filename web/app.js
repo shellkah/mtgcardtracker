@@ -399,10 +399,15 @@ function bestHTML(entry) {
   const store = isSafeUrl(offer.url)
     ? `<a class="chip chip--gold" href="${esc(offer.url)}" target="_blank" rel="noopener">${esc(offer.store_name)}</a>`
     : `<span class="chip chip--gold">${esc(offer.store_name)}</span>`;
+  const saved = cartHasOffer(offer);
+  const addBest = saved
+    ? '<span class="best__add is-saved" title="In the satchel" aria-hidden="true"><svg class="ico"><use href="#i-check" /></svg></span>'
+    : `<button class="best__add" type="button" data-act="add-best" aria-label="Add the best offer for ${esc(entry.card.name)} to the satchel"><svg class="ico"><use href="#i-plus" /></svg><span>Add best</span></button>`;
   return `
     <div class="best__row">
       <span class="best__price">${money(offer.price_sgd)}</span>
       ${store}
+      ${addBest}
     </div>
     <div class="best__tags">${tags}</div>`;
 }
@@ -437,6 +442,10 @@ function offersHTML(entry) {
         ? `<a class="offer__link" href="${esc(offer.url)}" target="_blank" rel="noopener" title="Open listing at ${esc(offer.store_name)}"><svg class="ico"><use href="#i-external" /></svg></a>`
         : `<span class="offer__link" aria-disabled="true" title="Unsafe link hidden"><svg class="ico"><use href="#i-external" /></svg></span>`;
       const printing = offer.printing_hint ? ` · ${esc(offer.printing_hint)}` : "";
+      const saved = cartHasOffer(offer);
+      const addBtn = saved
+        ? `<span class="offer__add is-saved" title="In the satchel" aria-hidden="true"><svg class="ico"><use href="#i-check" /></svg></span>`
+        : `<button class="offer__add" type="button" data-act="add-offer" aria-label="Add ${esc(offer.title)} from ${esc(offer.store_name)} to the satchel"><svg class="ico"><use href="#i-plus" /></svg></button>`;
       return `
         <div class="offer ${isBest ? "is-best" : ""}" style="--store-color:${esc(color)}" data-offer-key="${esc(offerIndexKey(offer))}">
           <span class="offer__fill" style="--w:${width.toFixed(1)}%"></span>
@@ -454,6 +463,7 @@ function offersHTML(entry) {
             aria-label="Preview ${esc(offer.title)} from ${esc(offer.store_name)}">
             <svg class="ico"><use href="#i-eye" /></svg>
           </button>
+          ${addBtn}
           ${link}
         </div>`;
     })
@@ -1121,6 +1131,50 @@ els.cartDrawer.addEventListener("click", (e) => {
   if (e.target === els.cartDrawer) closeCart(); // backdrop click
 });
 
+async function addOfferToCart(entry, offer) {
+  const payload = {
+    card: {
+      key: entry.card.key,
+      name: entry.card.name,
+      set_code: entry.card.set_code,
+      collector_number: entry.card.collector_number,
+      quantity: entry.card.quantity,
+    },
+    offer: {
+      store_id: offer.store_id,
+      store_name: offer.store_name,
+      title: offer.title,
+      url: offer.url,
+      price_sgd: String(offer.price_sgd),
+      currency: offer.currency || "SGD",
+      condition: offer.condition,
+      finish: offer.finish,
+      in_stock: offer.in_stock,
+      printing_hint: offer.printing_hint,
+      image_url: offer.image_url,
+      fetched_at: offer.fetched_at,
+    },
+  };
+  try {
+    const res = await fetch("/api/cart", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+    });
+    if (!res.ok) throw new Error("rejected");
+    const data = await res.json();
+    toast({
+      type: data.created ? "success" : "info",
+      title: data.created ? "Added to the satchel" : "Already in the satchel",
+      msg: `${entry.card.name} · ${offer.store_name}`,
+    });
+    await loadCart();
+    render();
+  } catch {
+    toast({ type: "error", title: "Could not add", msg: "The satchel didn’t save that offer." });
+  }
+}
+
 /* ── wiring ─────────────────────────────────────────────────── */
 els.searchButton.addEventListener("click", startSearch);
 els.cardList.addEventListener("input", refreshInputMeta);
@@ -1191,6 +1245,21 @@ els.resultsList.addEventListener("click", (e) => {
       showArt(hit.button, hit.offerKey);
       pinArt();
     }
+    return;
+  }
+  const addOffer = e.target.closest('[data-act="add-offer"]');
+  if (addOffer) {
+    const row = addOffer.closest(".offer");
+    const found = row && findEntry(row.dataset.offerKey);
+    if (found) addOfferToCart(found.entry, found.match.offer);
+    return;
+  }
+  const addBest = e.target.closest('[data-act="add-best"]');
+  if (addBest) {
+    const card = addBest.closest(".card");
+    const entry = card && state.cards.get(card.dataset.key);
+    const best = entry && bestOffer(entry);
+    if (entry && best) addOfferToCart(entry, best.offer);
     return;
   }
   const toggle = e.target.closest('[data-act="toggle"]');

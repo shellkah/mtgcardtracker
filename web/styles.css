@@ -1388,3 +1388,9 @@ textarea:focus {
 .satchel__actions { display: flex; gap: 8px; margin-top: 12px; }
 
 .tag--warn { border-color: rgba(224, 178, 95, 0.4); color: var(--warn); }
+
+.offer__add, .best__add { display: inline-flex; align-items: center; gap: 5px; border: 1px solid var(--line-strong); border-radius: 999px; background: transparent; color: var(--gold-2); cursor: pointer; }
+.offer__add { display: grid; place-items: center; width: 28px; height: 28px; padding: 0; }
+.best__add { padding: 4px 10px; font-size: 0.74rem; }
+.offer__add:hover, .best__add:hover { border-color: var(--gold); background: rgba(201, 169, 97, 0.1); }
+.offer__add.is-saved, .best__add.is-saved { border-color: transparent; color: var(--good); }
