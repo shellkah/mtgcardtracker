@@ -38,6 +38,10 @@
     <symbol id="i-stack" viewBox="0 0 24 24"><path d="m12 2 9 5-9 5-9-5 9-5z" /><path d="m3 12 9 5 9-5" opacity=".55" /><path d="m3 17 9 5 9-5" opacity=".3" /></symbol>
     <symbol id="i-max" viewBox="0 0 24 24"><path d="M3 9V3h6M15 3h6v6M21 15v6h-6M9 21H3v-6" /></symbol>
     <symbol id="i-grip" viewBox="0 0 24 24"><path d="M9 5v14M15 5v14" /><path d="m6 9-3 3 3 3M18 9l3 3-3 3" /></symbol>
+    <symbol id="i-satchel" viewBox="0 0 24 24"><path d="M5 9h14l-1.2 11a1 1 0 0 1-1 1H7.2a1 1 0 0 1-1-1z" /><path d="M9 9V6.5a3 3 0 0 1 6 0V9" /></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M5 12h14" /></symbol>
+    <symbol id="i-cart" viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4" /><circle cx="18" cy="20" r="1.4" /><path d="M2 3h3l2.6 12.4a1 1 0 0 0 1 .8h8.8a1 1 0 0 0 1-.8L21 7H6" /></symbol>
   </svg>
 
   <!-- ── top bar ─────────────────────────────────────────────────── -->
@@ -56,6 +60,11 @@
       </div>
     </div>
     <div class="topbar__status">
+      <button id="cart-button" class="cart-btn" type="button" aria-haspopup="dialog" aria-controls="cart-drawer" aria-label="Open the satchel">
+        <svg class="ico"><use href="#i-satchel" /></svg>
+        <span class="cart-btn__label">Satchel</span>
+        <span id="cart-count" class="cart-btn__badge" hidden>0</span>
+      </button>
       <span id="status" class="status" data-state="idle">
         <span class="status__pulse" aria-hidden="true"></span>
         <span id="status-text">Ready</span>
@@ -252,6 +261,36 @@
       </div>
     </div>
   </aside>
+
+  <dialog id="cart-drawer" class="satchel" aria-labelledby="cart-title">
+    <header class="satchel__head">
+      <div>
+        <p class="eyebrow">The Satchel</p>
+        <h2 id="cart-title" class="satchel__title">Saved offers</h2>
+      </div>
+      <button id="cart-close" class="btn btn--quiet btn--sm" type="button" aria-label="Close the satchel">
+        <svg class="ico"><use href="#i-x" /></svg>
+      </button>
+    </header>
+    <div id="cart-alerts" class="satchel__alerts" hidden></div>
+    <div id="cart-body" class="satchel__body"></div>
+    <footer class="satchel__foot">
+      <div class="satchel__total">
+        <span class="satchel__total-label">Grand total</span>
+        <span id="cart-total" class="satchel__total-value">S$0.00</span>
+        <span id="cart-excluded" class="satchel__excluded" hidden></span>
+      </div>
+      <div class="satchel__actions">
+        <button id="cart-refresh" class="btn btn--quiet btn--sm" type="button">
+          <svg class="ico"><use href="#i-refresh" /></svg> Re-check prices
+        </button>
+        <button id="cart-clear" class="btn btn--quiet btn--sm" type="button">
+          <svg class="ico"><use href="#i-trash" /></svg> Clear
+        </button>
+      </div>
+    </footer>
+    <div id="cart-live" class="sr-only" aria-live="polite"></div>
+  </dialog>
 
   <noscript><p class="noscript">This tracker needs JavaScript for live search results.</p></noscript>
   <script src="/app.js"></script>

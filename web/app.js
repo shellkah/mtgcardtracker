@@ -34,6 +34,17 @@ const els = {
   emptyState: $("empty-state"),
   resultsList: $("results-list"),
   toasts: $("toasts"),
+  cartButton: $("cart-button"),
+  cartCount: $("cart-count"),
+  cartDrawer: $("cart-drawer"),
+  cartClose: $("cart-close"),
+  cartAlerts: $("cart-alerts"),
+  cartBody: $("cart-body"),
+  cartTotal: $("cart-total"),
+  cartExcluded: $("cart-excluded"),
+  cartRefresh: $("cart-refresh"),
+  cartClear: $("cart-clear"),
+  cartLive: $("cart-live"),
 };
 
 const FILTER_IDS = ["filter-in-stock", "filter-nm", "filter-nonfoil"];
@@ -53,6 +64,7 @@ const state = {
   expanded: new Set(),
   cachedStores: new Set(),
   source: null,
+  cart: { items: [] },
 };
 
 const cardEls = new Map(); // card.key -> article element
@@ -959,6 +971,156 @@ function wireArtModal() {
   document.addEventListener("scroll", dismissOnScroll, { passive: true, capture: true });
 }
 
+/* ── the satchel ────────────────────────────────────────────── */
+function cartIdentity(item) {
+  return [item.store_id, item.title, item.condition, item.finish, item.url].join("\u0001");
+}
+
+function cartHasOffer(offer) {
+  const key = [offer.store_id, offer.title, offer.condition, offer.finish, offer.url].join("\u0001");
+  return state.cart.items.some((item) => cartIdentity(item) === key);
+}
+
+function cartLineTotal(item) {
+  return Number(item.price_sgd) * Number(item.quantity);
+}
+
+function cartCountable(item) {
+  return item.status === "ok" && Boolean(item.in_stock);
+}
+
+function cartGroups() {
+  const groups = new Map();
+  for (const item of state.cart.items) {
+    if (!groups.has(item.store_id)) {
+      groups.set(item.store_id, { store_id: item.store_id, store_name: item.store_name, items: [] });
+    }
+    groups.get(item.store_id).items.push(item);
+  }
+  return [...groups.values()];
+}
+
+function duplicateCartCardKeys() {
+  const seen = new Set();
+  const dupes = new Set();
+  for (const item of state.cart.items) {
+    if (seen.has(item.card_key)) dupes.add(item.card_key);
+    seen.add(item.card_key);
+  }
+  return dupes;
+}
+
+function renderCartBadge() {
+  const count = state.cart.items.length;
+  els.cartCount.textContent = String(count);
+  els.cartCount.hidden = count === 0;
+}
+
+function cartLineHTML(item, dupes) {
+  const countable = cartCountable(item);
+  const tags = [
+    conditionTag(item.condition),
+    finishTag(item.finish),
+    countable ? "" : `<span class="tag tag--oos">${item.status === "unavailable" ? "No longer listed" : "Out of stock"}</span>`,
+    dupes.has(item.card_key) ? '<span class="tag tag--warn">Duplicate choice</span>' : "",
+  ].join("");
+  const thumb = isSafeUrl(item.image_url)
+    ? `<img class="satchel__thumb" src="${esc(item.image_url)}" alt="" loading="lazy" />`
+    : '<span class="satchel__thumb satchel__thumb--none" aria-hidden="true"><svg class="ico"><use href="#i-stack" /></svg></span>';
+  const link = isSafeUrl(item.url)
+    ? `<a class="satchel__link" href="${esc(item.url)}" target="_blank" rel="noopener" title="Open listing"><svg class="ico"><use href="#i-external" /></svg></a>`
+    : "";
+  return `
+    <li class="satchel__line${countable ? "" : " is-dim"}" data-item-id="${item.id}">
+      ${thumb}
+      <div class="satchel__line-body">
+        <div class="satchel__line-name">${esc(item.card_name)}</div>
+        <div class="satchel__line-sub">${item.printing_hint ? esc(item.printing_hint) : "name match"}${tags ? " " + tags : ""}</div>
+      </div>
+      <div class="satchel__qty">
+        <button class="satchel__step" type="button" data-act="dec" aria-label="Decrease quantity of ${esc(item.card_name)}"><svg class="ico"><use href="#i-minus" /></svg></button>
+        <span class="satchel__qty-num">${item.quantity}</span>
+        <button class="satchel__step" type="button" data-act="inc" aria-label="Increase quantity of ${esc(item.card_name)}"><svg class="ico"><use href="#i-plus" /></svg></button>
+      </div>
+      <div class="satchel__line-price">${money(cartLineTotal(item))}</div>
+      ${link}
+      <button class="satchel__remove" type="button" data-act="remove" aria-label="Remove ${esc(item.card_name)} from the satchel"><svg class="ico"><use href="#i-trash" /></svg></button>
+    </li>`;
+}
+
+function renderCart() {
+  renderCartBadge();
+  const items = state.cart.items;
+  if (!items.length) {
+    els.cartBody.innerHTML = '<div class="satchel__empty"><svg class="ico"><use href="#i-satchel" /></svg><p>Nothing in the satchel yet. Add offers from your hunt results.</p></div>';
+    els.cartAlerts.hidden = true;
+    els.cartTotal.textContent = money(0);
+    els.cartExcluded.hidden = true;
+    return;
+  }
+  const dupes = duplicateCartCardKeys();
+  let total = 0;
+  let excluded = 0;
+  els.cartBody.innerHTML = cartGroups().map((group) => {
+    let subtotal = 0;
+    const lines = group.items.map((item) => {
+      if (cartCountable(item)) {
+        subtotal += cartLineTotal(item);
+        total += cartLineTotal(item);
+      } else {
+        excluded += 1;
+      }
+      return cartLineHTML(item, dupes);
+    }).join("");
+    return `
+      <section class="satchel__store">
+        <header class="satchel__store-head">
+          <span class="satchel__store-dot" style="--store-color:${esc(storeColor(group.store_id))}" aria-hidden="true"></span>
+          <span class="satchel__store-name">${esc(group.store_name)}</span>
+          <span class="satchel__store-sub">${money(subtotal)}</span>
+        </header>
+        <ul class="satchel__lines">${lines}</ul>
+      </section>`;
+  }).join("");
+  els.cartTotal.textContent = money(total);
+  els.cartExcluded.hidden = excluded === 0;
+  els.cartExcluded.textContent = excluded
+    ? `${excluded} line${excluded === 1 ? "" : "s"} excluded (out of stock or unavailable)`
+    : "";
+  const dupCount = dupes.size;
+  const alerts = [
+    dupCount ? `<span class="satchel__alert"><svg class="ico"><use href="#i-alert" /></svg> ${dupCount} card${dupCount === 1 ? "" : "s"} appear twice — remove one before buying.</span>` : "",
+    excluded ? `<span class="satchel__alert"><svg class="ico"><use href="#i-alert" /></svg> ${excluded} line${excluded === 1 ? "" : "s"} can’t be bought as-is.</span>` : "",
+  ].filter(Boolean);
+  els.cartAlerts.hidden = alerts.length === 0;
+  els.cartAlerts.innerHTML = alerts.join("");
+}
+
+async function loadCart() {
+  try {
+    const data = await (await fetch("/api/cart")).json();
+    state.cart.items = data.items || [];
+  } catch {
+    state.cart.items = [];
+  }
+  renderCart();
+}
+
+function openCart() {
+  if (!els.cartDrawer.open) els.cartDrawer.showModal();
+  loadCart();
+}
+
+function closeCart() {
+  if (els.cartDrawer.open) els.cartDrawer.close();
+}
+
+els.cartButton.addEventListener("click", openCart);
+els.cartClose.addEventListener("click", closeCart);
+els.cartDrawer.addEventListener("click", (e) => {
+  if (e.target === els.cartDrawer) closeCart(); // backdrop click
+});
+
 /* ── wiring ─────────────────────────────────────────────────── */
 els.searchButton.addEventListener("click", startSearch);
 els.cardList.addEventListener("input", refreshInputMeta);
@@ -1047,3 +1209,4 @@ wireArtModal();
 refreshInputMeta();
 loadStores();
 loadLists();
+loadCart();
