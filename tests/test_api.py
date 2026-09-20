@@ -120,3 +120,58 @@ def test_cart_clear(tmp_path):
     assert client.get("/api/cart").json()["count"] == 2
     client.delete("/api/cart")
     assert client.get("/api/cart").json()["count"] == 0
+
+
+def test_cart_item_refresh_keeps_price_when_unavailable(tmp_path):
+    client = _client(tmp_path)
+    item_id = client.post("/api/cart", json=CART_PAYLOAD).json()["id"]
+
+    gone = client.patch(
+        f"/api/cart/{item_id}/refresh",
+        json={"status": "unavailable", "last_checked_at": 123.0},
+    ).json()
+    assert gone["status"] == "unavailable"
+    assert gone["price_sgd"] == "4.50"  # last-known price retained
+    assert gone["last_checked_at"] == 123.0
+
+    fresh = client.patch(
+        f"/api/cart/{item_id}/refresh",
+        json={"status": "ok", "price_sgd": "5.00", "condition": "LP",
+              "finish": "foil", "in_stock": False,
+              "offer_fetched_at": "2026-09-21T00:00:00+00:00",
+              "last_checked_at": 456.0},
+    ).json()
+    assert fresh["price_sgd"] == "5.00"
+    assert fresh["condition"] == "LP"
+    assert fresh["finish"] == "foil"
+    assert fresh["in_stock"] == 0
+
+
+def test_cart_refresh_builds_run(tmp_path, monkeypatch):
+    import app.main as main_module
+
+    class FakeAdapter:
+        store_id = "greyogre"
+        store_name = "Grey Ogre Games"
+        zone = "singapore"
+        needs_browser = False
+        concurrency = 1
+
+        def search(self, card):
+            return []
+
+    monkeypatch.setattr(main_module, "build_adapters", lambda configs, http: [FakeAdapter()])
+    monkeypatch.setattr(main_module, "_make_http", lambda: FakeHttp())
+    client = _client(tmp_path)
+
+    assert client.post("/api/cart/refresh").status_code == 400  # empty cart
+
+    client.post("/api/cart", json=CART_PAYLOAD)
+    with client:
+        data = client.post("/api/cart/refresh").json()
+        assert data["card_count"] == 1
+        assert data["store_ids"] == ["greyogre"]
+        assert data["skipped_store_ids"] == []
+        with client.stream("GET", f"/api/runs/{data['run_id']}/stream") as response:
+            body = "".join(response.iter_text())
+    assert '"type": "done"' in body

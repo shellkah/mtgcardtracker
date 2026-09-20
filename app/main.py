@@ -8,6 +8,7 @@ from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
+from app.adapters.base import CardRequest
 from app.adapters.registry import build_adapters, load_config
 from app.cart import line_from_offer
 from app.db import Database
@@ -63,6 +64,16 @@ class AddCartRequest(BaseModel):
 
 class QuantityRequest(BaseModel):
     quantity: int
+
+
+class RefreshItemRequest(BaseModel):
+    status: str
+    price_sgd: str | None = None
+    condition: str | None = None
+    finish: str | None = None
+    in_stock: bool | None = None
+    offer_fetched_at: str | None = None
+    last_checked_at: float | None = None
 
 
 def create_app(config_path: str = "config/stores.yaml", db_path: str = "mtgcardtracker.db") -> FastAPI:
@@ -157,6 +168,57 @@ def create_app(config_path: str = "config/stores.yaml", db_path: str = "mtgcardt
     def clear_cart():
         db.clear_cart()
         return {"ok": True}
+
+    @app.patch("/api/cart/{item_id}/refresh")
+    def refresh_cart_item(item_id: int, request: RefreshItemRequest):
+        fields: dict = {
+            "status": request.status,
+            "last_checked_at": request.last_checked_at,
+        }
+        if request.status == "ok":
+            fields.update(
+                price_sgd=request.price_sgd,
+                condition=request.condition,
+                finish=request.finish,
+                in_stock=1 if request.in_stock else 0,
+                offer_fetched_at=request.offer_fetched_at,
+            )
+        item = db.update_cart_item(item_id, **fields)
+        if item is None:
+            raise HTTPException(status_code=404, detail="Not found")
+        return item
+
+    @app.post("/api/cart/refresh")
+    async def refresh_cart():
+        items = db.list_cart()
+        if not items:
+            raise HTTPException(status_code=400, detail="Cart is empty")
+
+        cards: dict[str, CardRequest] = {}
+        for item in items:
+            if item["card_key"] in cards:
+                continue
+            cards[item["card_key"]] = CardRequest(
+                name=item["card_name"],
+                set_code=item["set_code"],
+                collector_number=item["collector_number"],
+                quantity=item["quantity"],
+            )
+
+        wanted = {item["store_id"] for item in items}
+        selected = [c for c in configs if c.id in wanted and c.enabled]
+        skipped = sorted(wanted - {c.id for c in selected})
+        if not selected:
+            raise HTTPException(status_code=409, detail="No cart stores are enabled")
+
+        adapters = build_adapters(selected, _make_http())
+        run = registry.create(list(cards.values()), adapters, db, force_refresh=True)
+        return {
+            "run_id": run.id,
+            "card_count": len(cards),
+            "store_ids": [c.id for c in selected],
+            "skipped_store_ids": skipped,
+        }
 
     if WEB_DIR.exists():
         app.mount("/", StaticFiles(directory=str(WEB_DIR), html=True), name="web")
