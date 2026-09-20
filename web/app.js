@@ -1175,6 +1175,47 @@ async function addOfferToCart(entry, offer) {
   }
 }
 
+async function patchQuantity(itemId, quantity) {
+  const res = await fetch(`/api/cart/${itemId}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ quantity }),
+  });
+  if (!res.ok) return;
+  const updated = await res.json();
+  const index = state.cart.items.findIndex((i) => i.id === itemId);
+  if (index >= 0) state.cart.items[index] = updated;
+  renderCart();
+  render();
+}
+
+els.cartBody.addEventListener("click", async (e) => {
+  const line = e.target.closest(".satchel__line");
+  if (!line) return;
+  const itemId = Number(line.dataset.itemId);
+  const item = state.cart.items.find((i) => i.id === itemId);
+  if (!item) return;
+  const act = e.target.closest("[data-act]")?.dataset.act;
+  if (act === "inc" || act === "dec") {
+    const delta = act === "inc" ? 1 : -1;
+    await patchQuantity(itemId, Math.max(1, Number(item.quantity) + delta));
+  } else if (act === "remove") {
+    await fetch(`/api/cart/${itemId}`, { method: "DELETE" });
+    await loadCart();
+    render();
+    toast({ type: "info", title: "Removed", msg: item.card_name });
+  }
+});
+
+els.cartClear.addEventListener("click", async () => {
+  if (!state.cart.items.length) return;
+  if (!confirm("Clear the satchel? This removes every saved offer.")) return;
+  await fetch("/api/cart", { method: "DELETE" });
+  await loadCart();
+  render();
+  toast({ type: "info", title: "Satchel cleared" });
+});
+
 /* ── wiring ─────────────────────────────────────────────────── */
 els.searchButton.addEventListener("click", startSearch);
 els.cardList.addEventListener("input", refreshInputMeta);
