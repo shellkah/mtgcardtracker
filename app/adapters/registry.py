@@ -7,6 +7,7 @@ from pathlib import Path
 import yaml
 
 from app.adapters.base import Adapter
+from app.politeness import make_store_client
 
 
 @dataclass(frozen=True)
@@ -56,8 +57,9 @@ def build_adapters(configs, http, browser=None) -> list[Adapter]:
         if not cfg.enabled:
             continue
         cls = _import_class(cfg.adapter_path)
+        client = make_store_client(http, cfg)
         if cfg.needs_browser:
-            adapters.append(cls(cfg, http, browser))
+            adapters.append(cls(cfg, client, browser))
         else:
-            adapters.append(cls(cfg, http))
+            adapters.append(cls(cfg, client))
     return adapters
