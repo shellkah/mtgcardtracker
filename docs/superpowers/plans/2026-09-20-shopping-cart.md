@@ -1468,7 +1468,7 @@ async function refreshCart() {
     toast({ type: "info", title: "Some stores skipped", msg: data.skipped_store_ids.join(", ") });
   }
 
-  const stats = { checked: 0, changed: 0, unavailable: 0 };
+  const stats = { checked: 0, changed: 0, unavailable: 0, seen: new Set() };
   const source = new EventSource(`/api/runs/${data.run_id}/stream`);
   source.addEventListener("result", (e) => {
     reconcileCart(JSON.parse(e.data), stats);
@@ -1477,9 +1477,19 @@ async function refreshCart() {
     source.close();
     finishCartRefresh(null, stats);
   });
+  source.addEventListener("error", (e) => {
+    if (e.data) return; // adapter error event for one (card, store); cart lines are handled by results
+    if (source.readyState === EventSource.CLOSED) {
+      source.close();
+      finishCartRefresh("The connection to the server was lost.");
+    }
+  });
 }
 
 function reconcileCart(event, stats) {
+  const pairKey = `${event.card.key}\u0000${event.store_id}`;
+  if (stats.seen.has(pairKey)) return; // a reconnected stream replays events from index 0
+  stats.seen.add(pairKey);
   const lines = state.cart.items.filter(
     (i) => i.card_key === event.card.key && i.store_id === event.store_id
   );
