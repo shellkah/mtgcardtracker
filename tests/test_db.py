@@ -55,3 +55,62 @@ def test_saved_lists_crud(tmp_path):
     db.delete_saved(list_id)
     assert db.list_saved() == []
     db.close()
+
+
+from app.cart import line_from_offer
+
+
+def _row(**over):
+    row = line_from_offer(
+        {"key": "ltc:409", "name": "Sol Ring", "set_code": "LTC",
+         "collector_number": "409", "quantity": 2},
+        {"store_id": "greyogre", "store_name": "Grey Ogre Games",
+         "title": "Sol Ring [LTC]", "url": "https://example.test/p/sol-ring",
+         "price_sgd": "4.50", "currency": "SGD", "condition": "NM",
+         "finish": "nonfoil", "in_stock": True,
+         "fetched_at": "2026-09-20T00:00:00+00:00"},
+    )
+    row.update(over)
+    return row
+
+
+def test_cart_add_dedupes_identical_offers(tmp_path):
+    db = Database(tmp_path / "t.db")
+    db.init_schema()
+    item_id, created = db.add_cart_item(_row())
+    assert created is True
+    again_id, again_created = db.add_cart_item(_row())
+    assert again_created is False
+    assert again_id == item_id
+    assert len(db.list_cart()) == 1
+    db.close()
+
+
+def test_cart_quantity_update_and_remove(tmp_path):
+    db = Database(tmp_path / "t.db")
+    db.init_schema()
+    item_id, _ = db.add_cart_item(_row())
+    updated = db.update_cart_quantity(item_id, 5)
+    assert updated["quantity"] == 5
+    assert db.update_cart_quantity(item_id, 0)["quantity"] == 1  # clamped
+    assert db.update_cart_quantity(9999, 2) is None
+    db.remove_cart_item(item_id)
+    assert db.list_cart() == []
+    db.close()
+
+
+def test_cart_refresh_update_and_clear(tmp_path):
+    db = Database(tmp_path / "t.db")
+    db.init_schema()
+    item_id, _ = db.add_cart_item(_row())
+    updated = db.update_cart_item(
+        item_id, status="unavailable", last_checked_at=123.0
+    )
+    assert updated["status"] == "unavailable"
+    assert updated["price_sgd"] == "4.50"  # untouched
+    assert updated["last_checked_at"] == 123.0
+    # unknown columns are ignored rather than raising
+    assert db.update_cart_item(item_id, bogus="x")["id"] == item_id
+    db.clear_cart()
+    assert db.list_cart() == []
+    db.close()
