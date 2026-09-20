@@ -1242,7 +1242,7 @@ async function refreshCart() {
     toast({ type: "info", title: "Some stores skipped", msg: data.skipped_store_ids.join(", ") });
   }
 
-  const stats = { checked: 0, changed: 0, unavailable: 0 };
+  const stats = { checked: 0, changed: 0, unavailable: 0, seen: new Set() };
   const source = new EventSource(`/api/runs/${data.run_id}/stream`);
   source.addEventListener("result", (e) => {
     reconcileCart(JSON.parse(e.data), stats);
@@ -1251,9 +1251,22 @@ async function refreshCart() {
     source.close();
     finishCartRefresh(null, stats);
   });
+  source.addEventListener("error", (e) => {
+    if (e.data) return; // adapter error event for one (card, store) — cart lines are handled by results
+    if (source.readyState === EventSource.CLOSED) {
+      source.close();
+      finishCartRefresh("The connection to the server was lost.");
+    }
+  });
 }
 
 function reconcileCart(event, stats) {
+  // EventSource replays the whole stream from index 0 after a mid-run
+  // reconnect (the run has no Last-Event-ID support), so skip pairs we have
+  // already folded in — otherwise stats double-count and the toast lies.
+  const pairKey = `${event.card.key}\u0000${event.store_id}`;
+  if (stats.seen.has(pairKey)) return;
+  stats.seen.add(pairKey);
   const lines = state.cart.items.filter(
     (i) => i.card_key === event.card.key && i.store_id === event.store_id
   );
