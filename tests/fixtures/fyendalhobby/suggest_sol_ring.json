@@ -1,0 +1,322 @@
+{
+  "resources": {
+    "results": {
+      "products": [
+        {
+          "available": true,
+          "body": "",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-ring",
+          "id": 9345159823509,
+          "image": "https://cdn.shopify.com/s/files/1/0520/3722/2549/files/acce65cc-9093-45a6-8c86-97edce545050.jpg?v=1787473657",
+          "price": "11.00",
+          "price_max": "11.00",
+          "price_min": "11.00",
+          "tags": [
+            "Commander Collection: Black",
+            "MTG",
+            "New Arrival",
+            "Rare"
+          ],
+          "title": "Sol Ring",
+          "type": "MTG Single Cards",
+          "url": "/products/sol-ring?_pos=1&_psq=Sol+Ring&_psid=117161f07&_ss=e",
+          "variants": [],
+          "vendor": "Magic the Gathering",
+          "featured_image": {
+            "alt": "Sol Ring",
+            "aspect_ratio": 0.718,
+            "height": 936,
+            "url": "https://cdn.shopify.com/s/files/1/0520/3722/2549/files/acce65cc-9093-45a6-8c86-97edce545050.jpg?v=1787473657",
+            "width": 672
+          }
+        },
+        {
+          "available": true,
+          "body": "",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-ring-borderless",
+          "id": 9345159790741,
+          "image": "https://cdn.shopify.com/s/files/1/0520/3722/2549/files/7454e0cc-98c2-48a1-b2c9-49908d2aedcc.jpg?v=1787473653",
+          "price": "18.10",
+          "price_max": "18.10",
+          "price_min": "18.10",
+          "tags": [
+            "Commander Masters",
+            "MTG",
+            "New Arrival",
+            "Uncommon"
+          ],
+          "title": "Sol Ring (Borderless)",
+          "type": "MTG Single Cards",
+          "url": "/products/sol-ring-borderless?_pos=2&_psq=Sol+Ring&_psid=117161f07&_ss=e",
+          "variants": [],
+          "vendor": "Magic the Gathering",
+          "featured_image": {
+            "alt": "Sol Ring (Borderless)",
+            "aspect_ratio": 0.718,
+            "height": 936,
+            "url": "https://cdn.shopify.com/s/files/1/0520/3722/2549/files/7454e0cc-98c2-48a1-b2c9-49908d2aedcc.jpg?v=1787473653",
+            "width": 672
+          }
+        },
+        {
+          "available": true,
+          "body": "<p><span data-mce-fragment=\"1\">Card Name:\u00a0</span><span data-mce-fragment=\"1\">Vestige of Sol</span></p>\n<p>Whenever you pitch a Light card, if a card has been put into your hero's soul this turn, gain [1 Resource].\u00a0</p>\n<p>Blade Break\u00a0(If you defend with Vestiage of Sol, destroy it when the combat chain closes.)<br></p>",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "vestige-of-sol-ul-mon060",
+          "id": 6900695629973,
+          "image": "https://cdn.shopify.com/s/files/1/0520/3722/2549/products/MON060.png?v=1623302032",
+          "price": "50.00",
+          "price_max": "50.00",
+          "price_min": "50.00",
+          "tags": [
+            "Equipment",
+            "Head",
+            "Legendary",
+            "Light",
+            "Monarch",
+            "Unlimited Print"
+          ],
+          "title": "[RF] Vestige of Sol - UL-MON060",
+          "type": "Flesh And Blood Single Cards",
+          "url": "/products/vestige-of-sol-ul-mon060?_pos=3&_psq=Sol+Ring&_psid=117161f07&_ss=e",
+          "variants": [],
+          "vendor": "Flesh and Blood",
+          "featured_image": {
+            "alt": "[RF] Vestige of Sol - UL-MON060",
+            "aspect_ratio": 0.717,
+            "height": 762,
+            "url": "https://cdn.shopify.com/s/files/1/0520/3722/2549/products/MON060.png?v=1623302032",
+            "width": 546
+          }
+        },
+        {
+          "available": true,
+          "body": "<p>If you would be dealt damage, you may banish a card from your soul to prevent 1 of that damage. If you do, destroy this at the beginning of the end phase.</p>\n\n<p>Blade Break</p>",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "solray-plating-pen180",
+          "id": 9053985833109,
+          "image": "https://cdn.shopify.com/s/files/1/0520/3722/2549/files/PEN180_9470c46d-5b0a-4bbe-ab78-77f2763d63cf.webp?v=1770463110",
+          "price": "1.50",
+          "price_max": "1.50",
+          "price_min": "1.50",
+          "tags": [
+            "Chest",
+            "Compendium of Rathe",
+            "English",
+            "Equipment",
+            "Light",
+            "Rare"
+          ],
+          "title": "Solray Plating - PEN180",
+          "type": "Flesh And Blood Single Cards",
+          "url": "/products/solray-plating-pen180?_pos=4&_psq=Sol+Ring&_psid=117161f07&_ss=e",
+          "variants": [],
+          "vendor": "Flesh and Blood",
+          "featured_image": {
+            "alt": "Solray Plating",
+            "aspect_ratio": 0.716,
+            "height": 763,
+            "url": "https://cdn.shopify.com/s/files/1/0520/3722/2549/files/PEN180_9470c46d-5b0a-4bbe-ab78-77f2763d63cf.webp?v=1770463110",
+            "width": 546
+          }
+        },
+        {
+          "available": true,
+          "body": "<p>If you would be dealt damage, you may banish a card from your soul to prevent 1 of that damage. If you do, destroy this at the beginning of the end phase.</p>\n\n<p>Blade Break</p>",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "cf-solray-plating-pen180",
+          "id": 9055178817685,
+          "image": "https://cdn.shopify.com/s/files/1/0520/3722/2549/files/PEN180_5364855a-3e6a-4e1d-b27f-f686ff3a2ba9.webp?v=1770630934",
+          "price": "10.00",
+          "price_max": "10.00",
+          "price_min": "10.00",
+          "tags": [
+            "Chest",
+            "Compendium of Rathe",
+            "English",
+            "Equipment",
+            "Light",
+            "Rare"
+          ],
+          "title": "[CF] Solray Plating - PEN180",
+          "type": "Flesh And Blood Single Cards",
+          "url": "/products/cf-solray-plating-pen180?_pos=5&_psq=Sol+Ring&_psid=117161f07&_ss=e",
+          "variants": [],
+          "vendor": "Flesh and Blood",
+          "featured_image": {
+            "alt": "Solray Plating",
+            "aspect_ratio": 0.716,
+            "height": 763,
+            "url": "https://cdn.shopify.com/s/files/1/0520/3722/2549/files/PEN180_5364855a-3e6a-4e1d-b27f-f686ff3a2ba9.webp?v=1770630934",
+            "width": 546
+          }
+        },
+        {
+          "available": true,
+          "body": "<p><span data-mce-fragment=\"1\">Card Name: Rising Solartide (Yellow)</span></p>\n<p>If Rising Solartide hits,\u00a0put it into your hero's soul.\u00a0(Put this card face up under your hero card.)</p>",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "rising-solartide-yellow-ul-bol026",
+          "id": 7248055173269,
+          "image": "https://cdn.shopify.com/s/files/1/0520/3722/2549/products/BOL026.png?v=1638612002",
+          "price": "0.30",
+          "price_max": "0.30",
+          "price_min": "0.30",
+          "tags": [
+            "Action",
+            "Attack",
+            "Common",
+            "Light",
+            "Precon Singles"
+          ],
+          "title": "Rising Solartide (Yellow) - BOL026",
+          "type": "Flesh And Blood Single Cards",
+          "url": "/products/rising-solartide-yellow-ul-bol026?_pos=6&_psq=Sol+Ring&_psid=117161f07&_ss=e",
+          "variants": [],
+          "vendor": "Flesh and Blood",
+          "featured_image": {
+            "alt": "Rising Solartide (Yellow) - BOL026",
+            "aspect_ratio": 0.717,
+            "height": 762,
+            "url": "https://cdn.shopify.com/s/files/1/0520/3722/2549/products/BOL026.png?v=1638612002",
+            "width": 546
+          }
+        },
+        {
+          "available": true,
+          "body": "<p>Card Name:\u00a0Rising Solartide</p>\n<p>If Rising Solartide hits,\u00a0put it into your hero's soul.\u00a0(Put this card face up under your hero card.)</p>",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "rf-rising-solartide-yellow-ul-mon079",
+          "id": 7905776730261,
+          "image": "https://cdn.shopify.com/s/files/1/0520/3722/2549/files/MON079_164edb4e-5dd3-4fd5-ba3b-06d5c3b2c758.png?v=1684761383",
+          "price": "0.60",
+          "price_max": "0.60",
+          "price_min": "0.60",
+          "tags": [
+            "Action",
+            "Attack",
+            "Common",
+            "Light",
+            "Monarch",
+            "Unlimited Print"
+          ],
+          "title": "[RF] Rising Solartide (Yellow) - UL-MON079",
+          "type": "Flesh And Blood Single Cards",
+          "url": "/products/rf-rising-solartide-yellow-ul-mon079?_pos=7&_psq=Sol+Ring&_psid=117161f07&_ss=e",
+          "variants": [],
+          "vendor": "Flesh and Blood",
+          "featured_image": {
+            "alt": "[RF] Rising Solartide (Yellow) - UL-MON079",
+            "aspect_ratio": 0.717,
+            "height": 762,
+            "url": "https://cdn.shopify.com/s/files/1/0520/3722/2549/files/MON079_164edb4e-5dd3-4fd5-ba3b-06d5c3b2c758.png?v=1684761383",
+            "width": 546
+          }
+        },
+        {
+          "available": true,
+          "body": "<p><span data-mce-fragment=\"1\">Card Name: Rising Solartide (Red)</span></p>\n<p>If Rising Solartide hits,\u00a0put it into your hero's soul.\u00a0(Put this card face up under your hero card.)</p>",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "rising-solartide-red-ul-bol025",
+          "id": 7246143291541,
+          "image": "https://cdn.shopify.com/s/files/1/0520/3722/2549/products/BOL025.png?v=1638445832",
+          "price": "0.30",
+          "price_max": "0.30",
+          "price_min": "0.30",
+          "tags": [
+            "Action",
+            "Attack",
+            "Common",
+            "Light",
+            "Precon Singles"
+          ],
+          "title": "Rising Solartide (Red) - BOL025",
+          "type": "Flesh And Blood Single Cards",
+          "url": "/products/rising-solartide-red-ul-bol025?_pos=8&_psq=Sol+Ring&_psid=117161f07&_ss=e",
+          "variants": [],
+          "vendor": "Flesh and Blood",
+          "featured_image": {
+            "alt": "Rising Solartide (Red) - BOL025",
+            "aspect_ratio": 0.717,
+            "height": 762,
+            "url": "https://cdn.shopify.com/s/files/1/0520/3722/2549/products/BOL025.png?v=1638445832",
+            "width": 546
+          }
+        },
+        {
+          "available": true,
+          "body": "<p>Card Name:\u00a0Rising Solartide</p>\n<p>If Rising Solartide hits,\u00a0put it into your hero's soul.\u00a0(Put this card face up under your hero card.)</p>",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "rising-solartide-yellow-ul-mon079",
+          "id": 6900712571029,
+          "image": "https://cdn.shopify.com/s/files/1/0520/3722/2549/products/MON079.png?v=1623309170",
+          "price": "0.40",
+          "price_max": "0.40",
+          "price_min": "0.40",
+          "tags": [
+            "Action",
+            "Attack",
+            "Common",
+            "Light",
+            "Monarch",
+            "Unlimited Print"
+          ],
+          "title": "Rising Solartide (Yellow) - UL-MON079",
+          "type": "Flesh And Blood Single Cards",
+          "url": "/products/rising-solartide-yellow-ul-mon079?_pos=9&_psq=Sol+Ring&_psid=117161f07&_ss=e",
+          "variants": [],
+          "vendor": "Flesh and Blood",
+          "featured_image": {
+            "alt": "Rising Solartide (Yellow) - UL-MON079",
+            "aspect_ratio": 0.717,
+            "height": 762,
+            "url": "https://cdn.shopify.com/s/files/1/0520/3722/2549/products/MON079.png?v=1623309170",
+            "width": 546
+          }
+        },
+        {
+          "available": true,
+          "body": "<p>Card Name:\u00a0Rising Solartide</p>\n<p>If Rising Solartide hits,\u00a0put it into your hero's soul.\u00a0(Put this card face up under your hero card.)</p>",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "rising-solartide-yellow-1st-edition-mon079",
+          "id": 6806266511509,
+          "image": "https://cdn.shopify.com/s/files/1/0520/3722/2549/products/MON079.width-450.png?v=1620198491",
+          "price": "0.40",
+          "price_max": "0.40",
+          "price_min": "0.40",
+          "tags": [
+            "1st Edition Print",
+            "Action",
+            "Attack",
+            "Common",
+            "Light",
+            "Monarch"
+          ],
+          "title": "(1st Edition) Rising Solartide (Yellow) - MON079",
+          "type": "Flesh And Blood Single Cards",
+          "url": "/products/rising-solartide-yellow-1st-edition-mon079?_pos=10&_psq=Sol+Ring&_psid=117161f07&_ss=e",
+          "variants": [],
+          "vendor": "Flesh and Blood",
+          "featured_image": {
+            "alt": "(1st Edition) Rising Solartide (Yellow) - MON079",
+            "aspect_ratio": 0.717,
+            "height": 628,
+            "url": "https://cdn.shopify.com/s/files/1/0520/3722/2549/products/MON079.width-450.png?v=1620198491",
+            "width": 450
+          }
+        }
+      ]
+    }
+  }
+}

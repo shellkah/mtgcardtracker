@@ -38,3 +38,84 @@ stores:
     requests_per_second: 1.0
     concurrency: 2
     needs_browser: false
+  - id: onemtg
+    name: One MTG
+    zone: singapore
+    adapter: app.adapters.onemtg:OneMtgAdapter
+    base_url: https://onemtg.com.sg
+    enabled: true
+    requests_per_second: 1.0
+    concurrency: 2
+    needs_browser: false
+  - id: mtgasia
+    name: MTG Asia
+    zone: singapore
+    adapter: app.adapters.mtgasia:MtgAsiaAdapter
+    base_url: https://www.mtg-asia.com
+    enabled: true
+    requests_per_second: 1.0
+    concurrency: 2
+    needs_browser: false
+  - id: manapro
+    name: Mana Pro
+    zone: singapore
+    adapter: app.adapters.manapro:ManaProAdapter
+    base_url: https://sg-manapro.com
+    enabled: true
+    requests_per_second: 1.0
+    concurrency: 2
+    needs_browser: false
+  - id: cardaffinity
+    name: Card Affinity
+    zone: singapore
+    adapter: app.adapters.cardaffinity:CardAffinityAdapter
+    base_url: https://card-affinity.com
+    enabled: true
+    requests_per_second: 1.0
+    concurrency: 2
+    needs_browser: false
+  - id: hideyoshi
+    name: Hideyoshi TCG
+    zone: singapore
+    adapter: app.adapters.hideyoshi:HideyoshiAdapter
+    base_url: https://hideyoshitcg.com
+    enabled: true
+    requests_per_second: 1.0
+    concurrency: 2
+    needs_browser: false
+  - id: flagship
+    name: Flagship Games
+    zone: singapore
+    adapter: app.adapters.flagship:FlagshipAdapter
+    base_url: https://www.flagshipgames.sg
+    enabled: true
+    requests_per_second: 1.0
+    concurrency: 2
+    needs_browser: false
+  - id: fivemana
+    name: 5 Mana
+    zone: singapore
+    adapter: app.adapters.fivemana:FiveManaAdapter
+    base_url: https://5-mana.sg
+    enabled: true
+    requests_per_second: 1.0
+    concurrency: 2
+    needs_browser: false
+  - id: fyendalhobby
+    name: Fyendal Hobby
+    zone: singapore
+    adapter: app.adapters.fyendalhobby:FyendalHobbyAdapter
+    base_url: https://fyendalhobby.com
+    enabled: true
+    requests_per_second: 1.0
+    concurrency: 2
+    needs_browser: false
+  - id: arcanesanctum
+    name: Arcane Sanctum
+    zone: singapore
+    adapter: app.adapters.arcanesanctum:ArcaneSanctumAdapter
+    base_url: https://arcanesanctumtcg.com
+    enabled: true
+    requests_per_second: 1.0
+    concurrency: 2
+    needs_browser: false

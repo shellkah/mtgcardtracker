@@ -1,0 +1,375 @@
+{
+  "id": 7660413288600,
+  "title": "Sol Ring (Borderless Alternate Art) [Commander Masters]",
+  "handle": "sol-ring-borderless-alternate-art-commander-masters",
+  "description": "<table class=\"singles-description-table\" xmlns=\"http://www.w3.org/1999/html\">\n<tbody>\n      <tr>\n          <td>Set:</td>\n          <td>Commander Masters</td>\n      </tr>\n      <tr>\n          <td>Type:</td>\n          <td>Artifact</td>\n      </tr>\n      <tr>\n          <td>Rarity:</td>\n          <td>Uncommon</td>\n      </tr>\n      <tr>\n          <td>Cost:</td>\n          <td>{1}</td>\n      </tr>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n        <div class=\"oracle-text\">\n            T: Add CC.\n        </div>\n        <div class=\"flavor-text\">\n            \"Model? I'm insulted. It's by all reasonable metrics a fully functional planetary system, scaled down for easier study.\"\n\u2014Urza, to Tawnos\n        </div>\n<table class=\"singles-reverse-description-table\">\n<tbody>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n</div>\n<div class=\"catalogMetaData\" style=\"visibility: hidden;\" data-cardtype=\"mtg\" data-cardid=\"38426\" data-tcgid=\"503402\" data-lastupdated=\"2025-01-10T14:39:06.815Z\">\n</div>\n</div>\n",
+  "published_at": "2023-07-14T21:28:00+08:00",
+  "created_at": "2023-07-14T21:28:01+08:00",
+  "vendor": "Magic: The Gathering",
+  "type": "MTG Single",
+  "tags": [
+    "Artifact",
+    "Colorless",
+    "Commander",
+    "Commander Masters",
+    "Foil",
+    "Normal",
+    "Predh",
+    "Uncommon",
+    "Vintage"
+  ],
+  "price": 850,
+  "price_min": 850,
+  "price_max": 3870,
+  "available": true,
+  "price_varies": true,
+  "compare_at_price": null,
+  "compare_at_price_min": 0,
+  "compare_at_price_max": 0,
+  "compare_at_price_varies": false,
+  "variants": [
+    {
+      "id": 42732515885208,
+      "title": "Near Mint",
+      "option1": "Near Mint",
+      "option2": null,
+      "option3": null,
+      "sku": "CMM-703-EN-NF-1",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": true,
+      "name": "Sol Ring (Borderless Alternate Art) [Commander Masters] - Near Mint",
+      "public_title": "Near Mint",
+      "options": [
+        "Near Mint"
+      ],
+      "price": 1800,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 42732515950744,
+      "title": "Lightly Played",
+      "option1": "Lightly Played",
+      "option2": null,
+      "option3": null,
+      "sku": "CMM-703-EN-NF-2",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (Borderless Alternate Art) [Commander Masters] - Lightly Played",
+      "public_title": "Lightly Played",
+      "options": [
+        "Lightly Played"
+      ],
+      "price": 1280,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 42732516016280,
+      "title": "Moderately Played",
+      "option1": "Moderately Played",
+      "option2": null,
+      "option3": null,
+      "sku": "CMM-703-EN-NF-3",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (Borderless Alternate Art) [Commander Masters] - Moderately Played",
+      "public_title": "Moderately Played",
+      "options": [
+        "Moderately Played"
+      ],
+      "price": 1140,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 42732516081816,
+      "title": "Heavily Played",
+      "option1": "Heavily Played",
+      "option2": null,
+      "option3": null,
+      "sku": "CMM-703-EN-NF-4",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (Borderless Alternate Art) [Commander Masters] - Heavily Played",
+      "public_title": "Heavily Played",
+      "options": [
+        "Heavily Played"
+      ],
+      "price": 1000,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 42732516180120,
+      "title": "Damaged",
+      "option1": "Damaged",
+      "option2": null,
+      "option3": null,
+      "sku": "CMM-703-EN-NF-5",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (Borderless Alternate Art) [Commander Masters] - Damaged",
+      "public_title": "Damaged",
+      "options": [
+        "Damaged"
+      ],
+      "price": 850,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 42732516245656,
+      "title": "Near Mint Foil",
+      "option1": "Near Mint Foil",
+      "option2": null,
+      "option3": null,
+      "sku": "CMM-703-EN-FO-1",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (Borderless Alternate Art) [Commander Masters] - Near Mint Foil",
+      "public_title": "Near Mint Foil",
+      "options": [
+        "Near Mint Foil"
+      ],
+      "price": 3870,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 42732516311192,
+      "title": "Lightly Played Foil",
+      "option1": "Lightly Played Foil",
+      "option2": null,
+      "option3": null,
+      "sku": "CMM-703-EN-FO-2",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (Borderless Alternate Art) [Commander Masters] - Lightly Played Foil",
+      "public_title": "Lightly Played Foil",
+      "options": [
+        "Lightly Played Foil"
+      ],
+      "price": 3480,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 42732516376728,
+      "title": "Moderately Played Foil",
+      "option1": "Moderately Played Foil",
+      "option2": null,
+      "option3": null,
+      "sku": "CMM-703-EN-FO-3",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (Borderless Alternate Art) [Commander Masters] - Moderately Played Foil",
+      "public_title": "Moderately Played Foil",
+      "options": [
+        "Moderately Played Foil"
+      ],
+      "price": 3090,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 42732516442264,
+      "title": "Heavily Played Foil",
+      "option1": "Heavily Played Foil",
+      "option2": null,
+      "option3": null,
+      "sku": "CMM-703-EN-FO-4",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (Borderless Alternate Art) [Commander Masters] - Heavily Played Foil",
+      "public_title": "Heavily Played Foil",
+      "options": [
+        "Heavily Played Foil"
+      ],
+      "price": 2710,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 42732516475032,
+      "title": "Damaged Foil",
+      "option1": "Damaged Foil",
+      "option2": null,
+      "option3": null,
+      "sku": "CMM-703-EN-FO-5",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (Borderless Alternate Art) [Commander Masters] - Damaged Foil",
+      "public_title": "Damaged Foil",
+      "options": [
+        "Damaged Foil"
+      ],
+      "price": 2320,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    }
+  ],
+  "images": [
+    "//cdn.shopify.com/s/files/1/0567/4057/7432/files/d0dbd7b6-6fbb-5627-acdb-47ddbdf9b00b.png?v=1736566891"
+  ],
+  "featured_image": "//cdn.shopify.com/s/files/1/0567/4057/7432/files/d0dbd7b6-6fbb-5627-acdb-47ddbdf9b00b.png?v=1736566891",
+  "options": [
+    {
+      "name": "Title",
+      "position": 1,
+      "values": [
+        "Near Mint",
+        "Lightly Played",
+        "Moderately Played",
+        "Heavily Played",
+        "Damaged",
+        "Near Mint Foil",
+        "Lightly Played Foil",
+        "Moderately Played Foil",
+        "Heavily Played Foil",
+        "Damaged Foil"
+      ]
+    }
+  ],
+  "url": "/products/sol-ring-borderless-alternate-art-commander-masters",
+  "media": [
+    {
+      "alt": null,
+      "id": 40137017458840,
+      "position": 1,
+      "preview_image": {
+        "aspect_ratio": 0.716,
+        "height": 1040,
+        "width": 745,
+        "src": "https://cdn.shopify.com/s/files/1/0567/4057/7432/files/d0dbd7b6-6fbb-5627-acdb-47ddbdf9b00b.png?v=1736566891"
+      },
+      "aspect_ratio": 0.716,
+      "height": 1040,
+      "media_type": "image",
+      "src": "https://cdn.shopify.com/s/files/1/0567/4057/7432/files/d0dbd7b6-6fbb-5627-acdb-47ddbdf9b00b.png?v=1736566891",
+      "width": 745
+    }
+  ],
+  "requires_selling_plan": false,
+  "selling_plan_groups": []
+}

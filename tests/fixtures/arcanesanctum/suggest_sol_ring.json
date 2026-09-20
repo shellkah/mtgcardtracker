@@ -1,0 +1,349 @@
+{
+  "resources": {
+    "results": {
+      "products": [
+        {
+          "available": true,
+          "body": null,
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-ring-nm-foil-judge-gift-cards-2005",
+          "id": 15272495939629,
+          "image": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/1a5b855b-f391-4963-a3d9-47880e084a7f.jpg?v=1786275181",
+          "price": "1000.00",
+          "price_max": "1000.00",
+          "price_min": "1000.00",
+          "tags": [
+            "color:Colorless",
+            "consignment",
+            "customer-submitted",
+            "rarity:",
+            "seller:Shawn sun",
+            "set-code:G05",
+            "set:Judge Gift Cards 2005",
+            "type:Other",
+            "variant:Judge Promo"
+          ],
+          "title": "Sol Ring \u2014 NM Foil [Judge Gift Cards 2005]",
+          "type": "MTG Single",
+          "url": "/products/sol-ring-nm-foil-judge-gift-cards-2005?_pos=1&_psq=Sol+Ring&_psid=3715931d6&_ss=e",
+          "variants": [],
+          "vendor": "Arcane Sanctum",
+          "featured_image": {
+            "alt": "Sol Ring \u2014 NM Foil [Judge Gift Cards 2005]",
+            "aspect_ratio": 0.718,
+            "height": 680,
+            "url": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/1a5b855b-f391-4963-a3d9-47880e084a7f.jpg?v=1786275181",
+            "width": 488
+          }
+        },
+        {
+          "available": true,
+          "body": null,
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "lotus-ring-nm-the-big-score",
+          "id": 15382715662381,
+          "image": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/02267717-66e0-41f7-8009-75586a4aa4be.jpg?v=1789834300",
+          "price": "2.60",
+          "price_max": "2.60",
+          "price_min": "2.60",
+          "tags": [
+            "color:Colorless",
+            "consignment",
+            "rarity:Mythic",
+            "seller:Rachel",
+            "set-code:BIG",
+            "set:The Big Score",
+            "type:Artifact"
+          ],
+          "title": "Lotus Ring \u2014 NM [The Big Score]",
+          "type": "MTG Single",
+          "url": "/products/lotus-ring-nm-the-big-score?_pos=2&_psq=Sol+Ring&_psid=3715931d6&_ss=e",
+          "variants": [],
+          "vendor": "Arcane Sanctum",
+          "featured_image": {
+            "alt": "Lotus Ring \u2014 NM [The Big Score]",
+            "aspect_ratio": 0.718,
+            "height": 680,
+            "url": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/02267717-66e0-41f7-8009-75586a4aa4be.jpg?v=1789834300",
+            "width": 488
+          }
+        },
+        {
+          "available": true,
+          "body": null,
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-talisman-nm-foil-modern-horizons-2",
+          "id": 15379058917421,
+          "image": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/18052761-39c3-4342-b6e6-38dc5b7b05dd.jpg?v=1789746862",
+          "price": "3.10",
+          "price_max": "3.10",
+          "price_min": "3.10",
+          "tags": [
+            "color:Colorless",
+            "consignment",
+            "rarity:Rare",
+            "seller:Rachel",
+            "set-code:MH2",
+            "set:Modern Horizons 2",
+            "type:Artifact",
+            "variant:Extended Art"
+          ],
+          "title": "Sol Talisman \u2014 NM Foil [Modern Horizons 2]",
+          "type": "MTG Single",
+          "url": "/products/sol-talisman-nm-foil-modern-horizons-2?_pos=3&_psq=Sol+Ring&_psid=3715931d6&_ss=e",
+          "variants": [],
+          "vendor": "Arcane Sanctum",
+          "featured_image": {
+            "alt": "Sol Talisman \u2014 NM Foil [Modern Horizons 2]",
+            "aspect_ratio": 0.718,
+            "height": 680,
+            "url": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/18052761-39c3-4342-b6e6-38dc5b7b05dd.jpg?v=1789746862",
+            "width": 488
+          }
+        },
+        {
+          "available": true,
+          "body": null,
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-talisman-nm-modern-horizons-2",
+          "id": 15382715170861,
+          "image": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/a51fb64d-cc0c-400d-971f-78c28d42043b.jpg?v=1789834069",
+          "price": "1.40",
+          "price_max": "1.40",
+          "price_min": "1.40",
+          "tags": [
+            "color:Colorless",
+            "consignment",
+            "rarity:Rare",
+            "seller:Rachel",
+            "set-code:MH2",
+            "set:Modern Horizons 2",
+            "type:Artifact"
+          ],
+          "title": "Sol Talisman \u2014 NM [Modern Horizons 2]",
+          "type": "MTG Single",
+          "url": "/products/sol-talisman-nm-modern-horizons-2?_pos=4&_psq=Sol+Ring&_psid=3715931d6&_ss=e",
+          "variants": [],
+          "vendor": "Arcane Sanctum",
+          "featured_image": {
+            "alt": "Sol Talisman \u2014 NM [Modern Horizons 2]",
+            "aspect_ratio": 0.718,
+            "height": 680,
+            "url": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/a51fb64d-cc0c-400d-971f-78c28d42043b.jpg?v=1789834069",
+            "width": 488
+          }
+        },
+        {
+          "available": true,
+          "body": null,
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "wedding-ring-nm-doctor-who",
+          "id": 15374289272877,
+          "image": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/f99645e5-4125-4f23-8911-0a027a0ac9fe.jpg?v=1789399679",
+          "price": "11.50",
+          "price_max": "11.50",
+          "price_min": "11.50",
+          "tags": [
+            "color:White",
+            "consignment",
+            "rarity:Mythic",
+            "seller:Samuel Chua",
+            "set-code:WHO",
+            "set:Doctor Who",
+            "type:Artifact",
+            "variant:Extended Art"
+          ],
+          "title": "Wedding Ring \u2014 NM [Doctor Who]",
+          "type": "MTG Single",
+          "url": "/products/wedding-ring-nm-doctor-who?_pos=5&_psq=Sol+Ring&_psid=3715931d6&_ss=e",
+          "variants": [],
+          "vendor": "Arcane Sanctum",
+          "featured_image": {
+            "alt": "Wedding Ring \u2014 NM [Doctor Who]",
+            "aspect_ratio": 0.718,
+            "height": 680,
+            "url": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/f99645e5-4125-4f23-8911-0a027a0ac9fe.jpg?v=1789399679",
+            "width": 488
+          }
+        },
+        {
+          "available": true,
+          "body": null,
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "wedding-ring-nm-surge-foil-doctor-who",
+          "id": 15369936633901,
+          "image": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/bcac03a0-c4e3-4761-93f1-d4a64c0d46f8.jpg?v=1788865827",
+          "price": "21.00",
+          "price_max": "21.00",
+          "price_min": "21.00",
+          "tags": [
+            "color:White",
+            "consignment",
+            "rarity:Mythic",
+            "seller:Rachel",
+            "set-code:WHO",
+            "set:Doctor Who",
+            "treatment:surgefoil",
+            "type:Artifact",
+            "variant:Extended Art"
+          ],
+          "title": "Wedding Ring \u2014 NM Surge Foil [Doctor Who]",
+          "type": "MTG Single",
+          "url": "/products/wedding-ring-nm-surge-foil-doctor-who?_pos=6&_psq=Sol+Ring&_psid=3715931d6&_ss=e",
+          "variants": [],
+          "vendor": "Arcane Sanctum",
+          "featured_image": {
+            "alt": "Wedding Ring \u2014 NM Surge Foil [Doctor Who]",
+            "aspect_ratio": 0.718,
+            "height": 680,
+            "url": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/bcac03a0-c4e3-4761-93f1-d4a64c0d46f8.jpg?v=1788865827",
+            "width": 488
+          }
+        },
+        {
+          "available": true,
+          "body": null,
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "glamdring-nm-surge-foil-the-hobbit-eternal",
+          "id": 15368547991597,
+          "image": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/162a211d-621e-4a20-a732-2f4233e4fe48.jpg?v=1788781713",
+          "price": "18.90",
+          "price_max": "18.90",
+          "price_min": "18.90",
+          "tags": [
+            "color:Colorless",
+            "consignment",
+            "rarity:Mythic",
+            "seller:Samuel Chua",
+            "set-code:HOC",
+            "set:The Hobbit Eternal",
+            "treatment:surgefoil",
+            "type:Artifact",
+            "variant:Borderless",
+            "variant:Inverted"
+          ],
+          "title": "Glamdring \u2014 NM Surge Foil [The Hobbit Eternal]",
+          "type": "MTG Single",
+          "url": "/products/glamdring-nm-surge-foil-the-hobbit-eternal?_pos=7&_psq=Sol+Ring&_psid=3715931d6&_ss=e",
+          "variants": [],
+          "vendor": "Arcane Sanctum",
+          "featured_image": {
+            "alt": "Glamdring \u2014 NM Surge Foil [The Hobbit Eternal]",
+            "aspect_ratio": 0.718,
+            "height": 680,
+            "url": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/162a211d-621e-4a20-a732-2f4233e4fe48.jpg?v=1788781713",
+            "width": 488
+          }
+        },
+        {
+          "available": true,
+          "body": null,
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "goblin-ringleader-nm-apocalypse",
+          "id": 15253184872493,
+          "image": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/b6b2cd77-9552-48b1-80cb-26966323c1ea.jpg?v=1786004088",
+          "price": "6.50",
+          "price_max": "6.50",
+          "price_min": "6.50",
+          "tags": [
+            "color:Red",
+            "consignment",
+            "rarity:Uncommon",
+            "seller:Terence",
+            "set-code:APC",
+            "set:Apocalypse",
+            "type:Creature"
+          ],
+          "title": "Goblin Ringleader \u2014 NM [Apocalypse]",
+          "type": "MTG Single",
+          "url": "/products/goblin-ringleader-nm-apocalypse?_pos=8&_psq=Sol+Ring&_psid=3715931d6&_ss=e",
+          "variants": [],
+          "vendor": "Arcane Sanctum",
+          "featured_image": {
+            "alt": "Goblin Ringleader \u2014 NM [Apocalypse]",
+            "aspect_ratio": 0.718,
+            "height": 680,
+            "url": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/b6b2cd77-9552-48b1-80cb-26966323c1ea.jpg?v=1786004088",
+            "width": 488
+          }
+        },
+        {
+          "available": true,
+          "body": null,
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "glamdring-foe-hammer-gleam-of-death-nm-the-hobbit",
+          "id": 15254922559533,
+          "image": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/53cd94e9-6006-4d43-8032-7920103740fa.jpg?v=1786035669",
+          "price": "3.30",
+          "price_max": "3.30",
+          "price_min": "3.30",
+          "tags": [
+            "color:Blue",
+            "consignment",
+            "rarity:Rare",
+            "seller:Samuel Chua",
+            "set-code:HOB",
+            "set:The Hobbit",
+            "type:Artifact",
+            "variant:Borderless",
+            "variant:Inverted"
+          ],
+          "title": "Glamdring, Foe-hammer // Gleam of Death \u2014 NM [The Hobbit]",
+          "type": "MTG Single",
+          "url": "/products/glamdring-foe-hammer-gleam-of-death-nm-the-hobbit?_pos=9&_psq=Sol+Ring&_psid=3715931d6&_ss=e",
+          "variants": [],
+          "vendor": "Arcane Sanctum",
+          "featured_image": {
+            "alt": "Glamdring, Foe-hammer // Gleam of Death \u2014 NM [The Hobbit]",
+            "aspect_ratio": 0.718,
+            "height": 680,
+            "url": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/53cd94e9-6006-4d43-8032-7920103740fa.jpg?v=1786035669",
+            "width": 488
+          }
+        },
+        {
+          "available": true,
+          "body": null,
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "thorin-mountain-king-nm-foil-the-hobbit",
+          "id": 15374283702317,
+          "image": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/117347af-0dd7-4350-901d-8c8a81387e22_886f1c93-1425-442a-bb32-656443e200bf.jpg?v=1789399170",
+          "price": "6.30",
+          "price_max": "6.30",
+          "price_min": "6.30",
+          "tags": [
+            "color:Red",
+            "consignment",
+            "rarity:Mythic",
+            "seller:Samuel Chua",
+            "set-code:HOB",
+            "set:The Hobbit",
+            "type:Creature"
+          ],
+          "title": "Thorin, Mountain-king \u2014 NM Foil [The Hobbit]",
+          "type": "MTG Single",
+          "url": "/products/thorin-mountain-king-nm-foil-the-hobbit?_pos=10&_psq=Sol+Ring&_psid=3715931d6&_ss=e",
+          "variants": [],
+          "vendor": "Arcane Sanctum",
+          "featured_image": {
+            "alt": "Thorin, Mountain-king \u2014 NM Foil [The Hobbit]",
+            "aspect_ratio": 0.718,
+            "height": 680,
+            "url": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/117347af-0dd7-4350-901d-8c8a81387e22_886f1c93-1425-442a-bb32-656443e200bf.jpg?v=1789399170",
+            "width": 488
+          }
+        }
+      ]
+    }
+  }
+}

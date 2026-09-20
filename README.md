@@ -5,9 +5,10 @@ exported from Moxfield or ManaBox, searches a configured set of local card
 sellers, and shows which stores stock each card — with price (SGD), condition
 (NM/LP/MP/HP/DMG), and foil status.
 
-Stores are pluggable adapters, grouped by zone. v1 ships with four Singapore
-stores — Grey Ogre Games, Games Haven, Cards Citadel, and Hideout — and a
-documented procedure for adding more.
+Stores are pluggable adapters, grouped by zone. v1 ships with thirteen
+Singapore stores — Grey Ogre Games, Games Haven, Cards Citadel, Hideout, One
+MTG, MTG Asia, Mana Pro, Card Affinity, Hideyoshi TCG, Flagship Games, 5 Mana,
+Fyendal Hobby, and Arcane Sanctum — and a documented procedure for adding more.
 
 ## Requirements
 
@@ -90,6 +91,15 @@ app/
     gameshaven.py    Games Haven (Shopify)
     cardscitadel.py  Cards Citadel (Shopify)
     hideout.py       Hideout (Shopify)
+    onemtg.py        One MTG (Shopify)
+    mtgasia.py       MTG Asia (Shopify)
+    manapro.py       Mana Pro (Shopify)
+    cardaffinity.py  Card Affinity (Shopify)
+    hideyoshi.py     Hideyoshi TCG (Shopify)
+    flagship.py      Flagship Games (Shopify)
+    fivemana.py      5 Mana (Shopify)
+    fyendalhobby.py  Fyendal Hobby (Shopify)
+    arcanesanctum.py Arcane Sanctum (Shopify, title-keyed conditions)
     shopify_parse.py pure listing parsers (condition/finish/price/hint)
 config/stores.yaml   zones + stores (id, adapter, base_url, concurrency, …)
 cli.py               explore / scaffold / probe / validate
@@ -164,10 +174,16 @@ than merge blockers.
   the HTTP/SSE layer; orchestrator tests cover that below the API.
 - **No logging.** Cache failures and unexpected adapter errors are swallowed and
   only surface via SSE error events.
-- **More Singapore stores.** Card Arena, Dueller's Point (CrystalCommerce-shaped),
-  and Agora Hobby (custom) still need adapters via the procedure above.
-  `moxandlotus.sg` is a custom Laravel/Vue SPA with no Shopify-style JSON API, so
-  it needs a bespoke adapter rather than the three-line Shopify subclass.
+- **More Singapore stores.** Agora Hobby and Mox & Lotus need bespoke adapters
+  (custom storefronts with no Shopify-style JSON API), and Dueller's Point is
+  CrystalCommerce-shaped rather than Shopify. Cards Central is a custom Astro
+  store behind a Vercel bot check.
+- **Arcane Sanctum's condition suffix.** Unlike the other BinderPOS stores,
+  Arcane Sanctum encodes condition and finish in the product title
+  (``Sol Ring — NM Foil [Judge Gift Cards 2005]``) with a single
+  ``Default Title`` variant. ``ArcaneSanctumAdapter._product_key`` strips that
+  suffix so exact-name matching still works; the shared offer mapping then reads
+  condition/finish from the full title.
 
 ## v1 constraints
 

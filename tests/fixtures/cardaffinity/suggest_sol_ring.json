@@ -1,0 +1,351 @@
+{
+  "resources": {
+    "results": {
+      "products": [
+        {
+          "available": true,
+          "body": "<table class=\"singles-description-table\" xmlns=\"http://www.w3.org/1999/html\">\n<tbody>\n      <tr>\n          <td>Set:</td>\n          <td>Secret Lair Countdown Kit</td>\n      </tr>\n      <tr>\n          <td>Type:</td>\n          <td>Artifact</td>\n      </tr>\n      <tr>\n          <td>Rarity:</td>\n          <td>Rare</td>\n      </tr>\n      <tr>\n          <td>Cost:</td>\n          <td>{1}</td>\n      </tr>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n        <div class=\"oracle-text\">\n            {T}: Add {C}{C}.\n        </div>\n<table class=\"singles-reverse-description-table\">\n<tbody>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n</div>\n<div class=\"catalogMetaData\" style=\"visibility: hidden;\" data-cardtype=\"mtg\" data-cardid=\"105804\" data-tcgid=\"662066\" data-lastupdated=\"2025-12-23T19:53:22.138Z\">\n</div>\n</div>\n",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-ring-halo-foil-secret-lair-countdown-kit",
+          "id": 10027333845268,
+          "image": "https://cdn.shopify.com/s/files/1/0826/0681/7556/files/662066.jpg?v=1766519674",
+          "price": "243.40",
+          "price_max": "347.70",
+          "price_min": "243.40",
+          "tags": [
+            "Artifact",
+            "Colorless",
+            "Commander",
+            "Foil",
+            "Predh",
+            "Rare",
+            "Secret Lair Countdown Kit",
+            "Vintage"
+          ],
+          "title": "Sol Ring (Halo Foil) [Secret Lair Countdown Kit]",
+          "type": "MTG Single",
+          "url": "/products/sol-ring-halo-foil-secret-lair-countdown-kit?_pos=1&_psq=Sol+Ring&_psid=f2ef369d7&_ss=e",
+          "variants": [],
+          "vendor": "Magic: The Gathering",
+          "featured_image": {
+            "alt": "Sol Ring (Halo Foil) [Secret Lair Countdown Kit]",
+            "aspect_ratio": 0.724,
+            "height": 1025,
+            "url": "https://cdn.shopify.com/s/files/1/0826/0681/7556/files/662066.jpg?v=1766519674",
+            "width": 742
+          }
+        },
+        {
+          "available": true,
+          "body": "<table class=\"singles-description-table\" xmlns=\"http://www.w3.org/1999/html\">\n<tbody>\n      <tr>\n          <td>Set:</td>\n          <td>Secret Lair Drop Series</td>\n      </tr>\n      <tr>\n          <td>Type:</td>\n          <td>Artifact</td>\n      </tr>\n      <tr>\n          <td>Rarity:</td>\n          <td>Rare</td>\n      </tr>\n      <tr>\n          <td>Cost:</td>\n          <td>{1}</td>\n      </tr>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n        <div class=\"oracle-text\">\n            {T}: Add {C}{C}.\n        </div>\n<table class=\"singles-reverse-description-table\">\n<tbody>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n</div>\n<div class=\"catalogMetaData\" style=\"visibility: hidden;\" data-cardtype=\"mtg\" data-cardid=\"111950\" data-tcgid=\"707352\" data-lastupdated=\"2026-07-28T16:24:10.993Z\">\n</div>\n</div>\n",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-ring-2807-secret-lair-drop-series",
+          "id": 10315216683284,
+          "image": "https://cdn.shopify.com/s/files/1/0826/0681/7556/files/7a581f4c-34a0-5040-9b79-24cfce0cefab.png?v=1785255889",
+          "price": "8.20",
+          "price_max": "16.70",
+          "price_min": "8.20",
+          "tags": [
+            "Artifact",
+            "Colorless",
+            "Commander",
+            "Foil",
+            "Normal",
+            "Predh",
+            "Rare",
+            "Secret Lair Drop Series",
+            "Vintage"
+          ],
+          "title": "Sol Ring (2807) [Secret Lair Drop Series]",
+          "type": "MTG Single",
+          "url": "/products/sol-ring-2807-secret-lair-drop-series?_pos=2&_psq=Sol+Ring&_psid=f2ef369d7&_ss=e",
+          "variants": [],
+          "vendor": "Magic: The Gathering",
+          "featured_image": {
+            "alt": "Sol Ring (2807) [Secret Lair Drop Series]",
+            "aspect_ratio": 0.715,
+            "height": 1040,
+            "url": "https://cdn.shopify.com/s/files/1/0826/0681/7556/files/7a581f4c-34a0-5040-9b79-24cfce0cefab.png?v=1785255889",
+            "width": 744
+          }
+        },
+        {
+          "available": true,
+          "body": "<table class=\"singles-description-table\" xmlns=\"http://www.w3.org/1999/html\">\n<tbody>\n      <tr>\n          <td>Set:</td>\n          <td>Secret Lair Drop Series</td>\n      </tr>\n      <tr>\n          <td>Type:</td>\n          <td>Artifact</td>\n      </tr>\n      <tr>\n          <td>Rarity:</td>\n          <td>Rare</td>\n      </tr>\n      <tr>\n          <td>Cost:</td>\n          <td>{1}</td>\n      </tr>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n        <div class=\"oracle-text\">\n            {T}: Add {C}{C}.\n        </div>\n        <div class=\"flavor-text\">\n            Forged within the star itself, the ring harnesses its stellar energy for an unfathomable purpose.\n        </div>\n<table class=\"singles-reverse-description-table\">\n<tbody>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n</div>\n<div class=\"catalogMetaData\" style=\"visibility: hidden;\" data-cardtype=\"mtg\" data-cardid=\"55143\" data-tcgid=\"528288\" data-lastupdated=\"2026-04-27T17:05:51.594Z\">\n</div>\n</div>\n",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-ring-1494-galaxy-foil-secret-lair-drop-series",
+          "id": 8875571872020,
+          "image": "https://cdn.shopify.com/s/files/1/0826/0681/7556/files/f53dbf49-7ba0-58ff-be93-288d64c43d6c.png?v=1777311716",
+          "price": "186.20",
+          "price_max": "266.00",
+          "price_min": "186.20",
+          "tags": [
+            "Artifact",
+            "Colorless",
+            "Commander",
+            "Foil",
+            "Predh",
+            "Rare",
+            "Secret Lair Drop Series",
+            "Vintage"
+          ],
+          "title": "Sol Ring (1494) (Galaxy Foil) [Secret Lair Drop Series]",
+          "type": "MTG Single",
+          "url": "/products/sol-ring-1494-galaxy-foil-secret-lair-drop-series?_pos=3&_psq=Sol+Ring&_psid=f2ef369d7&_ss=e",
+          "variants": [],
+          "vendor": "Magic: The Gathering",
+          "featured_image": {
+            "alt": "Sol Ring (1494) (Galaxy Foil) [Secret Lair Drop Series]",
+            "aspect_ratio": 0.716,
+            "height": 1040,
+            "url": "https://cdn.shopify.com/s/files/1/0826/0681/7556/files/f53dbf49-7ba0-58ff-be93-288d64c43d6c.png?v=1777311716",
+            "width": 745
+          }
+        },
+        {
+          "available": true,
+          "body": "<table class=\"singles-description-table\" xmlns=\"http://www.w3.org/1999/html\">\n<tbody>\n      <tr>\n          <td>Set:</td>\n          <td>Secret Lair Drop Series</td>\n      </tr>\n      <tr>\n          <td>Type:</td>\n          <td>Artifact</td>\n      </tr>\n      <tr>\n          <td>Rarity:</td>\n          <td>Rare</td>\n      </tr>\n      <tr>\n          <td>Cost:</td>\n          <td>{1}</td>\n      </tr>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n        <div class=\"oracle-text\">\n            {T}: Add {C}{C}.\n        </div>\n<table class=\"singles-reverse-description-table\">\n<tbody>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n</div>\n<div class=\"catalogMetaData\" style=\"visibility: hidden;\" data-cardtype=\"mtg\" data-cardid=\"112682\" data-tcgid=\"711055\" data-lastupdated=\"2026-08-26T16:23:08.819Z\">\n</div>\n</div>\n",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-ring-2560-secret-lair-drop-series",
+          "id": 10345559261460,
+          "image": "https://cdn.shopify.com/s/files/1/0826/0681/7556/files/e47e081b-aeee-5211-a301-0b13f4a139cc.png?v=1787761426",
+          "price": "14.70",
+          "price_max": "32.20",
+          "price_min": "14.70",
+          "tags": [
+            "Artifact",
+            "Colorless",
+            "Commander",
+            "Foil",
+            "Normal",
+            "Predh",
+            "Rare",
+            "Secret Lair Drop Series",
+            "Vintage"
+          ],
+          "title": "Sol Ring (2560) [Secret Lair Drop Series]",
+          "type": "MTG Single",
+          "url": "/products/sol-ring-2560-secret-lair-drop-series?_pos=4&_psq=Sol+Ring&_psid=f2ef369d7&_ss=e",
+          "variants": [],
+          "vendor": "Magic: The Gathering",
+          "featured_image": {
+            "alt": "Sol Ring (2560) [Secret Lair Drop Series]",
+            "aspect_ratio": 0.715,
+            "height": 1040,
+            "url": "https://cdn.shopify.com/s/files/1/0826/0681/7556/files/e47e081b-aeee-5211-a301-0b13f4a139cc.png?v=1787761426",
+            "width": 744
+          }
+        },
+        {
+          "available": true,
+          "body": "<table class=\"singles-description-table\" xmlns=\"http://www.w3.org/1999/html\">\n<tbody>\n      <tr>\n          <td>Set:</td>\n          <td>Secret Lair Drop Series</td>\n      </tr>\n      <tr>\n          <td>Type:</td>\n          <td>Artifact</td>\n      </tr>\n      <tr>\n          <td>Rarity:</td>\n          <td>Rare</td>\n      </tr>\n      <tr>\n          <td>Cost:</td>\n          <td>{1}</td>\n      </tr>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n        <div class=\"oracle-text\">\n            T: Add CC.<br><br>When purchasing this unique product, please keep in mind that this card only appears in the Secret Lair x Marvel Superdrop and will ship out to you after the seller receives the product directly from Wizards of the Coast.The estimated time frame for sellers to receive stock is not fixed, so it could be anywhere between 1 - 10 weeks for delivery.\n        </div>\n        <div class=\"flavor-text\">\n            \u201cI built this arc reactor to save my life, but I intend to use it to save the world.\u201d\n\n\u2014Tony Stark, Iron Man\n        </div>\n<table class=\"singles-reverse-description-table\">\n<tbody>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n</div>\n<div class=\"catalogMetaData\" style=\"visibility: hidden;\" data-cardtype=\"mtg\" data-cardid=\"95806\" data-tcgid=\"588014\" data-lastupdated=\"2026-04-29T21:27:40.143Z\">\n</div>\n</div>\n",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-ring-1734-secret-lair-drop-series",
+          "id": 9636405739796,
+          "image": "https://cdn.shopify.com/s/files/1/0826/0681/7556/files/588014.jpg?v=1777498688",
+          "price": "16.70",
+          "price_max": "23.80",
+          "price_min": "16.70",
+          "tags": [
+            "Artifact",
+            "Colorless",
+            "Commander",
+            "Normal",
+            "Predh",
+            "Rare",
+            "Secret Lair Drop Series",
+            "Vintage"
+          ],
+          "title": "Sol Ring (1734) [Secret Lair Drop Series]",
+          "type": "MTG Single",
+          "url": "/products/sol-ring-1734-secret-lair-drop-series?_pos=5&_psq=Sol+Ring&_psid=f2ef369d7&_ss=e",
+          "variants": [],
+          "vendor": "Magic: The Gathering",
+          "featured_image": {
+            "alt": "Sol Ring (1734) [Secret Lair Drop Series]",
+            "aspect_ratio": 0.716,
+            "height": 1040,
+            "url": "https://cdn.shopify.com/s/files/1/0826/0681/7556/files/588014.jpg?v=1777498688",
+            "width": 745
+          }
+        },
+        {
+          "available": true,
+          "body": "<table class=\"singles-description-table\" xmlns=\"http://www.w3.org/1999/html\">\n<tbody>\n      <tr>\n          <td>Set:</td>\n          <td>Secret Lair Drop Series</td>\n      </tr>\n      <tr>\n          <td>Type:</td>\n          <td>Artifact</td>\n      </tr>\n      <tr>\n          <td>Rarity:</td>\n          <td>Rare</td>\n      </tr>\n      <tr>\n          <td>Cost:</td>\n          <td>{1}</td>\n      </tr>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n        <div class=\"oracle-text\">\n            {T}: Add {C}{C}.\n        </div>\n        <div class=\"flavor-text\">\n            For her birthday, Miku received a gift that shines as brightly as she does.\n        </div>\n<table class=\"singles-reverse-description-table\">\n<tbody>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n</div>\n<div class=\"catalogMetaData\" style=\"visibility: hidden;\" data-cardtype=\"mtg\" data-cardid=\"91340\" data-tcgid=\"555449\" data-lastupdated=\"2026-08-05T13:36:33.200Z\">\n</div>\n</div>\n",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-ring-1604-rainbow-foil-secret-lair-drop-series",
+          "id": 9481023455508,
+          "image": "https://cdn.shopify.com/s/files/1/0826/0681/7556/files/7fc3142c-ffcf-5544-86b5-17c77d819398.png?v=1785937541",
+          "price": "152.90",
+          "price_max": "218.40",
+          "price_min": "152.90",
+          "tags": [
+            "Artifact",
+            "Colorless",
+            "Commander",
+            "Foil",
+            "Predh",
+            "Rare",
+            "Secret Lair Drop Series",
+            "Vintage"
+          ],
+          "title": "Sol Ring (1604) (Rainbow Foil) [Secret Lair Drop Series]",
+          "type": "MTG Single",
+          "url": "/products/sol-ring-1604-rainbow-foil-secret-lair-drop-series?_pos=6&_psq=Sol+Ring&_psid=f2ef369d7&_ss=e",
+          "variants": [],
+          "vendor": "Magic: The Gathering",
+          "featured_image": {
+            "alt": "Sol Ring (1604) (Rainbow Foil) [Secret Lair Drop Series]",
+            "aspect_ratio": 0.716,
+            "height": 1040,
+            "url": "https://cdn.shopify.com/s/files/1/0826/0681/7556/files/7fc3142c-ffcf-5544-86b5-17c77d819398.png?v=1785937541",
+            "width": 745
+          }
+        },
+        {
+          "available": true,
+          "body": "<table class=\"singles-description-table\" xmlns=\"http://www.w3.org/1999/html\">\n<tbody>\n      <tr>\n          <td>Set:</td>\n          <td>Commander 2018</td>\n      </tr>\n      <tr>\n          <td>Type:</td>\n          <td>Artifact</td>\n      </tr>\n      <tr>\n          <td>Rarity:</td>\n          <td>Uncommon</td>\n      </tr>\n      <tr>\n          <td>Cost:</td>\n          <td>{1}</td>\n      </tr>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n        <div class=\"oracle-text\">\n            {T}: Add {C}{C}.\n        </div>\n        <div class=\"flavor-text\">\n            Lost to time is the artificer's art of trapping light from a distant star in a ring of purest gold.\n        </div>\n<table class=\"singles-reverse-description-table\">\n<tbody>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n</div>\n<div class=\"catalogMetaData\" style=\"visibility: hidden;\" data-cardtype=\"mtg\" data-cardid=\"18676\" data-tcgid=\"171158\" data-lastupdated=\"2023-11-22T21:47:22.942Z\">\n</div>\n</div>\n",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-ring-commander-2018",
+          "id": 8759202578708,
+          "image": "https://cdn.shopify.com/s/files/1/0826/0681/7556/products/de023616-efc3-5d59-8159-2ea452dd6274_24843424-55fc-41d9-93f7-39bad4dc101f.jpg?v=1700704570",
+          "price": "2.00",
+          "price_max": "2.80",
+          "price_min": "2.00",
+          "tags": [
+            "Artifact",
+            "Colorless",
+            "Commander",
+            "Commander 2018",
+            "Normal",
+            "Predh",
+            "Uncommon",
+            "Vintage"
+          ],
+          "title": "Sol Ring [Commander 2018]",
+          "type": "MTG Single",
+          "url": "/products/sol-ring-commander-2018?_pos=7&_psq=Sol+Ring&_psid=f2ef369d7&_ss=e",
+          "variants": [],
+          "vendor": "Magic: The Gathering",
+          "featured_image": {
+            "alt": "Sol Ring [Commander 2018]",
+            "aspect_ratio": 0.718,
+            "height": 936,
+            "url": "https://cdn.shopify.com/s/files/1/0826/0681/7556/products/de023616-efc3-5d59-8159-2ea452dd6274_24843424-55fc-41d9-93f7-39bad4dc101f.jpg?v=1700704570",
+            "width": 672
+          }
+        },
+        {
+          "available": true,
+          "body": "<table class=\"singles-description-table\" xmlns=\"http://www.w3.org/1999/html\">\n<tbody>\n      <tr>\n          <td>Set:</td>\n          <td>Secret Lair Drop Series</td>\n      </tr>\n      <tr>\n          <td>Type:</td>\n          <td>Artifact</td>\n      </tr>\n      <tr>\n          <td>Rarity:</td>\n          <td>Rare</td>\n      </tr>\n      <tr>\n          <td>Cost:</td>\n          <td>{1}</td>\n      </tr>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n        <div class=\"oracle-text\">\n            {T}: Add {C}{C}.\n        </div>\n        <div class=\"flavor-text\">\n            Forged within the star itself, the ring harnesses its stellar energy for an unfathomable purpose.\n        </div>\n<table class=\"singles-reverse-description-table\">\n<tbody>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n</div>\n<div class=\"catalogMetaData\" style=\"visibility: hidden;\" data-cardtype=\"mtg\" data-cardid=\"55109\" data-tcgid=\"528210\" data-lastupdated=\"2026-04-27T17:05:51.601Z\">\n</div>\n</div>\n",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-ring-1494-secret-lair-drop-series",
+          "id": 8875571675412,
+          "image": "https://cdn.shopify.com/s/files/1/0826/0681/7556/files/c3af8cb2-f4c2-558a-be9a-3b1fa167e172.png?v=1777311917",
+          "price": "82.40",
+          "price_max": "117.70",
+          "price_min": "82.40",
+          "tags": [
+            "Artifact",
+            "Colorless",
+            "Commander",
+            "Normal",
+            "Predh",
+            "Rare",
+            "Secret Lair Drop Series",
+            "Vintage"
+          ],
+          "title": "Sol Ring (1494) [Secret Lair Drop Series]",
+          "type": "MTG Single",
+          "url": "/products/sol-ring-1494-secret-lair-drop-series?_pos=8&_psq=Sol+Ring&_psid=f2ef369d7&_ss=e",
+          "variants": [],
+          "vendor": "Magic: The Gathering",
+          "featured_image": {
+            "alt": "Sol Ring (1494) [Secret Lair Drop Series]",
+            "aspect_ratio": 0.716,
+            "height": 1040,
+            "url": "https://cdn.shopify.com/s/files/1/0826/0681/7556/files/c3af8cb2-f4c2-558a-be9a-3b1fa167e172.png?v=1777311917",
+            "width": 745
+          }
+        },
+        {
+          "available": true,
+          "body": "<table class=\"singles-description-table\" xmlns=\"http://www.w3.org/1999/html\">\n<tbody>\n      <tr>\n          <td>Set:</td>\n          <td>Secret Lair Drop Series</td>\n      </tr>\n      <tr>\n          <td>Type:</td>\n          <td>Artifact</td>\n      </tr>\n      <tr>\n          <td>Rarity:</td>\n          <td>Rare</td>\n      </tr>\n      <tr>\n          <td>Cost:</td>\n          <td>{1}</td>\n      </tr>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n        <div class=\"oracle-text\">\n            {T}: Add {C}{C}.\n        </div>\n        <div class=\"flavor-text\">\n            \"It's time for you to fulfill your destiny.\"\n\u2014Princess Celestia\n        </div>\n<table class=\"singles-reverse-description-table\">\n<tbody>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n</div>\n<div class=\"catalogMetaData\" style=\"visibility: hidden;\" data-cardtype=\"mtg\" data-cardid=\"109504\" data-tcgid=\"691616\" data-lastupdated=\"2026-08-05T13:35:34.314Z\">\n</div>\n</div>\n",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-ring-2539-secret-lair-drop-series",
+          "id": 10193824514324,
+          "image": "https://cdn.shopify.com/s/files/1/0826/0681/7556/files/2eaf1295-c669-5924-b1c5-6cdda17b3200.png?v=1785937302",
+          "price": "17.00",
+          "price_max": "27.10",
+          "price_min": "17.00",
+          "tags": [
+            "Artifact",
+            "Colorless",
+            "Commander",
+            "Foil",
+            "Normal",
+            "Predh",
+            "Rare",
+            "Secret Lair Drop Series",
+            "Vintage"
+          ],
+          "title": "Sol Ring (2539) [Secret Lair Drop Series]",
+          "type": "MTG Single",
+          "url": "/products/sol-ring-2539-secret-lair-drop-series?_pos=9&_psq=Sol+Ring&_psid=f2ef369d7&_ss=e",
+          "variants": [],
+          "vendor": "Magic: The Gathering",
+          "featured_image": {
+            "alt": "Sol Ring (2539) [Secret Lair Drop Series]",
+            "aspect_ratio": 0.716,
+            "height": 1040,
+            "url": "https://cdn.shopify.com/s/files/1/0826/0681/7556/files/2eaf1295-c669-5924-b1c5-6cdda17b3200.png?v=1785937302",
+            "width": 745
+          }
+        },
+        {
+          "available": true,
+          "body": "<table class=\"singles-description-table\" xmlns=\"http://www.w3.org/1999/html\">\n<tbody>\n      <tr>\n          <td>Set:</td>\n          <td>Secret Lair Drop Series</td>\n      </tr>\n      <tr>\n          <td>Type:</td>\n          <td>Artifact</td>\n      </tr>\n      <tr>\n          <td>Rarity:</td>\n          <td>Rare</td>\n      </tr>\n      <tr>\n          <td>Cost:</td>\n          <td>{1}</td>\n      </tr>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n        <div class=\"oracle-text\">\n            {T}: Add {C}{C}.\n        </div>\n        <div class=\"flavor-text\">\n            \"An adventure's no fun if it's too easy.\"\n\u2014Sonic the Hedgehog\n        </div>\n<table class=\"singles-reverse-description-table\">\n<tbody>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n</div>\n<div class=\"catalogMetaData\" style=\"visibility: hidden;\" data-cardtype=\"mtg\" data-cardid=\"103637\" data-tcgid=\"643695\" data-lastupdated=\"2026-08-05T13:35:34.563Z\">\n</div>\n</div>\n",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-ring-2093-secret-lair-drop-series",
+          "id": 9914738999572,
+          "image": "https://cdn.shopify.com/s/files/1/0826/0681/7556/files/7c88b9d0-0aee-5743-ac6e-831584d7dfbe_f2054250-0481-4fc9-b44e-5a0b46871825.png?v=1785937312",
+          "price": "16.10",
+          "price_max": "22.90",
+          "price_min": "16.10",
+          "tags": [
+            "Artifact",
+            "Colorless",
+            "Commander",
+            "Normal",
+            "Predh",
+            "Rare",
+            "Secret Lair Drop Series",
+            "Vintage"
+          ],
+          "title": "Sol Ring (2093) [Secret Lair Drop Series]",
+          "type": "MTG Single",
+          "url": "/products/sol-ring-2093-secret-lair-drop-series?_pos=10&_psq=Sol+Ring&_psid=f2ef369d7&_ss=e",
+          "variants": [],
+          "vendor": "Magic: The Gathering",
+          "featured_image": {
+            "alt": "Sol Ring (2093) [Secret Lair Drop Series]",
+            "aspect_ratio": 0.716,
+            "height": 1040,
+            "url": "https://cdn.shopify.com/s/files/1/0826/0681/7556/files/7c88b9d0-0aee-5743-ac6e-831584d7dfbe_f2054250-0481-4fc9-b44e-5a0b46871825.png?v=1785937312",
+            "width": 745
+          }
+        }
+      ]
+    }
+  }
+}

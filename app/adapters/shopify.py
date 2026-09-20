@@ -67,6 +67,16 @@ class ShopifyAdapter:
             ) from exc
         return payload if isinstance(payload, dict) else {}
 
+    def _product_key(self, title: str) -> str:
+        """Return the card-name portion of a product title for exact matching.
+
+        Most stores put the card name first and any printing / variant detail in
+        a bracketed suffix, so :func:`normalize_name` is enough. Stores that
+        instead encode condition and finish in the product title override this
+        to strip that suffix before comparing.
+        """
+        return normalize_name(title)
+
     @staticmethod
     def _absolute_image(*sources: dict) -> str | None:
         """Return the first usable product image as an absolute https URL.
@@ -128,7 +138,7 @@ class ShopifyAdapter:
         for product in products:
             if not isinstance(product, dict):
                 continue
-            if normalize_name(product.get("title") or "") != wanted:
+            if self._product_key(product.get("title") or "") != wanted:
                 continue
             handle = product.get("handle") or ""
             try:

@@ -1,0 +1,96 @@
+{
+  "id": 15272495939629,
+  "title": "Sol Ring \u2014 NM Foil [Judge Gift Cards 2005]",
+  "handle": "sol-ring-nm-foil-judge-gift-cards-2005",
+  "description": null,
+  "published_at": "2026-08-09T19:32:59+08:00",
+  "created_at": "2026-08-09T19:32:58+08:00",
+  "vendor": "Arcane Sanctum",
+  "type": "MTG Single",
+  "tags": [
+    "color:Colorless",
+    "consignment",
+    "customer-submitted",
+    "rarity:",
+    "seller:Shawn sun",
+    "set-code:G05",
+    "set:Judge Gift Cards 2005",
+    "type:Other",
+    "variant:Judge Promo"
+  ],
+  "price": 100000,
+  "price_min": 100000,
+  "price_max": 100000,
+  "available": true,
+  "price_varies": false,
+  "compare_at_price": null,
+  "compare_at_price_min": 0,
+  "compare_at_price_max": 0,
+  "compare_at_price_varies": false,
+  "variants": [
+    {
+      "id": 67282824921133,
+      "title": "Default Title",
+      "option1": "Default Title",
+      "option2": null,
+      "option3": null,
+      "sku": null,
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": true,
+      "name": "Sol Ring \u2014 NM Foil [Judge Gift Cards 2005]",
+      "public_title": null,
+      "options": [
+        "Default Title"
+      ],
+      "price": 100000,
+      "weight": 0,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    }
+  ],
+  "images": [
+    "//cdn.shopify.com/s/files/1/0728/5194/7565/files/1a5b855b-f391-4963-a3d9-47880e084a7f.jpg?v=1786275181"
+  ],
+  "featured_image": "//cdn.shopify.com/s/files/1/0728/5194/7565/files/1a5b855b-f391-4963-a3d9-47880e084a7f.jpg?v=1786275181",
+  "options": [
+    {
+      "name": "Title",
+      "position": 1,
+      "values": [
+        "Default Title"
+      ]
+    }
+  ],
+  "url": "/products/sol-ring-nm-foil-judge-gift-cards-2005",
+  "media": [
+    {
+      "alt": "Sol Ring \u2014 NM Foil [Judge Gift Cards 2005]",
+      "id": 45075599982637,
+      "position": 1,
+      "preview_image": {
+        "aspect_ratio": 0.718,
+        "height": 680,
+        "width": 488,
+        "src": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/1a5b855b-f391-4963-a3d9-47880e084a7f.jpg?v=1786275181"
+      },
+      "aspect_ratio": 0.718,
+      "height": 680,
+      "media_type": "image",
+      "src": "https://cdn.shopify.com/s/files/1/0728/5194/7565/files/1a5b855b-f391-4963-a3d9-47880e084a7f.jpg?v=1786275181",
+      "width": 488
+    }
+  ],
+  "requires_selling_plan": false,
+  "selling_plan_groups": []
+}
