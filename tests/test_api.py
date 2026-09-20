@@ -205,3 +205,26 @@ def test_cart_refresh_without_variant_id_keeps_stored_one(tmp_path):
               "last_checked_at": 456.0},
     ).json()
     assert fresh["variant_id"] == "41984399442000"
+
+
+def test_cart_returns_per_store_checkout_url(tmp_path):
+    client = _client(tmp_path)
+    client.post("/api/cart", json=CART_PAYLOAD)
+
+    data = client.get("/api/cart").json()
+    store = next(s for s in data["stores"] if s["store_id"] == "greyogre")
+    # config base_url is https://example.test; the card quantity is 2
+    assert store["checkout_url"] == "https://example.test/cart/41984399442000:2"
+
+
+def test_cart_checkout_url_is_none_without_variant_id(tmp_path):
+    client = _client(tmp_path)
+    payload = {
+        "card": CART_PAYLOAD["card"],
+        "offer": {**CART_PAYLOAD["offer"], "variant_id": None},
+    }
+    client.post("/api/cart", json=payload)
+
+    data = client.get("/api/cart").json()
+    store = next(s for s in data["stores"] if s["store_id"] == "greyogre")
+    assert store["checkout_url"] is None

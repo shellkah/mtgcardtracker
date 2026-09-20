@@ -1,4 +1,5 @@
 from app.cart import (
+    checkout_url,
     duplicate_card_keys,
     group_by_store,
     identity_key,
@@ -106,3 +107,33 @@ def test_totals_sums_countable_lines_and_counts_excluded():
     result = totals([ok, oos, gone])
     assert result["total_sgd"] == "9.00"
     assert result["excluded"] == 2
+
+
+def test_checkout_url_joins_purchasable_lines_in_order():
+    items = [
+        _item(id=1, variant_id="111", quantity=2),
+        _item(id=2, variant_id="222", quantity=1),
+    ]
+    assert checkout_url("https://example.test", items) == "https://example.test/cart/111:2,222:1"
+
+
+def test_checkout_url_skips_excluded_and_unbuyable_lines():
+    items = [
+        _item(id=1, variant_id="111"),
+        _item(id=2, variant_id="222", in_stock=0),
+        _item(id=3, variant_id="333", status="unavailable"),
+        _item(id=4, variant_id=None),
+        _item(id=5, variant_id="not-a-number"),
+    ]
+    assert checkout_url("https://example.test", items) == "https://example.test/cart/111:2"
+
+
+def test_checkout_url_returns_none_without_purchasable_lines():
+    assert checkout_url("https://example.test", [_item(id=1, variant_id=None)]) is None
+    assert checkout_url("", [_item(id=1, variant_id="111")]) is None
+
+
+def test_checkout_url_clamps_quantity_to_at_least_one():
+    assert checkout_url(
+        "https://example.test/", [_item(id=1, variant_id="111", quantity=0)]
+    ) == "https://example.test/cart/111:1"

@@ -10,7 +10,7 @@ from pydantic import BaseModel
 
 from app.adapters.base import CardRequest
 from app.adapters.registry import build_adapters, load_config
-from app.cart import line_from_offer
+from app.cart import checkout_url, group_by_store, line_from_offer
 from app.db import Database
 from app.http import HttpxClient
 from app.parsing import detect_format, parse_cards
@@ -146,7 +146,18 @@ def create_app(config_path: str = "config/stores.yaml", db_path: str = "mtgcardt
     @app.get("/api/cart")
     def get_cart():
         items = db.list_cart()
-        return {"items": items, "count": len(items)}
+        base_urls = {c.id: c.base_url for c in configs}
+        stores = [
+            {
+                "store_id": group["store_id"],
+                "store_name": group["store_name"],
+                "checkout_url": checkout_url(
+                    base_urls.get(group["store_id"], ""), group["items"]
+                ),
+            }
+            for group in group_by_store(items)
+        ]
+        return {"items": items, "count": len(items), "stores": stores}
 
     @app.post("/api/cart")
     def add_to_cart(request: AddCartRequest):

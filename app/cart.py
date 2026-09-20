@@ -1,7 +1,34 @@
 from __future__ import annotations
 
+import re
 from datetime import datetime, timezone
 from decimal import Decimal
+
+_VARIANT_ID_RE = re.compile(r"^\d+$")
+
+
+def checkout_url(base_url: str, items: list[dict]) -> str | None:
+    """Shopify cart permalink for one store's purchasable satchel lines.
+
+    Only lines that are ``status == "ok"``, in stock, and carry a numeric
+    ``variant_id`` are included; anything else would land in the store's cart
+    as a sold-out or unmatched item. Returns ``None`` when nothing qualifies.
+    """
+    if not base_url:
+        return None
+    tokens: list[str] = []
+    for item in items:
+        if item.get("status") != "ok" or not item.get("in_stock"):
+            continue
+        variant_id = str(item.get("variant_id") or "")
+        if not _VARIANT_ID_RE.match(variant_id):
+            continue
+        quantity = max(1, int(item.get("quantity") or 1))
+        tokens.append(f"{variant_id}:{quantity}")
+    if not tokens:
+        return None
+    return f"{base_url.rstrip('/')}/cart/" + ",".join(tokens)
+
 
 IDENTITY_FIELDS = ("store_id", "title", "condition", "finish", "url")
 
