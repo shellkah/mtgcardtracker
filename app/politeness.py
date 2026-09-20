@@ -5,6 +5,8 @@ import threading
 import time
 from dataclasses import dataclass
 
+from app.http import HttpError
+
 RETRYABLE_STATUS = frozenset({429, 503})
 
 
@@ -57,3 +59,59 @@ class RetryPolicy:
             return min(self.max_delay, max(0.0, retry_after))
         ceiling = min(self.max_delay, self.base_delay * (2 ** (attempt - 1)))
         return rand() * ceiling
+
+
+class RetryingHttpClient:
+    """HttpClient wrapper: per-store rate limiting plus bounded retry/backoff."""
+
+    def __init__(self, inner, limiter, policy=RetryPolicy(), sleep=time.sleep, rand=random.random):
+        self._inner = inner
+        self._limiter = limiter
+        self._policy = policy
+        self._sleep = sleep
+        self._rand = rand
+
+    @property
+    def rate_per_second(self) -> float:
+        interval = self._limiter.interval
+        return 1.0 / interval if interval > 0 else 0.0
+
+    def get_json(self, url, params=None):
+        return self._call(self._inner.get_json, url, params)
+
+    def get_text(self, url, params=None):
+        return self._call(self._inner.get_text, url, params)
+
+    @staticmethod
+    def _retryable(exc: HttpError) -> bool:
+        return exc.status_code is None or exc.status_code in RETRYABLE_STATUS
+
+    def _call(self, fn, url, params):
+        attempts = max(1, self._policy.attempts)
+        for attempt in range(1, attempts + 1):
+            self._limiter.wait()
+            try:
+                return fn(url, params)
+            except HttpError as exc:
+                if not self._retryable(exc):
+                    raise  # permanent failure: unchanged behaviour
+                if attempt == attempts:
+                    raise self._exhausted_error(exc, attempt) from exc
+                self._sleep(self._policy.delay_for(attempt, exc.retry_after, self._rand))
+
+    def _exhausted_error(self, exc: HttpError, attempts: int) -> HttpError:
+        if exc.status_code is None:
+            return exc  # network/timeout: re-raise the original unchanged
+        why = "Cloudflare challenge" if exc.challenged else "rate-limited"
+        return HttpError(
+            f"{exc} ({why}) after {attempts} attempt(s)",
+            status_code=exc.status_code,
+            retry_after=exc.retry_after,
+            challenged=exc.challenged,
+        )
+
+
+def make_store_client(base_http, config, *, policy=None, sleep=time.sleep,
+                      clock=time.monotonic, rand=random.random) -> RetryingHttpClient:
+    limiter = RateLimiter(config.requests_per_second, clock=clock, sleep=sleep)
+    return RetryingHttpClient(base_http, limiter, policy or RetryPolicy(), sleep=sleep, rand=rand)
