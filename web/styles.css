@@ -1367,6 +1367,8 @@ textarea:focus {
 .satchel__lines { display: flex; flex-direction: column; }
 .satchel__line { display: flex; align-items: center; gap: 10px; padding: 10px 0; border-bottom: 1px solid var(--line); }
 .satchel__line.is-dim { opacity: 0.55; }
+.satchel__line.is-moved { background: rgba(224, 178, 95, 0.07); }
+.satchel__was { color: var(--warn); font-size: 0.72rem; text-decoration: line-through; }
 .satchel__thumb { width: 34px; height: 48px; border-radius: 4px; object-fit: cover; background: var(--raised); }
 .satchel__thumb--none { display: grid; place-items: center; color: var(--faint); }
 .satchel__line-body { flex: 1; min-width: 0; }

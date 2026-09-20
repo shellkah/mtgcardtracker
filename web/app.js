@@ -1040,8 +1040,11 @@ function cartLineHTML(item, dupes) {
   const link = isSafeUrl(item.url)
     ? `<a class="satchel__link" href="${esc(item.url)}" target="_blank" rel="noopener" title="Open listing"><svg class="ico"><use href="#i-external" /></svg></a>`
     : "";
+  const moved = item.was_price_sgd !== undefined && item.was_price_sgd !== null
+    && Number(item.was_price_sgd) !== Number(item.price_sgd);
+  const wasTag = moved ? `<span class="satchel__was" title="Previous price">was ${money(item.was_price_sgd)}</span>` : "";
   return `
-    <li class="satchel__line${countable ? "" : " is-dim"}" data-item-id="${item.id}">
+    <li class="satchel__line${countable ? "" : " is-dim"}${moved ? " is-moved" : ""}" data-item-id="${item.id}">
       ${thumb}
       <div class="satchel__line-body">
         <div class="satchel__line-name">${esc(item.card_name)}</div>
@@ -1052,7 +1055,7 @@ function cartLineHTML(item, dupes) {
         <span class="satchel__qty-num">${item.quantity}</span>
         <button class="satchel__step" type="button" data-act="inc" aria-label="Increase quantity of ${esc(item.card_name)}"><svg class="ico"><use href="#i-plus" /></svg></button>
       </div>
-      <div class="satchel__line-price">${money(cartLineTotal(item))}</div>
+      <div class="satchel__line-price">${wasTag}${money(cartLineTotal(item))}</div>
       ${link}
       <button class="satchel__remove" type="button" data-act="remove" aria-label="Remove ${esc(item.card_name)} from the satchel"><svg class="ico"><use href="#i-trash" /></svg></button>
     </li>`;
@@ -1066,6 +1069,7 @@ function renderCart() {
     els.cartAlerts.hidden = true;
     els.cartTotal.textContent = money(0);
     els.cartExcluded.hidden = true;
+    els.cartLive.textContent = "Satchel empty. Grand total S$0.00";
     return;
   }
   const dupes = duplicateCartCardKeys();
@@ -1093,6 +1097,7 @@ function renderCart() {
       </section>`;
   }).join("");
   els.cartTotal.textContent = money(total);
+  els.cartLive.textContent = "Grand total " + els.cartTotal.textContent;
   els.cartExcluded.hidden = excluded === 0;
   els.cartExcluded.textContent = excluded
     ? `${excluded} line${excluded === 1 ? "" : "s"} excluded (out of stock or unavailable)`
@@ -1111,7 +1116,7 @@ async function loadCart() {
     const data = await (await fetch("/api/cart")).json();
     state.cart.items = data.items || [];
   } catch {
-    state.cart.items = [];
+    toast({ type: "error", title: "Could not load the satchel", msg: "Showing the last known basket." });
   }
   renderCart();
 }
@@ -1286,10 +1291,16 @@ function reconcileCart(event, stats) {
       line.offer_fetched_at = match.fetched_at || line.offer_fetched_at;
       line.status = "ok";
       line.last_checked_at = Date.now() / 1000;
-      if (oldPrice !== Number(match.price_sgd)) stats.changed += 1;
+      if (oldPrice !== Number(match.price_sgd)) {
+        stats.changed += 1;
+        line.was_price_sgd = oldPrice;
+      } else {
+        delete line.was_price_sgd;
+      }
     } else {
       line.status = "unavailable";
       line.last_checked_at = Date.now() / 1000;
+      delete line.was_price_sgd;
       stats.unavailable += 1;
     }
     pushCartRefresh(line);
