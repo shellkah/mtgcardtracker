@@ -154,11 +154,12 @@ hand-authored. See the design spec and plan under `docs/superpowers/`.
 These were triaged by the final whole-branch review as follow-up work rather
 than merge blockers.
 
-- **Politeness config is not wired.** `requests_per_second` in
-  `config/stores.yaml` is currently unread, per-store `concurrency` is not
-  plumbed to real adapters (they always get the default), and there is no rate
-  limiter or retry/backoff. Fine for one store with a 6h cache; needed before
-  adding many stores.
+- **Politeness.** Each store's `requests_per_second` is enforced by a
+  thread-safe rate limiter, and transient failures (HTTP `429`, `503`, and
+  network/timeout errors) are retried up to three times with exponential
+  backoff and jitter, honouring `Retry-After`. A Cloudflare challenge is named
+  in the resulting store error. Per-store `concurrency` is still unused, and
+  there is no aggregate cross-store request cap.
 - **Per-run client/resolver construction.** Every search builds a fresh
   `HttpxClient` and `SetResolver`, re-fetching Scryfall's `/sets` per store, and
   never closes the httpx clients. Should become app-lifetime singletons closed
