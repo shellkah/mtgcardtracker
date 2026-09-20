@@ -128,6 +128,9 @@ class ShopifyAdapter:
                 url=absolute,
                 printing_hint=printing_hint,
                 image_url=image_url,
+                variant_id=(
+                    str(variant["id"]) if variant.get("id") is not None else None
+                ),
             ))
         return offers
 

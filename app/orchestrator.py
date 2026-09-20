@@ -32,6 +32,7 @@ def _offer_from_dict(data: dict) -> Offer:
         url=data["url"],
         printing_hint=data.get("printing_hint"),
         image_url=data.get("image_url"),
+        variant_id=data.get("variant_id"),
     )
     fetched_at = data.get("fetched_at")
     if fetched_at is not None:

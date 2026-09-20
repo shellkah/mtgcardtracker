@@ -93,6 +93,8 @@ def test_search_maps_real_variants_to_offers():
     assert nm.url.startswith(
         "https://www.greyogregames.com/products/sol-ring-2467-secret-lair-drop-series"
     )
+    # the .js fixture's "Near Mint" variant is id 41984399442000
+    assert nm.variant_id == "41984399442000"
 
     foil = next(o for o in chosen if o.condition == "NM" and o.finish == "foil")
     assert foil.price_sgd == Decimal("15.25")

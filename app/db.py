@@ -50,7 +50,7 @@ CREATE TABLE IF NOT EXISTS cart_items (
 # older row deserialises cleanly and silently misses any newly added field
 # (image_url, for one). Stamping the version makes those rows a cache miss and
 # they get refetched instead of serving incomplete offers until the TTL expires.
-CACHE_VERSION = 2
+CACHE_VERSION = 3
 
 CART_FIELDS = (
     "id", "identity_key", "card_key", "card_name", "set_code",

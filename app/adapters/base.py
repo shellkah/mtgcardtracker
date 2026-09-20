@@ -41,6 +41,7 @@ class Offer:
     url: str
     printing_hint: str | None = None
     image_url: str | None = None
+    variant_id: str | None = None
     fetched_at: datetime = field(default_factory=lambda: datetime.now(timezone.utc))
 
     def to_dict(self) -> dict:
@@ -56,6 +57,7 @@ class Offer:
             "url": self.url,
             "printing_hint": self.printing_hint,
             "image_url": self.image_url,
+            "variant_id": self.variant_id,
             "fetched_at": self.fetched_at.isoformat(),
         }
 
