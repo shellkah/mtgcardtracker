@@ -47,6 +47,7 @@ class CartOffer(BaseModel):
     store_name: str
     title: str
     url: str
+    variant_id: str | None = None
     price_sgd: str
     currency: str = "SGD"
     condition: str | None = None
@@ -71,6 +72,7 @@ class RefreshItemRequest(BaseModel):
     price_sgd: str | None = None
     condition: str | None = None
     finish: str | None = None
+    variant_id: str | None = None
     in_stock: bool | None = None
     offer_fetched_at: str | None = None
     last_checked_at: float | None = None
@@ -183,6 +185,8 @@ def create_app(config_path: str = "config/stores.yaml", db_path: str = "mtgcardt
                 in_stock=1 if request.in_stock else 0,
                 offer_fetched_at=request.offer_fetched_at,
             )
+            if request.variant_id is not None:
+                fields["variant_id"] = request.variant_id
         item = db.update_cart_item(item_id, **fields)
         if item is None:
             raise HTTPException(status_code=404, detail="Not found")

@@ -81,6 +81,7 @@ CART_PAYLOAD = {
               "title": "Sol Ring [LTC]", "url": "https://example.test/p/sol-ring",
               "price_sgd": "4.50", "currency": "SGD", "condition": "NM",
               "finish": "nonfoil", "in_stock": True, "printing_hint": "ltc:409",
+              "variant_id": "41984399442000",
               "fetched_at": "2026-09-20T00:00:00+00:00"},
 }
 
@@ -100,6 +101,7 @@ def test_cart_roundtrip(tmp_path):
     assert item["quantity"] == 2
     assert item["price_sgd"] == "4.50"
     assert item["card_key"] == "ltc:409"
+    assert item["variant_id"] == "41984399442000"
 
     patched = client.patch(f"/api/cart/{created['id']}", json={"quantity": 3}).json()
     assert patched["quantity"] == 3
@@ -175,3 +177,31 @@ def test_cart_refresh_builds_run(tmp_path, monkeypatch):
         with client.stream("GET", f"/api/runs/{data['run_id']}/stream") as response:
             body = "".join(response.iter_text())
     assert '"type": "done"' in body
+
+
+def test_cart_refresh_updates_variant_id_when_present(tmp_path):
+    client = _client(tmp_path)
+    item_id = client.post("/api/cart", json=CART_PAYLOAD).json()["id"]
+
+    fresh = client.patch(
+        f"/api/cart/{item_id}/refresh",
+        json={"status": "ok", "price_sgd": "5.00", "condition": "NM",
+              "finish": "nonfoil", "in_stock": True,
+              "offer_fetched_at": "2026-09-21T00:00:00+00:00",
+              "last_checked_at": 456.0, "variant_id": "999"},
+    ).json()
+    assert fresh["variant_id"] == "999"
+
+
+def test_cart_refresh_without_variant_id_keeps_stored_one(tmp_path):
+    client = _client(tmp_path)
+    item_id = client.post("/api/cart", json=CART_PAYLOAD).json()["id"]
+
+    fresh = client.patch(
+        f"/api/cart/{item_id}/refresh",
+        json={"status": "ok", "price_sgd": "5.00", "condition": "NM",
+              "finish": "nonfoil", "in_stock": True,
+              "offer_fetched_at": "2026-09-21T00:00:00+00:00",
+              "last_checked_at": 456.0},
+    ).json()
+    assert fresh["variant_id"] == "41984399442000"
