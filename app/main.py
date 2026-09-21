@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from pathlib import Path
 
 from fastapi import FastAPI, HTTPException
@@ -84,6 +85,10 @@ def create_app(config_path: str = "config/stores.yaml", db_path: str = "mtgcardt
     db = Database(db_path)
     db.init_schema()
     registry = RunRegistry()
+
+    @app.get("/healthz")
+    def healthz():
+        return {"status": "ok"}
 
     @app.get("/api/stores")
     def stores():
@@ -241,4 +246,7 @@ def create_app(config_path: str = "config/stores.yaml", db_path: str = "mtgcardt
     return app
 
 
-app = create_app()
+app = create_app(
+    config_path=os.environ.get("MTG_CONFIG_PATH", "config/stores.yaml"),
+    db_path=os.environ.get("MTG_DB_PATH", "mtgcardtracker.db"),
+)
