@@ -1,0 +1,24 @@
+services:
+  mtgcardtracker:
+    image: ghcr.io/shellkah/mtgcardtracker:${MTG_TAG:-latest}
+    # build: .            # uncomment to build locally instead of pulling
+    container_name: mtgcardtracker
+    restart: unless-stopped
+    environment:
+      MTG_DB_PATH: /data/mtgcardtracker.db
+      MTG_CONFIG_PATH: /app/config/stores.yaml
+    volumes:
+      - mtg-data:/data
+      # - ./stores.yaml:/app/config/stores.yaml:ro   # custom store config
+    expose:
+      - "8000"
+    networks:
+      - proxy
+
+networks:
+  proxy:
+    external: true
+    name: ${PROXY_NETWORK:-proxy}
+
+volumes:
+  mtg-data:
