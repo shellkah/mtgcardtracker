@@ -44,6 +44,76 @@ in the top bar. It groups your saved offers by store, totals them (SGD), and can
 re-check their prices and stock on demand. There is no checkout; the satchel is
 a saved basket you buy from manually.
 
+## Deploy with Docker
+
+The image is published to GitHub Container Registry and runs the API and
+frontend in one container. It is designed to sit behind an existing nginx /
+Nginx Proxy Manager (NPM) reverse proxy on a Docker Compose server and needs no
+host port.
+
+### Prerequisites
+
+- Docker Engine with the Compose plugin.
+- A running nginx/NPM proxy that shares a Docker network with your apps.
+- The name of that network (`docker network ls`).
+
+### Run
+
+1. Copy `compose.yaml` and `.env.example` (renamed to `.env`) onto the server.
+2. Edit `.env`:
+   - `PROXY_NETWORK` — the external network your proxy uses.
+   - `MTG_TAG` — pin a release (e.g. `0.1.0`) or leave `latest`.
+3. Start it:
+
+   ```bash
+   docker compose up -d
+   ```
+
+4. In nginx/NPM, create a proxy host forwarding to **Hostname**
+   `mtgcardtracker`, **Port** `8000`, **Scheme** `http`. The proxy and the app
+   must both be attached to `PROXY_NETWORK`.
+
+### Data and configuration
+
+- All state (SQLite cache, saved lists, the Satchel) lives in the named volume
+  `mtg-data` at `/data`. `docker compose down` keeps it; `docker compose down -v`
+  deletes it.
+- `config/stores.yaml` is baked into the image. To customise stores, uncomment
+  the volume line in `compose.yaml` and mount your own file read-only:
+
+  ```yaml
+  volumes:
+    - ./stores.yaml:/app/config/stores.yaml:ro
+  ```
+
+  The mounted file must be readable by uid `1000` (the container's `app` user).
+
+### Upgrade and rollback
+
+Set `MTG_TAG` to the release you want, then:
+
+```bash
+docker compose pull && docker compose up -d
+```
+
+Rolling back uses the same commands with an earlier tag.
+
+### Package visibility
+
+GHCR packages are private by default. Either set the package visibility to
+public in the repository's package settings, or authenticate the server once:
+
+```bash
+echo "$GHCR_TOKEN" | docker login ghcr.io -u <username> --password-stdin
+```
+
+### Environment variables
+
+| Variable | Default | Purpose |
+|---|---|---|
+| `MTG_DB_PATH` | `mtgcardtracker.db` | SQLite file path. Set to `/data/mtgcardtracker.db` in the image. |
+| `MTG_CONFIG_PATH` | `config/stores.yaml` | Store config path. Set to `/app/config/stores.yaml` in the image. |
+
 ## Card list formats
 
 - **Moxfield CSV** (`Count, Name, Edition, Collector Number, Foil, Condition, …`)
