@@ -7,7 +7,7 @@ from pathlib import Path
 import yaml
 
 from app.adapters.base import Adapter
-from app.politeness import make_store_client
+from app.politeness import RetryPolicy, make_store_client
 
 
 @dataclass(frozen=True)
@@ -19,6 +19,7 @@ class StoreConfig:
     base_url: str
     enabled: bool = True
     requests_per_second: float = 1.0
+    attempts: int = 3
     concurrency: int = 2
     needs_browser: bool = False
     options: dict = field(default_factory=dict)
@@ -36,6 +37,7 @@ def load_config(path: str | Path) -> list[StoreConfig]:
             base_url=item["base_url"].rstrip("/"),
             enabled=item.get("enabled", True),
             requests_per_second=item.get("requests_per_second", 1.0),
+            attempts=item.get("attempts", 3),
             concurrency=item.get("concurrency", 2),
             needs_browser=item.get("needs_browser", False),
             options=item.get("options", {}),
@@ -57,7 +59,7 @@ def build_adapters(configs, http, browser=None) -> list[Adapter]:
         if not cfg.enabled:
             continue
         cls = _import_class(cfg.adapter_path)
-        client = make_store_client(http, cfg)
+        client = make_store_client(http, cfg, policy=RetryPolicy(attempts=cfg.attempts))
         if cfg.needs_browser:
             adapters.append(cls(cfg, client, browser))
         else:

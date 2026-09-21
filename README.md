@@ -154,12 +154,15 @@ hand-authored. See the design spec and plan under `docs/superpowers/`.
 These were triaged by the final whole-branch review as follow-up work rather
 than merge blockers.
 
-- **Politeness.** Each store's `requests_per_second` is enforced by a
-  thread-safe rate limiter, and transient failures (HTTP `429`, `503`, and
-  network/timeout errors) are retried up to three times with exponential
-  backoff and jitter, honouring `Retry-After`. A Cloudflare challenge is named
-  in the resulting store error. Per-store `concurrency` is still unused, and
-  there is no aggregate cross-store request cap.
+- **Politeness.** Per-store pacing is currently **disabled**
+  (`requests_per_second: 0`) because throttling did not stop stores from
+  returning HTTP `429`. Retry behaviour is configured per store via `attempts`
+  (total attempts, including the first): every store ships with `attempts: 1`,
+  so there are no retries and transient failures surface immediately. Raising
+  `attempts` re-enables bounded retry with exponential backoff, jitter, and
+  `Retry-After` support. A Cloudflare challenge is named in the resulting store
+  error. Per-store `concurrency` is still unused, and there is no aggregate
+  cross-store request cap.
 - **Per-run client/resolver construction.** Every search builds a fresh
   `HttpxClient` and `SetResolver`, re-fetching Scryfall's `/sets` per store, and
   never closes the httpx clients. Should become app-lifetime singletons closed

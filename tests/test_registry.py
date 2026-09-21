@@ -15,7 +15,8 @@ def test_load_config_parses_stores():
     configs = load_config(Path("config/stores.yaml"))
     grey = next(c for c in configs if c.id == "greyogre")
     assert grey.zone == "singapore"
-    assert grey.requests_per_second == 1.0
+    assert grey.requests_per_second == 0
+    assert grey.attempts == 1
     assert grey.needs_browser is False
 
 
@@ -48,6 +49,11 @@ def test_build_adapters_wraps_client_per_store():
     client = adapters[0]._http
     assert isinstance(client, RetryingHttpClient)
     assert client.rate_per_second == 0.5
+
+
+def test_build_adapters_uses_configured_attempts():
+    adapters = build_adapters([_config(attempts=1)], FakeHttp())
+    assert adapters[0]._http._policy.attempts == 1
 
 
 def test_make_store_client_reflects_configured_rate():
