@@ -7,6 +7,9 @@ services:
     environment:
       MTG_DB_PATH: /data/mtgcardtracker.db
       MTG_CONFIG_PATH: /app/config/stores.yaml
+      # Byparr solver on the shared `proxy` network. Run Byparr's own compose
+      # (see README) attached to the same network; it resolves as `byparr`.
+      MTG_BYPARR_URL: ${MTG_BYPARR_URL:-http://byparr:8191}
     volumes:
       - mtg-data:/data
       # - ./stores.yaml:/app/config/stores.yaml:ro   # custom store config

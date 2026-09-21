@@ -120,6 +120,7 @@ echo "$GHCR_TOKEN" | docker login ghcr.io -u <username> --password-stdin
 |---|---|---|
 | `MTG_DB_PATH` | `mtgcardtracker.db` | SQLite file path. Set to `/data/mtgcardtracker.db` in the image. |
 | `MTG_CONFIG_PATH` | `config/stores.yaml` | Store config path. Set to `/app/config/stores.yaml` in the image. |
+| `MTG_BYPARR_URL` | `http://127.0.0.1:8191` | Byparr solver used to retry challenged requests. Set to `http://byparr:8191` in the image. |
 
 ## Card list formats
 
@@ -159,7 +160,9 @@ app/
   parsing.py         Moxfield / ManaBox / plain-text parsing
   db.py              SQLite cache + saved lists
   cart.py            cart domain helpers (identity, grouping, totals)
-  http.py            HttpClient abstraction (identifying User-Agent)
+  http.py            HttpClient abstraction (identifying User-Agent) + challenge fallback
+  curlclient.py      curl_cffi browser-fingerprint HttpClient (primary)
+  byparr.py          Byparr/FlareSolverr-backed HttpClient (anti-bot solver)
   sets.py            Scryfall set-name -> set-code resolver
   scryfall.py        best-effort printing validation (currently dormant)
   filters.py         condition/finish/stock filtering (canonical)
@@ -226,6 +229,66 @@ The adapter now:
 Fixtures under `tests/fixtures/greyogre/` are recorded from the live store, not
 hand-authored. See the design spec and plan under `docs/superpowers/`.
 
+## Anti-bot handling (curl_cffi + Byparr)
+
+Stores answer the app's plain `httpx` requests with a Cloudflare challenge
+(`HTTP 429`, `cf-mitigated: challenge`) or a `403`. Two things deal with this:
+
+1. **`curl_cffi` is the primary client.** It replays a real Chrome TLS/JA3
+   fingerprint and header set, which clears most Cloudflare fingerprint
+   challenges in well under a second. (Measured: `httpx` → `429` challenge,
+   `curl_cffi` → `200` in ~0.5s.)
+2. **Byparr is the last-resort fallback** — a
+   [Byparr](https://github.com/ThePhaseless/Byparr) service drives a full
+   headless browser when fingerprint impersonation still fails. It is slow
+   (~5s per request, because Byparr launches a fresh browser every time and
+   has no session reuse), so it should fire rarely.
+
+The fallback is **automatic and per-request**: a request is retried through
+Byparr only when `curl_cffi` comes back challenged / `403` / `429` / `503`.
+There is no per-store flag to maintain and no browser cost unless the
+fingerprint client is actually blocked.
+
+> Note: to pass Cloudflare, `curl_cffi` presents a browser `User-Agent`. The
+> app therefore no longer sends its own identifying `User-Agent` on store
+> requests.
+
+### Run Byparr locally
+
+Byparr is deployed from its own repository, not vendored here:
+
+```bash
+git clone https://github.com/ThePhaseless/Byparr.git ~/projects/byparr
+cd ~/projects/byparr
+docker compose up -d            # pulls ghcr.io/thephaseless/byparr:latest
+```
+
+It listens on port `8191`. The app reads the solver URL from `MTG_BYPARR_URL`
+(default `http://127.0.0.1:8191`), so a locally-run app needs no configuration.
+
+### Run Byparr for the Docker deployment
+
+The app container reaches Byparr by service name over the shared `proxy`
+network, so Byparr's compose must join that network too (and should not publish
+a host port):
+
+```yaml
+services:
+  byparr:
+    image: ghcr.io/thephaseless/byparr:latest
+    restart: unless-stopped
+    shm_size: 512mb
+    networks: [proxy]
+
+networks:
+  proxy:
+    external: true
+```
+
+`MTG_BYPARR_URL` in `.env` then points at `http://byparr:8191`. The solver does
+not guarantee a bypass — see the warning in Byparr's own README. If Byparr is
+unreachable, challenged requests surface as a store error, exactly as before.
+
 ## Known limitations / follow-ups
 
 These were triaged by the final whole-branch review as follow-up work rather
@@ -276,5 +339,5 @@ than merge blockers.
 - Response cache TTL defaults to 6 hours (`force refresh` bypasses it).
 - No price history, no accounts. A cart (the Satchel) saves offers for manual
   purchase, but there is no checkout or order automation.
-- No proxy rotation or anti-bot evasion — requests are low-rate and use an
-  identifying `User-Agent`.
+- Requests use a browser TLS fingerprint (`curl_cffi`); a request that is still
+  challenged is retried through Byparr. There is no proxy rotation.

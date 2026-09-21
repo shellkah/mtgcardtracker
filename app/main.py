@@ -13,15 +13,31 @@ from app.adapters.base import CardRequest
 from app.adapters.registry import build_adapters, load_config
 from app.cart import checkout_url, group_by_store, line_from_offer
 from app.db import Database
-from app.http import HttpxClient
+from app.byparr import ByparrClient
+from app.curlclient import CurlCffiClient
+from app.http import FallbackHttpClient
 from app.parsing import detect_format, parse_cards
 from app.runs import RunRegistry
 
 WEB_DIR = Path(__file__).resolve().parent.parent / "web"
 
+#: Byparr solver URL. Override when the solver lives on another host
+#: (e.g. ``http://byparr:8191`` inside the Docker network). Set empty to
+#: disable the browser fallback entirely.
+BYPARR_URL = os.environ.get("MTG_BYPARR_URL", "http://127.0.0.1:8191")
 
-def _make_http() -> HttpxClient:
-    return HttpxClient("mtgcardtracker/0.1 (+local tool)")
+
+def _make_http():
+    """Browser-fingerprint client first, Byparr browser as the last resort.
+
+    curl_cffi passes most Cloudflare fingerprint challenges in well under a
+    second; Byparr only runs when that still fails, so the ~5s browser cost is
+    paid rarely rather than on every request.
+    """
+    primary = CurlCffiClient(impersonate="chrome")
+    if not BYPARR_URL:
+        return primary
+    return FallbackHttpClient(primary, ByparrClient(BYPARR_URL))
 
 
 class RunRequest(BaseModel):
