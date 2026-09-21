@@ -335,7 +335,7 @@ def build_adapters(configs, http, browser=None) -> list[Adapter]:
     return adapters
 ```
 
-- [ ] **Step 5: Create `app/adapters/greyogre.py` with a non-functional stub** so the import test passes (filled in Task 7)
+- [ ] **Step 5: Create `app/adapters/greyogre.py` with a non-functional stub** so the import test passes (filled in Task 8)
 
 ```python
 from __future__ import annotations
@@ -1021,22 +1021,196 @@ git commit -m "feat: shopify listing parsing helpers"
 
 ---
 
-### Task 7: ShopifyAdapter base and Grey Ogre adapter (with contract test)
+### Task 7: Scryfall set resolver and printing-hint normalization
+
+**Files:**
+- Create: `app/sets.py`
+- Create: `tests/test_sets.py`
+- Modify: `app/adapters/shopify_parse.py`
+- Modify: `tests/test_shopify_parse.py`
+
+**Interfaces:**
+- Consumes: `HttpClient` (Task 5); `parse_printing_hint` (Task 6).
+- Produces:
+  - `normalize_set_name(name: str) -> str`
+  - `SetResolver(http)` with `code_for(set_name: str) -> str | None` — fetches `https://api.scryfall.com/sets` once per instance, maps a normalized Scryfall set name to its lowercase code, and returns `None` for unknown names or on any HTTP failure.
+  - `parse_printing_hint(text: str, set_code_lookup: Callable[[str], str | None] | None = None) -> str | None` — with a lookup, resolves the bracket text to a code (returning `None` when it cannot be resolved); without one, preserves Task 6 behavior (raw lowercased bracket as the set id).
+
+**Why:** real Shopify titles put the full set name in brackets (e.g. `[The Lord of the Rings: Tales of Middle-Earth Commander]`), while Moxfield/ManaBox exports carry set codes (`LTC`). Resolving names to codes is what makes exact-printing matching (Task 9) work.
+
+- [ ] **Step 1: Write the failing test** — `tests/test_sets.py`
+
+```python
+from app.sets import SetResolver, normalize_set_name
+
+
+class FakeHttp:
+    def __init__(self, payload=None, raise_error=False):
+        self._payload = payload or {}
+        self._raise = raise_error
+        self.calls = 0
+
+    def get_json(self, url, params=None):
+        self.calls += 1
+        if self._raise:
+            raise RuntimeError("boom")
+        return self._payload
+
+    def get_text(self, url, params=None):
+        return ""
+
+
+SETS = {"data": [{"code": "LTC", "name": "The Lord of the Rings: Tales of Middle-Earth Commander"}]}
+
+
+def test_normalize_set_name_collapses_whitespace_and_case():
+    assert normalize_set_name("  The   Lord of the Rings ") == "the lord of the rings"
+
+
+def test_code_for_resolves_scryfall_name_to_lowercase_code():
+    resolver = SetResolver(FakeHttp(SETS))
+    assert resolver.code_for("The Lord of the Rings: Tales of Middle-Earth Commander") == "ltc"
+
+
+def test_code_for_returns_none_for_unknown_name():
+    resolver = SetResolver(FakeHttp(SETS))
+    assert resolver.code_for("Some Unknown Set") is None
+
+
+def test_code_for_returns_none_on_http_error():
+    resolver = SetResolver(FakeHttp(raise_error=True))
+    assert resolver.code_for("The Lord of the Rings: Tales of Middle-Earth Commander") is None
+
+
+def test_sets_are_fetched_once():
+    http = FakeHttp(SETS)
+    resolver = SetResolver(http)
+    resolver.code_for("The Lord of the Rings: Tales of Middle-Earth Commander")
+    resolver.code_for("The Lord of the Rings: Tales of Middle-Earth Commander")
+    assert http.calls == 1
+```
+
+- [ ] **Step 2: Run test to verify it fails**
+
+Run: `pytest tests/test_sets.py -v`
+Expected: FAIL with `ModuleNotFoundError: No module named 'app.sets'`.
+
+- [ ] **Step 3: Write minimal implementation** — `app/sets.py`
+
+```python
+from __future__ import annotations
+
+SCYRSFALL_SETS_URL = "https://api.scryfall.com/sets"
+
+
+def normalize_set_name(name: str) -> str:
+    return " ".join(name.strip().lower().split())
+
+
+class SetResolver:
+    """Maps Scryfall set names to set codes.
+
+    Fetches the full set list once per instance and caches the name -> code
+    mapping in memory. HTTP failures degrade to an empty map (no matches)
+    rather than raising, so a Scryfall outage cannot break a store lookup.
+    """
+
+    def __init__(self, http):
+        self._http = http
+        self._by_name: dict[str, str] | None = None
+
+    def _load(self) -> dict[str, str]:
+        if self._by_name is None:
+            try:
+                payload = self._http.get_json(SCYRSFALL_SETS_URL)
+            except Exception:
+                self._by_name = {}
+            else:
+                mapping: dict[str, str] = {}
+                for item in payload.get("data", []):
+                    name = item.get("name")
+                    code = item.get("code")
+                    if name and code:
+                        mapping[normalize_set_name(name)] = str(code).lower()
+                self._by_name = mapping
+        return self._by_name
+
+    def code_for(self, set_name: str) -> str | None:
+        return self._load().get(normalize_set_name(set_name))
+```
+
+- [ ] **Step 4: Add lookup tests to `tests/test_shopify_parse.py`**
+
+```python
+def test_parse_printing_hint_resolves_set_name_with_lookup():
+    lookup = {"the lord of the rings: tales of middle-earth commander": "ltc"}.get
+    assert parse_printing_hint(
+        "Sol Ring (409) [The Lord of the Rings: Tales of Middle-Earth Commander]", lookup
+    ) == "ltc:409"
+
+
+def test_parse_printing_hint_returns_none_when_lookup_fails():
+    assert parse_printing_hint("Sol Ring (409) [Unknown Set]", lambda name: None) is None
+```
+
+- [ ] **Step 5: Modify `parse_printing_hint` in `app/adapters/shopify_parse.py`** (replace the existing function; the default keeps Task 6 behavior)
+
+```python
+def parse_printing_hint(text: str, set_code_lookup=None) -> str | None:
+    number = _NUMBER_RE.search(text)
+    set_match = _SET_RE.search(text)
+    if not (number and set_match):
+        return None
+    raw = set_match.group(1).strip()
+    if set_code_lookup is not None:
+        code = set_code_lookup(raw)
+        if not code:
+            return None
+        code = code.lower()
+    else:
+        code = raw.lower()
+    return f"{code}:{number.group(1).strip().lower()}"
+```
+
+- [ ] **Step 6: Run tests to verify they pass**
+
+Run: `pytest tests/test_sets.py tests/test_shopify_parse.py -v`
+Expected: PASS (9 passed).
+
+- [ ] **Step 7: Run the whole suite and commit**
+
+Run: `.venv/bin/pytest -v`
+
+```bash
+git add app/sets.py tests/test_sets.py app/adapters/shopify_parse.py tests/test_shopify_parse.py
+git commit -m "feat: scryfall set-name resolver and printing hint normalization"
+```
+
+---
+
+### Task 8: ShopifyAdapter base and Grey Ogre adapter (with contract test)
 
 **Files:**
 - Create: `app/adapters/shopify.py`
 - Modify: `app/adapters/greyogre.py`
 - Create: `tests/fixtures/greyogre/suggest_sol_ring.json`
+- Create: `tests/fixtures/greyogre/scryfall_sets.json`
 - Create: `tests/test_shopify_adapter.py`
 
 **Interfaces:**
-- Consumes: `StoreConfig` (Task 2), `CardRequest`, `Offer`, `AdapterError` (Task 1), `HttpClient` (Task 5), parsing helpers (Task 6).
+- Consumes: `StoreConfig` (Task 2), `CardRequest`, `Offer`, `AdapterError` (Task 1), `HttpClient` (Task 5), parsing helpers (Task 6), `SetResolver` (Task 7).
 - Produces:
-  - `ShopifyAdapter(config, http)` with class/instance attrs `store_id, store_name, zone, needs_browser=False` and:
+  - `ShopifyAdapter(config, http, sets=None)` with class/instance attrs `store_id, store_name, zone, needs_browser=False` and:
     - `search(card: CardRequest) -> list[Offer]`
     - `fetch_products(query: str) -> list[dict]` (calls `{base_url}/search/suggest.json`)
     - `_product_to_offers(product: dict) -> list[Offer]`
   - `GreyOgreAdapter(ShopifyAdapter)` — subclass with `store_id`/`store_name`/`zone` from config; equals base behavior for v1.
+
+When `sets` is omitted, the adapter builds its own `SetResolver(http)` so it can turn bracketed set names into codes for `printing_hint`.
+
+**The adapter does not filter by printing.** It returns offers for every name-matching product, each carrying its own `printing_hint`; dropping offers from other printings is `matching.py`'s job (Task 9). The fixture deliberately contains two printings so the contract test pins that behavior.
+
+**Post-implementation correction (from the final whole-branch review, verified live).** The real Grey Ogre `search/suggest.json` returns `variants: []` — variant data is not available from the suggest endpoint. The correct source is `GET {base_url}/products/{handle}.js`, whose `variants[]` carry `title` = condition (optionally suffixed ` Foil`), `price` = **integer cents**, and `available` = bool. The adapter therefore fetches `.js` per *name-matching* product (never for non-matches, bounding requests) and converts cents to SGD (`Decimal(price) / 100`). Test fixtures are now recorded from the live store rather than synthetic. The original `search/suggest.json`-variants design in this task was the final review's Critical finding C1.
 
 - [ ] **Step 1: Create fixture** — `tests/fixtures/greyogre/suggest_sol_ring.json`
 
@@ -1047,8 +1221,8 @@ git commit -m "feat: shopify listing parsing helpers"
       "products": [
         {
           "title": "Sol Ring (409) [The Lord of the Rings: Tales of Middle-Earth Commander]",
-          "handle": "sol-ring-409-ltr-commander",
-          "url": "/products/sol-ring-409-ltr-commander",
+          "handle": "sol-ring-409-ltc-commander",
+          "url": "/products/sol-ring-409-ltc-commander",
           "available": true,
           "variants": [
             {"title": "Near Mint", "price": "4.50", "available": true},
@@ -1058,8 +1232,8 @@ git commit -m "feat: shopify listing parsing helpers"
         },
         {
           "title": "Sol Ring (410) [The Lord of the Rings: Tales of Middle-Earth Commander]",
-          "handle": "sol-ring-410-ltr-commander",
-          "url": "/products/sol-ring-410-ltr-commander",
+          "handle": "sol-ring-410-ltc-commander",
+          "url": "/products/sol-ring-410-ltc-commander",
           "available": true,
           "variants": [
             {"title": "Near Mint", "price": "5.00", "available": true}
@@ -1068,6 +1242,19 @@ git commit -m "feat: shopify listing parsing helpers"
       ]
     }
   }
+}
+```
+
+Also create `tests/fixtures/greyogre/scryfall_sets.json` (used by the test's fake HTTP to resolve the bracketed set name to a code):
+
+```json
+{
+  "data": [
+    {
+      "code": "LTC",
+      "name": "The Lord of the Rings: Tales of Middle-Earth Commander"
+    }
+  ]
 }
 ```
 
@@ -1082,17 +1269,25 @@ from app.adapters.registry import StoreConfig
 from app.adapters.shopify import ShopifyAdapter
 from app.adapters.greyogre import GreyOgreAdapter
 
-FIXTURE = Path(__file__).parent / "fixtures" / "greyogre" / "suggest_sol_ring.json"
+FIXTURES = Path(__file__).parent / "fixtures" / "greyogre"
+PRODUCTS = FIXTURES / "suggest_sol_ring.json"
+SETS = FIXTURES / "scryfall_sets.json"
 
 
 class FixtureHttp:
-    def __init__(self, payload):
-        self._payload = payload
+    """Fake client: serves the product payload for search calls and the set
+    list for Scryfall /sets calls. Records product calls only."""
+
+    def __init__(self, products):
+        self._products = products
+        self._sets = json.loads(SETS.read_text())
         self.calls = []
 
     def get_json(self, url, params=None):
+        if url.endswith("/sets"):
+            return self._sets
         self.calls.append((url, params))
-        return self._payload
+        return self._products
 
     def get_text(self, url, params=None):
         return ""
@@ -1107,30 +1302,32 @@ def _config():
 
 
 def test_search_maps_variants_to_offers():
-    payload = json.loads(FIXTURE.read_text())
-    http = FixtureHttp(payload)
+    http = FixtureHttp(json.loads(PRODUCTS.read_text()))
     adapter = ShopifyAdapter(_config(), http)
     offers = adapter.search(CardRequest(name="Sol Ring", set_code="LTC", collector_number="409"))
 
-    assert len(offers) == 3
-    nm = offers[0]
+    assert len(offers) == 4
+    nm, foil, lp, other = offers
     assert nm.store_id == "greyogre"
     assert str(nm.price_sgd) == "4.50"
     assert nm.condition == "NM"
     assert nm.finish == "nonfoil"
     assert nm.in_stock is True
-    assert nm.url == "https://www.greyogregames.com/products/sol-ring-409-ltr-commander"
+    assert nm.url == "https://www.greyogregames.com/products/sol-ring-409-ltc-commander"
 
-    foil = offers[1]
     assert foil.finish == "foil"
     assert str(foil.price_sgd) == "9.00"
 
-    lp = offers[2]
     assert lp.condition == "LP"
     assert lp.in_stock is False
 
-    # printing hint recovered from the product title
-    assert nm.printing_hint == "ltr:409"
+    # bracketed set name resolved to a code via the Scryfall set resolver
+    assert nm.printing_hint == "ltc:409"
+
+    # offers from the other printing are returned unfiltered — matching.py (Task 9)
+    # is responsible for dropping them
+    assert other.printing_hint == "ltc:410"
+    assert str(other.price_sgd) == "5.00"
 
     # the search query was the card name
     assert http.calls[0][1]["q"] == "Sol Ring"
@@ -1163,6 +1360,7 @@ from app.adapters.shopify_parse import (
     parse_price,
     parse_printing_hint,
 )
+from app.sets import SetResolver
 
 
 class ShopifyAdapter:
@@ -1174,13 +1372,14 @@ class ShopifyAdapter:
 
     needs_browser = False
 
-    def __init__(self, config, http):
+    def __init__(self, config, http, sets=None):
         self.store_id = config.id
         self.store_name = config.name
         self.zone = config.zone
         self.base_url = config.base_url.rstrip("/")
         self._config = config
         self._http = http
+        self._sets = sets or SetResolver(http)
 
     @property
     def search_url(self) -> str:
@@ -1208,11 +1407,16 @@ class ShopifyAdapter:
         handle = product.get("handle", "")
         url = product.get("url") or f"/products/{handle}"
         absolute = urljoin(self.base_url + "/", url)
-        printing_hint = parse_printing_hint(title)
+        printing_hint = parse_printing_hint(title, self._sets.code_for)
         offers: list[Offer] = []
         for variant in product.get("variants", []):
             variant_title = variant.get("title", "")
             combined = f"{title} {variant_title}"
+            finish = parse_finish(combined)
+            if finish == "unknown":
+                # variant titles with no finish keyword (e.g. plain "Near Mint")
+                # are non-foil by card-store convention
+                finish = "nonfoil"
             offers.append(Offer(
                 store_id=self.store_id,
                 store_name=self.store_name,
@@ -1220,7 +1424,7 @@ class ShopifyAdapter:
                 price_sgd=parse_price(variant.get("price", "0")),
                 currency="SGD",
                 condition=parse_condition(combined),
-                finish=parse_finish(combined),
+                finish=finish,
                 in_stock=bool(variant.get("available", False)),
                 url=absolute,
                 printing_hint=printing_hint,
@@ -1264,7 +1468,7 @@ git commit -m "feat: shopify adapter base and grey ogre store"
 
 ---
 
-### Task 8: Matching rules
+### Task 9: Matching rules
 
 **Files:**
 - Create: `app/matching.py`
@@ -1420,7 +1624,7 @@ git commit -m "feat: card/offer matching rules"
 
 ---
 
-### Task 9: Scryfall validation client
+### Task 10: Scryfall validation client
 
 **Files:**
 - Create: `app/scryfall.py`
@@ -1531,14 +1735,14 @@ git commit -m "feat: best-effort scryfall validation client"
 
 ---
 
-### Task 10: Orchestrator (fan-out, cache, streaming events)
+### Task 11: Orchestrator (fan-out, cache, streaming events)
 
 **Files:**
 - Create: `app/orchestrator.py`
 - Create: `tests/test_orchestrator.py`
 
 **Interfaces:**
-- Consumes: `CardRequest`, `Offer`, `AdapterError` (Task 1), `Database` (Task 3), `match` (Task 8).
+- Consumes: `CardRequest`, `Offer`, `AdapterError` (Task 1), `Database` (Task 3), `match` (Task 9).
 - Produces: `async def run_search(cards, adapters, db, cache_ttl_seconds=21600, force_refresh=False) -> AsyncIterator[dict]`.
 
 Event shapes emitted (one `dict` per SSE `data:` line):
@@ -1747,7 +1951,7 @@ git commit -m "feat: async orchestrator with cache and streaming events"
 
 ---
 
-### Task 11: FastAPI app, run registry, and SSE endpoint
+### Task 12: FastAPI app, run registry, and SSE endpoint
 
 **Files:**
 - Create: `app/runs.py`
@@ -1755,7 +1959,7 @@ git commit -m "feat: async orchestrator with cache and streaming events"
 - Create: `tests/test_api.py`
 
 **Interfaces:**
-- Consumes: `load_config`, `build_adapters` (Task 2), `Database` (Task 3), `parse_cards` (Task 4), `HttpxClient` (Task 5), `run_search` (Task 10).
+- Consumes: `load_config`, `build_adapters` (Task 2), `Database` (Task 3), `parse_cards` (Task 4), `HttpxClient` (Task 5), `run_search` (Task 11).
 - Produces:
   - `RunRegistry` with `create(cards, adapters, db, force_refresh) -> str` (starts a background task and returns `run_id`), `get(run_id) -> Run | None`.
   - `Run` with `events: list[dict]`, `done: bool`, and `async def subscribe() -> AsyncIterator[dict]` (replays existing events, then yields new ones until done).
@@ -1829,13 +2033,18 @@ def test_run_stream_emits_done(tmp_path, monkeypatch):
     monkeypatch.setattr(main_module, "build_adapters", lambda configs, http: [FakeAdapter()])
     monkeypatch.setattr(main_module, "_make_http", lambda: FakeHttp())
     client = _client(tmp_path)
-    run = client.post(
-        "/api/runs",
-        json={"text": "1 Sol Ring", "store_ids": ["greyogre"], "force_refresh": True},
-    ).json()
-    assert run["card_count"] == 1
-    with client.stream("GET", f"/api/runs/{run['run_id']}/stream") as response:
-        body = "".join(response.iter_text())
+    # Keep one event loop alive for the background run task: production ASGI
+    # servers use a single persistent loop, and TestClient does too when used as
+    # a context manager. Without this the POST loop closes and the run task is
+    # torn down before the stream connects.
+    with client:
+        run = client.post(
+            "/api/runs",
+            json={"text": "1 Sol Ring", "store_ids": ["greyogre"], "force_refresh": True},
+        ).json()
+        assert run["card_count"] == 1
+        with client.stream("GET", f"/api/runs/{run['run_id']}/stream") as response:
+            body = "".join(response.iter_text())
     assert '"type": "done"' in body
 ```
 
@@ -1966,7 +2175,7 @@ def create_app(config_path: str = "config/stores.yaml", db_path: str = "mtgcardt
         }
 
     @app.post("/api/runs")
-    def create_run(request: RunRequest):
+    async def create_run(request: RunRequest):
         cards = parse_cards(request.text)
         if not cards:
             raise HTTPException(status_code=400, detail="No cards parsed from input")
@@ -2032,7 +2241,7 @@ git commit -m "feat: fastapi app with runs, sse stream, and saved lists"
 
 ---
 
-### Task 12: Frontend input screen
+### Task 13: Frontend input screen
 
 **Files:**
 - Create: `web/index.html`
@@ -2241,7 +2450,7 @@ git commit -m "feat: web ui input screen and streaming results"
 
 ---
 
-### Task 13: Condition/finish/stock filters and saved lists UI
+### Task 14: Condition/finish/stock filters and saved lists UI
 
 **Files:**
 - Modify: `web/index.html`
@@ -2427,7 +2636,7 @@ git commit -m "feat: condition/finish/stock filters and saved-lists ui"
 
 ---
 
-### Task 14: Developer CLI (`explore`, `scaffold`, `probe`, `validate`)
+### Task 15: Developer CLI (`explore`, `scaffold`, `probe`, `validate`)
 
 **Files:**
 - Create: `app/devtools.py`
@@ -2639,7 +2848,7 @@ git commit -m "feat: developer cli for adapter discovery and probing"
 
 This milestone is intentionally **not** a fixed task list because each store needs a live crawl before its adapter can be written. Repeat this procedure per store; each store is one task/PR with its own fixture and contract test.
 
-1. **Recon:** `python cli.py explore https://<store>` and inspect the dump. For Shopify stores, confirm `/search/suggest.json` returns the products/variants shape used in Task 7.
+1. **Recon:** `python cli.py explore https://<store>` and inspect the dump. For Shopify stores, confirm `/search/suggest.json` returns the products/variants shape used in Task 8.
 2. **Classify:**
    - Shopify -> add `<store>.py` with `class <Name>Adapter(ShopifyAdapter): ...` (usually empty; add overrides only for quirks like a different search URL, a currency toggle, or variant titles that don't encode conditions).
    - Custom -> implement the `Adapter` protocol directly. Use `app.http.HttpClient`; if the site is JS-rendered, set `needs_browser = True` and implement a `BrowserSession` wrapper (add it in `app/browser.py` with a Playwright `sync_playwright` context). Register the `browser` argument.
@@ -2648,12 +2857,12 @@ This milestone is intentionally **not** a fixed task list because each store nee
 5. **Enable** the store in `config/stores.yaml` (`enabled: true`) once its contract test passes.
 6. **Commit** the adapter, fixture, config change, and test together.
 
-Target order: Grey Ogre (done in Task 7) -> Games Haven -> Cards Citadel -> Hideout -> Card Arena -> Dueller's Point -> Agora Hobby (custom).
+Target order: Grey Ogre (done in Task 8) -> Games Haven -> Cards Citadel -> Hideout -> Card Arena -> Dueller's Point -> Agora Hobby (custom).
 
 ## Self-Review
 
-**Spec coverage:** stack (Tasks 1,5,11), goals (Tasks 4,7,10,12), non-goals honored (no price history, no cart, no evasion — enforced by Global Constraints), architecture (Tasks 1-11), recon table (Task 14 explore + Milestone 6), data model (Tasks 1,3,8), adapter interface (Tasks 1,2,7), stores.yaml (Task 2), input parsing incl. plain text (Task 4), orchestration/cache/politeness (Tasks 5,10), SSE UI (Tasks 11,12,13), saved lists (Tasks 3,11,13), testing incl. fixtures/live marker (Tasks 7,14, Milestone 6), CLI (Task 14), Scryfall (Task 9), milestones 1-7 (mapped in order).
+**Spec coverage:** stack (Tasks 1,5,12), goals (Tasks 4,8,11,13), non-goals honored (no price history, no cart, no evasion — enforced by Global Constraints), architecture (Tasks 1-12), recon table (Task 15 explore + Milestone 6), data model (Tasks 1,3,9), adapter interface (Tasks 1,2,8), stores.yaml (Task 2), input parsing incl. plain text (Task 4), orchestration/cache/politeness (Tasks 5,11), SSE UI (Tasks 12,13,14), saved lists (Tasks 3,12,14), testing incl. fixtures/live marker (Tasks 7,8,15, Milestone 6), CLI (Task 15), Scryfall (Tasks 7 set resolver, 10 validation client), milestones 1-7 (mapped in order).
 
 **Placeholder scan:** the only procedurally-generated content is Milestone 6, which is explicitly a repeatable recipe because it requires live recon — not a TBD in a fixed task. All fixed tasks contain real code.
 
-**Type consistency:** `CardRequest`/`Offer`/`AdapterError` defined in Task 1 are reused verbatim. `StoreConfig` fields match `config/stores.yaml`. `build_adapters(configs, http, browser=None)` is called consistently in Tasks 2, 11, 14. `match()` returns `MatchResult` with `to_dict()` used by the orchestrator. `run_search` signature matches its callers in `app/runs.py`. `Database` method names match all call sites. `detect_platform` return values match the tests.
+**Type consistency:** `CardRequest`/`Offer`/`AdapterError` defined in Task 1 are reused verbatim. `StoreConfig` fields match `config/stores.yaml`. `build_adapters(configs, http, browser=None)` is called consistently in Tasks 2, 12, 15. `match()` returns `MatchResult` with `to_dict()` used by the orchestrator. `run_search` signature matches its callers in `app/runs.py`. `Database` method names match all call sites. `detect_platform` return values match the tests.

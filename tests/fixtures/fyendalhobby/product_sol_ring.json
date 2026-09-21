@@ -1,0 +1,91 @@
+{
+  "id": 9345159823509,
+  "title": "Sol Ring",
+  "handle": "sol-ring",
+  "description": "",
+  "published_at": "2026-08-23T16:27:33+08:00",
+  "created_at": "2026-08-23T16:27:33+08:00",
+  "vendor": "Magic the Gathering",
+  "type": "MTG Single Cards",
+  "tags": [
+    "Commander Collection: Black",
+    "MTG",
+    "New Arrival",
+    "Rare"
+  ],
+  "price": 1100,
+  "price_min": 1100,
+  "price_max": 1100,
+  "available": true,
+  "price_varies": false,
+  "compare_at_price": null,
+  "compare_at_price_min": 0,
+  "compare_at_price_max": 0,
+  "compare_at_price_varies": false,
+  "variants": [
+    {
+      "id": 47767138336917,
+      "title": "Regular",
+      "option1": "Regular",
+      "option2": null,
+      "option3": null,
+      "sku": "C040726-015",
+      "requires_shipping": true,
+      "taxable": false,
+      "featured_image": null,
+      "available": true,
+      "name": "Sol Ring - Regular",
+      "public_title": "Regular",
+      "options": [
+        "Regular"
+      ],
+      "price": 1100,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    }
+  ],
+  "images": [
+    "//cdn.shopify.com/s/files/1/0520/3722/2549/files/acce65cc-9093-45a6-8c86-97edce545050.jpg?v=1787473657"
+  ],
+  "featured_image": "//cdn.shopify.com/s/files/1/0520/3722/2549/files/acce65cc-9093-45a6-8c86-97edce545050.jpg?v=1787473657",
+  "options": [
+    {
+      "name": "Type",
+      "position": 1,
+      "values": [
+        "Regular"
+      ]
+    }
+  ],
+  "url": "/products/sol-ring",
+  "media": [
+    {
+      "alt": "Sol Ring",
+      "id": 37925962219669,
+      "position": 1,
+      "preview_image": {
+        "aspect_ratio": 0.718,
+        "height": 936,
+        "width": 672,
+        "src": "https://cdn.shopify.com/s/files/1/0520/3722/2549/files/acce65cc-9093-45a6-8c86-97edce545050.jpg?v=1787473657"
+      },
+      "aspect_ratio": 0.718,
+      "height": 936,
+      "media_type": "image",
+      "src": "https://cdn.shopify.com/s/files/1/0520/3722/2549/files/acce65cc-9093-45a6-8c86-97edce545050.jpg?v=1787473657",
+      "width": 672
+    }
+  ],
+  "requires_selling_plan": false,
+  "selling_plan_groups": []
+}

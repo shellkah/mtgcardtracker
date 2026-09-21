@@ -1,0 +1,375 @@
+{
+  "id": 10315216683284,
+  "title": "Sol Ring (2807) [Secret Lair Drop Series]",
+  "handle": "sol-ring-2807-secret-lair-drop-series",
+  "description": "<table class=\"singles-description-table\" xmlns=\"http://www.w3.org/1999/html\">\n<tbody>\n      <tr>\n          <td>Set:</td>\n          <td>Secret Lair Drop Series</td>\n      </tr>\n      <tr>\n          <td>Type:</td>\n          <td>Artifact</td>\n      </tr>\n      <tr>\n          <td>Rarity:</td>\n          <td>Rare</td>\n      </tr>\n      <tr>\n          <td>Cost:</td>\n          <td>{1}</td>\n      </tr>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n        <div class=\"oracle-text\">\n            {T}: Add {C}{C}.\n        </div>\n<table class=\"singles-reverse-description-table\">\n<tbody>\n</tbody>\n</table>\n<div class=\"single-description-div\">\n</div>\n<div class=\"catalogMetaData\" style=\"visibility: hidden;\" data-cardtype=\"mtg\" data-cardid=\"111950\" data-tcgid=\"707352\" data-lastupdated=\"2026-07-28T16:24:10.993Z\">\n</div>\n</div>\n",
+  "published_at": "2026-07-29T00:24:49+08:00",
+  "created_at": "2026-07-29T00:24:47+08:00",
+  "vendor": "Magic: The Gathering",
+  "type": "MTG Single",
+  "tags": [
+    "Artifact",
+    "Colorless",
+    "Commander",
+    "Foil",
+    "Normal",
+    "Predh",
+    "Rare",
+    "Secret Lair Drop Series",
+    "Vintage"
+  ],
+  "price": 820,
+  "price_min": 820,
+  "price_max": 1670,
+  "available": true,
+  "price_varies": true,
+  "compare_at_price": null,
+  "compare_at_price_min": 0,
+  "compare_at_price_max": 0,
+  "compare_at_price_varies": false,
+  "variants": [
+    {
+      "id": 53356953600276,
+      "title": "Near Mint",
+      "option1": "Near Mint",
+      "option2": null,
+      "option3": null,
+      "sku": "SLD-2807-EN-NF-1",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": true,
+      "name": "Sol Ring (2807) [Secret Lair Drop Series] - Near Mint",
+      "public_title": "Near Mint",
+      "options": [
+        "Near Mint"
+      ],
+      "price": 1170,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 53356953633044,
+      "title": "Lightly Played",
+      "option1": "Lightly Played",
+      "option2": null,
+      "option3": null,
+      "sku": "SLD-2807-EN-NF-2",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (2807) [Secret Lair Drop Series] - Lightly Played",
+      "public_title": "Lightly Played",
+      "options": [
+        "Lightly Played"
+      ],
+      "price": 1120,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 53356953665812,
+      "title": "Moderately Played",
+      "option1": "Moderately Played",
+      "option2": null,
+      "option3": null,
+      "sku": "SLD-2807-EN-NF-3",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (2807) [Secret Lair Drop Series] - Moderately Played",
+      "public_title": "Moderately Played",
+      "options": [
+        "Moderately Played"
+      ],
+      "price": 1000,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 53356953698580,
+      "title": "Heavily Played",
+      "option1": "Heavily Played",
+      "option2": null,
+      "option3": null,
+      "sku": "SLD-2807-EN-NF-4",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (2807) [Secret Lair Drop Series] - Heavily Played",
+      "public_title": "Heavily Played",
+      "options": [
+        "Heavily Played"
+      ],
+      "price": 880,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 53356953731348,
+      "title": "Damaged",
+      "option1": "Damaged",
+      "option2": null,
+      "option3": null,
+      "sku": "SLD-2807-EN-NF-5",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (2807) [Secret Lair Drop Series] - Damaged",
+      "public_title": "Damaged",
+      "options": [
+        "Damaged"
+      ],
+      "price": 820,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 53356953764116,
+      "title": "Near Mint Foil",
+      "option1": "Near Mint Foil",
+      "option2": null,
+      "option3": null,
+      "sku": "SLD-2807-EN-FO-1",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": true,
+      "name": "Sol Ring (2807) [Secret Lair Drop Series] - Near Mint Foil",
+      "public_title": "Near Mint Foil",
+      "options": [
+        "Near Mint Foil"
+      ],
+      "price": 1670,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 53356953796884,
+      "title": "Lightly Played Foil",
+      "option1": "Lightly Played Foil",
+      "option2": null,
+      "option3": null,
+      "sku": "SLD-2807-EN-FO-2",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (2807) [Secret Lair Drop Series] - Lightly Played Foil",
+      "public_title": "Lightly Played Foil",
+      "options": [
+        "Lightly Played Foil"
+      ],
+      "price": 1590,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 53356953829652,
+      "title": "Moderately Played Foil",
+      "option1": "Moderately Played Foil",
+      "option2": null,
+      "option3": null,
+      "sku": "SLD-2807-EN-FO-3",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (2807) [Secret Lair Drop Series] - Moderately Played Foil",
+      "public_title": "Moderately Played Foil",
+      "options": [
+        "Moderately Played Foil"
+      ],
+      "price": 1420,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 53356953862420,
+      "title": "Heavily Played Foil",
+      "option1": "Heavily Played Foil",
+      "option2": null,
+      "option3": null,
+      "sku": "SLD-2807-EN-FO-4",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (2807) [Secret Lair Drop Series] - Heavily Played Foil",
+      "public_title": "Heavily Played Foil",
+      "options": [
+        "Heavily Played Foil"
+      ],
+      "price": 1260,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    },
+    {
+      "id": 53356953895188,
+      "title": "Damaged Foil",
+      "option1": "Damaged Foil",
+      "option2": null,
+      "option3": null,
+      "sku": "SLD-2807-EN-FO-5",
+      "requires_shipping": true,
+      "taxable": true,
+      "featured_image": null,
+      "available": false,
+      "name": "Sol Ring (2807) [Secret Lair Drop Series] - Damaged Foil",
+      "public_title": "Damaged Foil",
+      "options": [
+        "Damaged Foil"
+      ],
+      "price": 1170,
+      "weight": 2,
+      "compare_at_price": null,
+      "inventory_management": "shopify",
+      "barcode": null,
+      "quantity_rule": {
+        "min": 1,
+        "max": null,
+        "increment": 1
+      },
+      "quantity_price_breaks": [],
+      "requires_selling_plan": false,
+      "selling_plan_allocations": []
+    }
+  ],
+  "images": [
+    "//cdn.shopify.com/s/files/1/0826/0681/7556/files/7a581f4c-34a0-5040-9b79-24cfce0cefab.png?v=1785255889"
+  ],
+  "featured_image": "//cdn.shopify.com/s/files/1/0826/0681/7556/files/7a581f4c-34a0-5040-9b79-24cfce0cefab.png?v=1785255889",
+  "options": [
+    {
+      "name": "Title",
+      "position": 1,
+      "values": [
+        "Near Mint",
+        "Lightly Played",
+        "Moderately Played",
+        "Heavily Played",
+        "Damaged",
+        "Near Mint Foil",
+        "Lightly Played Foil",
+        "Moderately Played Foil",
+        "Heavily Played Foil",
+        "Damaged Foil"
+      ]
+    }
+  ],
+  "url": "/products/sol-ring-2807-secret-lair-drop-series",
+  "media": [
+    {
+      "alt": null,
+      "id": 46474076487956,
+      "position": 1,
+      "preview_image": {
+        "aspect_ratio": 0.715,
+        "height": 1040,
+        "width": 744,
+        "src": "https://cdn.shopify.com/s/files/1/0826/0681/7556/files/7a581f4c-34a0-5040-9b79-24cfce0cefab.png?v=1785255889"
+      },
+      "aspect_ratio": 0.715,
+      "height": 1040,
+      "media_type": "image",
+      "src": "https://cdn.shopify.com/s/files/1/0826/0681/7556/files/7a581f4c-34a0-5040-9b79-24cfce0cefab.png?v=1785255889",
+      "width": 744
+    }
+  ],
+  "requires_selling_plan": false,
+  "selling_plan_groups": []
+}

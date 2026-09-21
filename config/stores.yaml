@@ -1,0 +1,134 @@
+zones:
+  - id: singapore
+    name: Singapore
+stores:
+  - id: greyogre
+    name: Grey Ogre Games
+    zone: singapore
+    adapter: app.adapters.greyogre:GreyOgreAdapter
+    base_url: https://www.greyogregames.com
+    enabled: true
+    requests_per_second: 0
+    attempts: 1
+    concurrency: 2
+    needs_browser: false
+  - id: gameshaven
+    name: Games Haven
+    zone: singapore
+    adapter: app.adapters.gameshaven:GamesHavenAdapter
+    base_url: https://www.gameshaventcg.com
+    enabled: true
+    requests_per_second: 0
+    attempts: 1
+    concurrency: 2
+    needs_browser: false
+  - id: cardscitadel
+    name: Cards Citadel
+    zone: singapore
+    adapter: app.adapters.cardscitadel:CardsCitadelAdapter
+    base_url: https://cardscitadel.com
+    enabled: true
+    requests_per_second: 0
+    attempts: 1
+    concurrency: 2
+    needs_browser: false
+  - id: hideout
+    name: Hideout
+    zone: singapore
+    adapter: app.adapters.hideout:HideoutAdapter
+    base_url: https://hideoutcg.com
+    enabled: true
+    requests_per_second: 0
+    attempts: 1
+    concurrency: 2
+    needs_browser: false
+  - id: onemtg
+    name: One MTG
+    zone: singapore
+    adapter: app.adapters.onemtg:OneMtgAdapter
+    base_url: https://onemtg.com.sg
+    enabled: true
+    requests_per_second: 0
+    attempts: 1
+    concurrency: 2
+    needs_browser: false
+  - id: mtgasia
+    name: MTG Asia
+    zone: singapore
+    adapter: app.adapters.mtgasia:MtgAsiaAdapter
+    base_url: https://www.mtg-asia.com
+    enabled: true
+    requests_per_second: 0
+    attempts: 1
+    concurrency: 2
+    needs_browser: false
+  - id: manapro
+    name: Mana Pro
+    zone: singapore
+    adapter: app.adapters.manapro:ManaProAdapter
+    base_url: https://sg-manapro.com
+    enabled: true
+    requests_per_second: 0
+    attempts: 1
+    concurrency: 2
+    needs_browser: false
+  - id: cardaffinity
+    name: Card Affinity
+    zone: singapore
+    adapter: app.adapters.cardaffinity:CardAffinityAdapter
+    base_url: https://card-affinity.com
+    enabled: true
+    requests_per_second: 0
+    attempts: 1
+    concurrency: 2
+    needs_browser: false
+  - id: hideyoshi
+    name: Hideyoshi TCG
+    zone: singapore
+    adapter: app.adapters.hideyoshi:HideyoshiAdapter
+    base_url: https://hideyoshitcg.com
+    enabled: true
+    requests_per_second: 0
+    attempts: 1
+    concurrency: 2
+    needs_browser: false
+  - id: flagship
+    name: Flagship Games
+    zone: singapore
+    adapter: app.adapters.flagship:FlagshipAdapter
+    base_url: https://www.flagshipgames.sg
+    enabled: true
+    requests_per_second: 0
+    attempts: 1
+    concurrency: 2
+    needs_browser: false
+  - id: fivemana
+    name: 5 Mana
+    zone: singapore
+    adapter: app.adapters.fivemana:FiveManaAdapter
+    base_url: https://5-mana.sg
+    enabled: true
+    requests_per_second: 0
+    attempts: 1
+    concurrency: 2
+    needs_browser: false
+  - id: fyendalhobby
+    name: Fyendal Hobby
+    zone: singapore
+    adapter: app.adapters.fyendalhobby:FyendalHobbyAdapter
+    base_url: https://fyendalhobby.com
+    enabled: true
+    requests_per_second: 0
+    attempts: 1
+    concurrency: 2
+    needs_browser: false
+  - id: arcanesanctum
+    name: Arcane Sanctum
+    zone: singapore
+    adapter: app.adapters.arcanesanctum:ArcaneSanctumAdapter
+    base_url: https://arcanesanctumtcg.com
+    enabled: true
+    requests_per_second: 0
+    attempts: 1
+    concurrency: 2
+    needs_browser: false

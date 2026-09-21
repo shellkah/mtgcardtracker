@@ -1,0 +1,305 @@
+{
+  "resources": {
+    "results": {
+      "products": [
+        {
+          "available": true,
+          "body": null,
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-ring-commander-2019",
+          "id": 8837729812692,
+          "image": "https://cdn.shopify.com/s/files/1/0746/1198/2548/files/277fd9d7-4433-5649-a369-8979c3577a6b.jpg?v=1748243691",
+          "price": "3.50",
+          "price_max": "3.50",
+          "price_min": "3.50",
+          "tags": [
+            "Colorless",
+            "Commander 2019",
+            "Uncommon"
+          ],
+          "title": "Sol Ring [Commander 2019]",
+          "type": "MTG Single",
+          "url": "/products/sol-ring-commander-2019?_pos=1&_psq=Sol+Ring&_psid=e073e5b14&_ss=e",
+          "variants": [],
+          "vendor": "Magic: The Gathering",
+          "featured_image": {
+            "alt": "Sol Ring [Commander 2019]",
+            "aspect_ratio": 0.718,
+            "height": 936,
+            "url": "https://cdn.shopify.com/s/files/1/0746/1198/2548/files/277fd9d7-4433-5649-a369-8979c3577a6b.jpg?v=1748243691",
+            "width": 672
+          }
+        },
+        {
+          "available": true,
+          "body": "",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-ring-tarkir-dragonstorm-commander",
+          "id": 8814229717204,
+          "image": "https://cdn.shopify.com/s/files/1/0746/1198/2548/files/1156dbda-e1de-5424-811c-9daec6401d0c.png?v=1755083260",
+          "price": "3.00",
+          "price_max": "3.00",
+          "price_min": "3.00",
+          "tags": [
+            "Colorless",
+            "Tarkir: Dragonstorm Commander",
+            "Uncommon"
+          ],
+          "title": "Sol Ring [Tarkir: Dragonstorm Commander]",
+          "type": "MTG Single",
+          "url": "/products/sol-ring-tarkir-dragonstorm-commander?_pos=2&_psq=Sol+Ring&_psid=e073e5b14&_ss=e",
+          "variants": [],
+          "vendor": "Magic: The Gathering",
+          "featured_image": {
+            "alt": "Sol Ring [Tarkir: Dragonstorm Commander]",
+            "aspect_ratio": 0.716,
+            "height": 1040,
+            "url": "https://cdn.shopify.com/s/files/1/0746/1198/2548/files/1156dbda-e1de-5424-811c-9daec6401d0c.png?v=1755083260",
+            "width": 745
+          }
+        },
+        {
+          "available": true,
+          "body": "",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-ring-0358-surge-foil-final-fantasy-commander",
+          "id": 8864813613268,
+          "image": "https://cdn.shopify.com/s/files/1/0746/1198/2548/files/636978.jpg?v=1755077206",
+          "price": "15.40",
+          "price_max": "15.40",
+          "price_min": "15.40",
+          "tags": [
+            "Colorless",
+            "FINAL FANTASY Commander Deck Surges",
+            "Uncommon"
+          ],
+          "title": "Sol Ring (0358) (Surge Foil) [FINAL FANTASY Commander]",
+          "type": "MTG Single",
+          "url": "/products/sol-ring-0358-surge-foil-final-fantasy-commander?_pos=3&_psq=Sol+Ring&_psid=e073e5b14&_ss=e",
+          "variants": [],
+          "vendor": "Magic: The Gathering",
+          "featured_image": {
+            "alt": "Sol Ring (0358) (Surge Foil) [FINAL FANTASY Commander]",
+            "aspect_ratio": 0.716,
+            "height": 1039,
+            "url": "https://cdn.shopify.com/s/files/1/0746/1198/2548/files/636978.jpg?v=1755077206",
+            "width": 744
+          }
+        },
+        {
+          "available": true,
+          "body": "",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-ring-0214-marvel-super-heroes-commander",
+          "id": 9234528272596,
+          "image": "https://cdn.shopify.com/s/files/1/0746/1198/2548/files/84f52567-887a-5998-bf14-4ec8d05c94b0.png?v=1782368495",
+          "price": "3.00",
+          "price_max": "3.00",
+          "price_min": "3.00",
+          "tags": [
+            "Colorless",
+            "Marvel Super Heroes Commander",
+            "Uncommon"
+          ],
+          "title": "Sol Ring (0214) [Marvel Super Heroes Commander]",
+          "type": "MTG Single",
+          "url": "/products/sol-ring-0214-marvel-super-heroes-commander?_pos=4&_psq=Sol+Ring&_psid=e073e5b14&_ss=e",
+          "variants": [],
+          "vendor": "Magic: The Gathering",
+          "featured_image": {
+            "alt": "Sol Ring (0214) [Marvel Super Heroes Commander]",
+            "aspect_ratio": 0.716,
+            "height": 1040,
+            "url": "https://cdn.shopify.com/s/files/1/0746/1198/2548/files/84f52567-887a-5998-bf14-4ec8d05c94b0.png?v=1782368495",
+            "width": 745
+          }
+        },
+        {
+          "available": true,
+          "body": "",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-ring-0212-marvel-super-heroes-commander",
+          "id": 9203886391508,
+          "image": "https://cdn.shopify.com/s/files/1/0746/1198/2548/files/1f5f6c3a-1847-5525-af76-fdfb165fa727_65ee9adf-2c4d-4154-a42e-cca4a6649660.png?v=1782368570",
+          "price": "3.00",
+          "price_max": "3.00",
+          "price_min": "3.00",
+          "tags": [
+            "Colorless",
+            "Marvel Super Heroes Commander",
+            "Uncommon"
+          ],
+          "title": "Sol Ring (0212) [Marvel Super Heroes Commander]",
+          "type": "MTG Single",
+          "url": "/products/sol-ring-0212-marvel-super-heroes-commander?_pos=5&_psq=Sol+Ring&_psid=e073e5b14&_ss=e",
+          "variants": [],
+          "vendor": "Magic: The Gathering",
+          "featured_image": {
+            "alt": "Sol Ring (0212) [Marvel Super Heroes Commander]",
+            "aspect_ratio": 0.716,
+            "height": 1040,
+            "url": "https://cdn.shopify.com/s/files/1/0746/1198/2548/files/1f5f6c3a-1847-5525-af76-fdfb165fa727_65ee9adf-2c4d-4154-a42e-cca4a6649660.png?v=1782368570",
+            "width": 745
+          }
+        },
+        {
+          "available": true,
+          "body": "",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "sol-ring-marvel-super-heroes-commander",
+          "id": 9203886424276,
+          "image": "https://cdn.shopify.com/s/files/1/0746/1198/2548/files/2d133953-0a19-53a8-85df-25f2e3ce1923_aff79ca4-3586-489a-90d2-8deca354b24b.png?v=1782368864",
+          "price": "3.00",
+          "price_max": "3.00",
+          "price_min": "3.00",
+          "tags": [
+            "Colorless",
+            "Marvel Super Heroes Commander",
+            "Uncommon"
+          ],
+          "title": "Sol Ring (0211) [Marvel Super Heroes Commander]",
+          "type": "MTG Single",
+          "url": "/products/sol-ring-marvel-super-heroes-commander?_pos=6&_psq=Sol+Ring&_psid=e073e5b14&_ss=e",
+          "variants": [],
+          "vendor": "Magic: The Gathering",
+          "featured_image": {
+            "alt": "Sol Ring (0211) [Marvel Super Heroes Commander]",
+            "aspect_ratio": 0.716,
+            "height": 1040,
+            "url": "https://cdn.shopify.com/s/files/1/0746/1198/2548/files/2d133953-0a19-53a8-85df-25f2e3ce1923_aff79ca4-3586-489a-90d2-8deca354b24b.png?v=1782368864",
+            "width": 745
+          }
+        },
+        {
+          "available": true,
+          "body": null,
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "soldier-of-the-grey-host-the-lord-of-the-rings-tales-of-middle-earth",
+          "id": 8833971486932,
+          "image": "https://cdn.shopify.com/s/files/1/0746/1198/2548/files/a2c2da64-7a70-5e9b-b78c-d52c49e7229f.png?v=1755073425",
+          "price": "0.25",
+          "price_max": "0.25",
+          "price_min": "0.25",
+          "tags": [
+            "Common",
+            "The Lord of the Rings: Tales of Middle-Earth",
+            "The Lord of the Rings: Tales of Middle-Earth Non-Foil",
+            "White"
+          ],
+          "title": "Soldier of the Grey Host [The Lord of the Rings: Tales of Middle-Earth]",
+          "type": "MTG Single",
+          "url": "/products/soldier-of-the-grey-host-the-lord-of-the-rings-tales-of-middle-earth?_pos=7&_psq=Sol+Ring&_psid=e073e5b14&_ss=e",
+          "variants": [],
+          "vendor": "Magic: The Gathering",
+          "featured_image": {
+            "alt": "Soldier of the Grey Host [The Lord of the Rings: Tales of Middle-Earth]",
+            "aspect_ratio": 0.716,
+            "height": 1040,
+            "url": "https://cdn.shopify.com/s/files/1/0746/1198/2548/files/a2c2da64-7a70-5e9b-b78c-d52c49e7229f.png?v=1755073425",
+            "width": 745
+          }
+        },
+        {
+          "available": true,
+          "body": "",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "solemn-offering-battlebond",
+          "id": 8839889027284,
+          "image": "https://cdn.shopify.com/s/files/1/0746/1198/2548/files/909f94b8-bb54-5ceb-bf09-7a60fad83b52.jpg?v=1748246317",
+          "price": "0.40",
+          "price_max": "0.40",
+          "price_min": "0.40",
+          "tags": [
+            "Battlebond",
+            "Battlebond Non-Foil",
+            "Uncommon",
+            "White"
+          ],
+          "title": "Solemn Offering [Battlebond]",
+          "type": "MTG Single",
+          "url": "/products/solemn-offering-battlebond?_pos=8&_psq=Sol+Ring&_psid=e073e5b14&_ss=e",
+          "variants": [],
+          "vendor": "Magic: The Gathering",
+          "featured_image": {
+            "alt": "Solemn Offering [Battlebond]",
+            "aspect_ratio": 0.718,
+            "height": 936,
+            "url": "https://cdn.shopify.com/s/files/1/0746/1198/2548/files/909f94b8-bb54-5ceb-bf09-7a60fad83b52.jpg?v=1748246317",
+            "width": 672
+          }
+        },
+        {
+          "available": true,
+          "body": null,
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "isolation-at-orthanc-the-lord-of-the-rings-tales-of-middle-earth",
+          "id": 8833973354708,
+          "image": "https://cdn.shopify.com/s/files/1/0746/1198/2548/files/8e1d54f4-b128-528d-977d-808d079b7c06.png?v=1755072913",
+          "price": "0.25",
+          "price_max": "0.25",
+          "price_min": "0.25",
+          "tags": [
+            "Blue",
+            "Common",
+            "The Lord of the Rings: Tales of Middle-Earth",
+            "The Lord of the Rings: Tales of Middle-Earth Non-Foil"
+          ],
+          "title": "Isolation at Orthanc [The Lord of the Rings: Tales of Middle-Earth]",
+          "type": "MTG Single",
+          "url": "/products/isolation-at-orthanc-the-lord-of-the-rings-tales-of-middle-earth?_pos=9&_psq=Sol+Ring&_psid=e073e5b14&_ss=e",
+          "variants": [],
+          "vendor": "Magic: The Gathering",
+          "featured_image": {
+            "alt": "Isolation at Orthanc [The Lord of the Rings: Tales of Middle-Earth]",
+            "aspect_ratio": 0.716,
+            "height": 1040,
+            "url": "https://cdn.shopify.com/s/files/1/0746/1198/2548/files/8e1d54f4-b128-528d-977d-808d079b7c06.png?v=1755072913",
+            "width": 745
+          }
+        },
+        {
+          "available": true,
+          "body": "",
+          "compare_at_price_max": "0.00",
+          "compare_at_price_min": "0.00",
+          "handle": "solkanar-the-swamp-king-time-spiral-timeshifted",
+          "id": 8854303867092,
+          "image": "https://cdn.shopify.com/s/files/1/0746/1198/2548/files/c8ad24c2-b83e-5a60-add7-c37fda3435b7.jpg?v=1750313935",
+          "price": "0.60",
+          "price_max": "0.60",
+          "price_min": "0.60",
+          "tags": [
+            "Black",
+            "Blue",
+            "Multicolor",
+            "Rare",
+            "Red",
+            "Time Spiral Timeshifted",
+            "Time Spiral Timeshifted Non-Foil"
+          ],
+          "title": "Sol'kanar the Swamp King [Time Spiral Timeshifted]",
+          "type": "MTG Single",
+          "url": "/products/solkanar-the-swamp-king-time-spiral-timeshifted?_pos=10&_psq=Sol+Ring&_psid=e073e5b14&_ss=e",
+          "variants": [],
+          "vendor": "Magic: The Gathering",
+          "featured_image": {
+            "alt": "Sol'kanar the Swamp King [Time Spiral Timeshifted]",
+            "aspect_ratio": 0.718,
+            "height": 936,
+            "url": "https://cdn.shopify.com/s/files/1/0746/1198/2548/files/c8ad24c2-b83e-5a60-add7-c37fda3435b7.jpg?v=1750313935",
+            "width": 672
+          }
+        }
+      ]
+    }
+  }
+}
