@@ -1,5 +1,6 @@
 from fastapi.testclient import TestClient
 
+from app.db import Database
 from app.main import create_app
 
 
@@ -228,3 +229,56 @@ def test_cart_checkout_url_is_none_without_variant_id(tmp_path):
     data = client.get("/api/cart").json()
     store = next(s for s in data["stores"] if s["store_id"] == "greyogre")
     assert store["checkout_url"] is None
+
+
+def test_cart_is_isolated_per_browser(tmp_path):
+    a = _client(tmp_path)
+    b = _client(tmp_path)
+    created = a.post("/api/cart", json=CART_PAYLOAD).json()
+
+    assert a.get("/api/cart").json()["count"] == 1
+    assert b.get("/api/cart").json()["count"] == 0
+
+    # b cannot mutate a's line
+    assert b.patch(f"/api/cart/{created['id']}", json={"quantity": 9}).status_code == 404
+    assert b.delete(f"/api/cart/{created['id']}").status_code == 404
+    assert a.get("/api/cart").json()["items"][0]["quantity"] == 2
+
+
+def test_cart_sets_session_cookie(tmp_path):
+    client = _client(tmp_path)
+    response = client.get("/api/cart")
+    header = response.headers["set-cookie"]
+    assert "mtg_cart=" in header
+    assert "HttpOnly" in header
+
+
+def test_cart_survives_with_the_same_cookie(tmp_path):
+    client = _client(tmp_path)
+    client.post("/api/cart", json=CART_PAYLOAD)
+    token = client.cookies.get("mtg_cart")
+
+    other = _client(tmp_path)
+    other.cookies.set("mtg_cart", token)
+    assert other.get("/api/cart").json()["count"] == 1
+
+
+def test_idle_session_is_purged(tmp_path, monkeypatch):
+    import app.sessions as sessions
+
+    client = _client(tmp_path)
+    client.post("/api/cart", json=CART_PAYLOAD)
+    old = client.cookies.get("mtg_cart")
+
+    # age the session on disk, then make the TTL short so the next cart request
+    # purges it before resolving the cookie
+    db = Database(tmp_path / "t.db")
+    db._conn.execute("UPDATE cart_sessions SET last_seen=1.0 WHERE id=?", (old,))
+    db._conn.commit()
+    db.close()
+
+    monkeypatch.setattr(sessions, "CART_TTL_SECONDS", 60)
+    response = client.get("/api/cart")
+
+    assert client.cookies.get("mtg_cart") != old
+    assert response.json()["count"] == 0

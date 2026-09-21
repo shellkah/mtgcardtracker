@@ -4,11 +4,12 @@ import json
 import os
 from pathlib import Path
 
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Request, Response
 from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
+import app.sessions as sessions
 from app.adapters.base import CardRequest
 from app.adapters.registry import build_adapters, load_config
 from app.cart import checkout_url, group_by_store, line_from_offer
@@ -102,6 +103,10 @@ def create_app(config_path: str = "config/stores.yaml", db_path: str = "mtgcardt
     db.init_schema()
     registry = RunRegistry()
 
+    def cart_owner(request: Request, response: Response) -> str:
+        # Read the module attribute at call time so tests can shrink the TTL.
+        return sessions.resolve_owner(db, request, response, sessions.CART_TTL_SECONDS)
+
     @app.get("/healthz")
     def healthz():
         return {"status": "ok"}
@@ -165,8 +170,8 @@ def create_app(config_path: str = "config/stores.yaml", db_path: str = "mtgcardt
         return {"ok": True}
 
     @app.get("/api/cart")
-    def get_cart():
-        items = db.list_cart()
+    def get_cart(owner_id: str = Depends(cart_owner)):
+        items = db.list_cart(owner_id)
         base_urls = {c.id: c.base_url for c in configs}
         stores = [
             {
@@ -181,30 +186,37 @@ def create_app(config_path: str = "config/stores.yaml", db_path: str = "mtgcardt
         return {"items": items, "count": len(items), "stores": stores}
 
     @app.post("/api/cart")
-    def add_to_cart(request: AddCartRequest):
+    def add_to_cart(request: AddCartRequest, owner_id: str = Depends(cart_owner)):
         row = line_from_offer(request.card.model_dump(), request.offer.model_dump())
-        item_id, created = db.add_cart_item(row)
+        item_id, created = db.add_cart_item(owner_id, row)
         return {"id": item_id, "created": created}
 
     @app.patch("/api/cart/{item_id}")
-    def set_cart_quantity(item_id: int, request: QuantityRequest):
-        item = db.update_cart_quantity(item_id, request.quantity)
+    def set_cart_quantity(
+        item_id: int, request: QuantityRequest, owner_id: str = Depends(cart_owner)
+    ):
+        item = db.update_cart_quantity(owner_id, item_id, request.quantity)
         if item is None:
             raise HTTPException(status_code=404, detail="Not found")
         return item
 
     @app.delete("/api/cart/{item_id}")
-    def remove_from_cart(item_id: int):
-        db.remove_cart_item(item_id)
+    def remove_from_cart(item_id: int, owner_id: str = Depends(cart_owner)):
+        if not db.remove_cart_item(owner_id, item_id):
+            raise HTTPException(status_code=404, detail="Not found")
         return {"ok": True}
 
     @app.delete("/api/cart")
-    def clear_cart():
-        db.clear_cart()
+    def clear_cart(owner_id: str = Depends(cart_owner)):
+        db.clear_cart(owner_id)
         return {"ok": True}
 
     @app.patch("/api/cart/{item_id}/refresh")
-    def refresh_cart_item(item_id: int, request: RefreshItemRequest):
+    def refresh_cart_item(
+        item_id: int,
+        request: RefreshItemRequest,
+        owner_id: str = Depends(cart_owner),
+    ):
         fields: dict = {
             "status": request.status,
             "last_checked_at": request.last_checked_at,
@@ -219,14 +231,14 @@ def create_app(config_path: str = "config/stores.yaml", db_path: str = "mtgcardt
             )
             if request.variant_id is not None:
                 fields["variant_id"] = request.variant_id
-        item = db.update_cart_item(item_id, **fields)
+        item = db.update_cart_item(owner_id, item_id, **fields)
         if item is None:
             raise HTTPException(status_code=404, detail="Not found")
         return item
 
     @app.post("/api/cart/refresh")
-    async def refresh_cart():
-        items = db.list_cart()
+    async def refresh_cart(owner_id: str = Depends(cart_owner)):
+        items = db.list_cart(owner_id)
         if not items:
             raise HTTPException(status_code=400, detail="Cart is empty")
 

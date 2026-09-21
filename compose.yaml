@@ -10,6 +10,7 @@ services:
       # Byparr solver on the shared `proxy` network. Run Byparr's own compose
       # (see README) attached to the same network; it resolves as `byparr`.
       MTG_BYPARR_URL: ${MTG_BYPARR_URL:-http://byparr:8191}
+      MTG_CART_TTL_DAYS: ${MTG_CART_TTL_DAYS:-30}
     volumes:
       - mtg-data:/data
       # - ./stores.yaml:/app/config/stores.yaml:ro   # custom store config

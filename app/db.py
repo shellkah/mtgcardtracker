@@ -5,24 +5,11 @@ import sqlite3
 import time
 from pathlib import Path
 
-SCHEMA = """
-CREATE TABLE IF NOT EXISTS cache (
-    store_id   TEXT NOT NULL,
-    card_key   TEXT NOT NULL,
-    payload    TEXT NOT NULL,
-    fetched_at REAL NOT NULL,
-    PRIMARY KEY (store_id, card_key)
-);
-CREATE TABLE IF NOT EXISTS saved_lists (
-    id         INTEGER PRIMARY KEY AUTOINCREMENT,
-    name       TEXT NOT NULL,
-    raw_text   TEXT NOT NULL,
-    format     TEXT NOT NULL,
-    created_at REAL NOT NULL
-);
+CART_ITEMS_TABLE = """
 CREATE TABLE IF NOT EXISTS cart_items (
     id                INTEGER PRIMARY KEY AUTOINCREMENT,
-    identity_key      TEXT NOT NULL UNIQUE,
+    identity_key      TEXT NOT NULL,
+    owner_id          TEXT NOT NULL,
     card_key          TEXT NOT NULL,
     card_name         TEXT NOT NULL,
     set_code          TEXT,
@@ -46,6 +33,33 @@ CREATE TABLE IF NOT EXISTS cart_items (
     last_checked_at   REAL
 );
 """
+
+CART_ITEMS_INDEX = """
+CREATE UNIQUE INDEX IF NOT EXISTS ux_cart_items_owner_identity
+    ON cart_items(owner_id, identity_key);
+"""
+
+SCHEMA = """
+CREATE TABLE IF NOT EXISTS cache (
+    store_id   TEXT NOT NULL,
+    card_key   TEXT NOT NULL,
+    payload    TEXT NOT NULL,
+    fetched_at REAL NOT NULL,
+    PRIMARY KEY (store_id, card_key)
+);
+CREATE TABLE IF NOT EXISTS saved_lists (
+    id         INTEGER PRIMARY KEY AUTOINCREMENT,
+    name       TEXT NOT NULL,
+    raw_text   TEXT NOT NULL,
+    format     TEXT NOT NULL,
+    created_at REAL NOT NULL
+);
+CREATE TABLE IF NOT EXISTS cart_sessions (
+    id         TEXT PRIMARY KEY,
+    created_at REAL NOT NULL,
+    last_seen  REAL NOT NULL
+);
+""" + CART_ITEMS_TABLE
 
 # Bump when the cached Offer shape changes. The payload is opaque JSON, so an
 # older row deserialises cleanly and silently misses any newly added field
@@ -83,8 +97,24 @@ class Database:
 
     def init_schema(self) -> None:
         self._conn.executescript(SCHEMA)
-        self._add_missing_cart_columns()
+        self._migrate_cart_items()
+        self._conn.executescript(CART_ITEMS_INDEX)
         self._conn.commit()
+
+    def _migrate_cart_items(self) -> None:
+        existing = {
+            row["name"]
+            for row in self._conn.execute("PRAGMA table_info(cart_items)")
+        }
+        if not existing:
+            return
+        if "owner_id" not in existing:
+            # No way to drop a column-level UNIQUE via ALTER, and legacy rows
+            # have no owner anyway: rebuild the table and discard them.
+            self._conn.execute("DROP TABLE cart_items")
+            self._conn.executescript(CART_ITEMS_TABLE)
+            return
+        self._add_missing_cart_columns()
 
     def _add_missing_cart_columns(self) -> None:
         existing = {
@@ -96,6 +126,37 @@ class Database:
                 self._conn.execute(
                     f"ALTER TABLE cart_items ADD COLUMN {name} {decl}"
                 )
+
+    def create_session(self, owner_id: str) -> None:
+        now = time.time()
+        self._conn.execute(
+            "INSERT INTO cart_sessions (id, created_at, last_seen) VALUES (?,?,?)",
+            (owner_id, now, now),
+        )
+        self._conn.commit()
+
+    def touch_session(self, owner_id: str) -> bool:
+        row = self._conn.execute(
+            "SELECT 1 FROM cart_sessions WHERE id=?", (owner_id,)
+        ).fetchone()
+        if row is None:
+            return False
+        self._conn.execute(
+            "UPDATE cart_sessions SET last_seen=? WHERE id=?",
+            (time.time(), owner_id),
+        )
+        self._conn.commit()
+        return True
+
+    def purge_expired_sessions(self, cutoff: float) -> None:
+        self._conn.execute(
+            "DELETE FROM cart_sessions WHERE last_seen < ?", (cutoff,)
+        )
+        self._conn.execute(
+            "DELETE FROM cart_items WHERE owner_id NOT IN "
+            "(SELECT id FROM cart_sessions)"
+        )
+        self._conn.commit()
 
     def get_cached(self, store_id: str, card_key: str, ttl_seconds: int) -> dict | None:
         row = self._conn.execute(
@@ -154,21 +215,21 @@ class Database:
         self._conn.execute("DELETE FROM saved_lists WHERE id=?", (list_id,))
         self._conn.commit()
 
-    def add_cart_item(self, item: dict) -> tuple[int, bool]:
+    def add_cart_item(self, owner_id: str, item: dict) -> tuple[int, bool]:
         existing = self._conn.execute(
-            "SELECT id FROM cart_items WHERE identity_key=?",
-            (item["identity_key"],),
+            "SELECT id FROM cart_items WHERE owner_id=? AND identity_key=?",
+            (owner_id, item["identity_key"]),
         ).fetchone()
         if existing is not None:
             return int(existing["id"]), False
         cur = self._conn.execute(
-            "INSERT INTO cart_items (identity_key, card_key, card_name, set_code, "
-            "collector_number, store_id, store_name, title, url, variant_id, "
-            "printing_hint, image_url, condition, finish, price_sgd, currency, "
-            "in_stock, quantity, status, added_at, offer_fetched_at) "
-            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+            "INSERT INTO cart_items (identity_key, owner_id, card_key, card_name, "
+            "set_code, collector_number, store_id, store_name, title, url, "
+            "variant_id, printing_hint, image_url, condition, finish, price_sgd, "
+            "currency, in_stock, quantity, status, added_at, offer_fetched_at) "
+            "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
             (
-                item["identity_key"], item["card_key"], item["card_name"],
+                item["identity_key"], owner_id, item["card_key"], item["card_name"],
                 item.get("set_code"), item.get("collector_number"),
                 item["store_id"], item["store_name"], item["title"],
                 item["url"], item.get("variant_id"), item.get("printing_hint"),
@@ -181,44 +242,50 @@ class Database:
         self._conn.commit()
         return int(cur.lastrowid), True
 
-    def list_cart(self) -> list[dict]:
+    def list_cart(self, owner_id: str) -> list[dict]:
         rows = self._conn.execute(
-            "SELECT * FROM cart_items ORDER BY added_at ASC, id ASC"
+            "SELECT * FROM cart_items WHERE owner_id=? ORDER BY added_at ASC, id ASC",
+            (owner_id,),
         ).fetchall()
         return [_cart_row(r) for r in rows]
 
-    def get_cart_item(self, item_id: int) -> dict | None:
+    def get_cart_item(self, owner_id: str, item_id: int) -> dict | None:
         row = self._conn.execute(
-            "SELECT * FROM cart_items WHERE id=?", (item_id,)
+            "SELECT * FROM cart_items WHERE id=? AND owner_id=?",
+            (item_id, owner_id),
         ).fetchone()
         return _cart_row(row) if row is not None else None
 
-    def update_cart_quantity(self, item_id: int, quantity: int) -> dict | None:
+    def update_cart_quantity(self, owner_id: str, item_id: int, quantity: int) -> dict | None:
         quantity = max(1, int(quantity))
         cur = self._conn.execute(
-            "UPDATE cart_items SET quantity=? WHERE id=?", (quantity, item_id)
+            "UPDATE cart_items SET quantity=? WHERE id=? AND owner_id=?",
+            (quantity, item_id, owner_id),
         )
         self._conn.commit()
-        return self.get_cart_item(item_id) if cur.rowcount else None
+        return self.get_cart_item(owner_id, item_id) if cur.rowcount else None
 
-    def update_cart_item(self, item_id: int, **fields) -> dict | None:
+    def update_cart_item(self, owner_id: str, item_id: int, **fields) -> dict | None:
         allowed = {k: v for k, v in fields.items() if k in CART_UPDATABLE}
         if not allowed:
-            return self.get_cart_item(item_id)
+            return self.get_cart_item(owner_id, item_id)
         assignments = ", ".join(f"{k}=?" for k in allowed)
         cur = self._conn.execute(
-            f"UPDATE cart_items SET {assignments} WHERE id=?",
-            (*allowed.values(), item_id),
+            f"UPDATE cart_items SET {assignments} WHERE id=? AND owner_id=?",
+            (*allowed.values(), item_id, owner_id),
         )
         self._conn.commit()
-        return self.get_cart_item(item_id) if cur.rowcount else None
+        return self.get_cart_item(owner_id, item_id) if cur.rowcount else None
 
-    def remove_cart_item(self, item_id: int) -> None:
-        self._conn.execute("DELETE FROM cart_items WHERE id=?", (item_id,))
+    def remove_cart_item(self, owner_id: str, item_id: int) -> bool:
+        cur = self._conn.execute(
+            "DELETE FROM cart_items WHERE id=? AND owner_id=?", (item_id, owner_id)
+        )
         self._conn.commit()
+        return cur.rowcount > 0
 
-    def clear_cart(self) -> None:
-        self._conn.execute("DELETE FROM cart_items")
+    def clear_cart(self, owner_id: str) -> None:
+        self._conn.execute("DELETE FROM cart_items WHERE owner_id=?", (owner_id,))
         self._conn.commit()
 
     def close(self) -> None:
