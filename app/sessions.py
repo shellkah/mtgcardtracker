@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import math
 import os
 import secrets
 import time
@@ -19,7 +20,7 @@ def _ttl_seconds_from_env() -> float:
         days = float(raw) if raw else float(DEFAULT_TTL_DAYS)
     except ValueError:
         days = float(DEFAULT_TTL_DAYS)
-    if days <= 0:
+    if not math.isfinite(days) or days <= 0:
         days = float(DEFAULT_TTL_DAYS)
     return days * 86400
 

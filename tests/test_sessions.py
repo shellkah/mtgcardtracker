@@ -25,7 +25,7 @@ def _request(cookie=None, scheme="http"):
         headers.append((b"cookie", f"{CART_COOKIE}={cookie}".encode()))
     return Request(
         {"type": "http", "method": "GET", "path": "/api/cart",
-         "scheme": scheme, "headers": headers}
+         "scheme": scheme, "server": ("testserver", 80), "headers": headers}
     )
 
 
@@ -42,6 +42,10 @@ def test_ttl_reads_env_with_default_fallback(monkeypatch):
     monkeypatch.setenv("MTG_CART_TTL_DAYS", "not-a-number")
     assert _ttl_seconds_from_env() == DEFAULT_TTL_DAYS * 86400
     monkeypatch.setenv("MTG_CART_TTL_DAYS", "0")
+    assert _ttl_seconds_from_env() == DEFAULT_TTL_DAYS * 86400
+    monkeypatch.setenv("MTG_CART_TTL_DAYS", "inf")
+    assert _ttl_seconds_from_env() == DEFAULT_TTL_DAYS * 86400
+    monkeypatch.setenv("MTG_CART_TTL_DAYS", "nan")
     assert _ttl_seconds_from_env() == DEFAULT_TTL_DAYS * 86400
 
 
@@ -84,3 +88,16 @@ def test_set_cart_cookie_secure_flag():
     response = Response()
     set_cart_cookie(response, "tok", 100, secure=True)
     assert "Secure" in response.headers["set-cookie"]
+
+
+def test_resolve_owner_secure_cookie_follows_request_scheme(tmp_path):
+    db = _db(tmp_path)
+
+    https_response = Response()
+    resolve_owner(db, _request(scheme="https"), https_response, CART_TTL_SECONDS)
+    assert "Secure" in https_response.headers["set-cookie"]
+
+    http_response = Response()
+    resolve_owner(db, _request(scheme="http"), http_response, CART_TTL_SECONDS)
+    assert "Secure" not in http_response.headers["set-cookie"]
+    db.close()
