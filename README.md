@@ -121,6 +121,7 @@ echo "$GHCR_TOKEN" | docker login ghcr.io -u <username> --password-stdin
 | `MTG_DB_PATH` | `mtgcardtracker.db` | SQLite file path. Set to `/data/mtgcardtracker.db` in the image. |
 | `MTG_CONFIG_PATH` | `config/stores.yaml` | Store config path. Set to `/app/config/stores.yaml` in the image. |
 | `MTG_BYPARR_URL` | `http://127.0.0.1:8191` | Byparr solver used to retry challenged requests. Set to `http://byparr:8191` in the image. |
+| `MTG_CART_TTL_DAYS` | `30` | Days an idle cart session survives before it and its lines are purged. Each cart request refreshes the timer. |
 
 ## Card list formats
 
