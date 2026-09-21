@@ -44,6 +44,13 @@ in the top bar. It groups your saved offers by store, totals them (SGD), and can
 re-check their prices and stock on demand. There is no checkout; the satchel is
 a saved basket you buy from manually.
 
+## Make targets
+
+Common tasks are wrapped in the `Makefile`; run `make help` for the full list.
+For local development: `make install`, `make run`, `make test`. For Docker:
+`make build`, `make up`, `make down`, `make logs`, `make pull`, `make redeploy`
+(pass `MTG_TAG=0.1.0` to override the image tag, e.g. `make up MTG_TAG=0.1.0`).
+
 ## Deploy with Docker
 
 The image is published to GitHub Container Registry and runs the API and
