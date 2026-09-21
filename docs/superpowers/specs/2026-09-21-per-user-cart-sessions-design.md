@@ -121,12 +121,18 @@ Fresh installations create the new shape directly through the normal
 - `MTG_CART_TTL_DAYS` environment variable, default `30`. Empty, missing, or
   non-numeric values fall back to the default. Converted to seconds once at
   import.
-- Sliding window: every cart request refreshes the session's `last_seen`, so an
-  actively used cart never expires.
-- Purge runs inline on each cart request, in order:
+- Sliding window: every surviving cart request refreshes the session's
+  `last_seen`, so an actively used cart never expires.
+- Purge runs inline at the **start** of each cart request, before the cookie is
+  resolved. Order matters: purging first means a session idle longer than the
+  TTL is already gone by the time its cookie is read, so that request starts a
+  fresh empty cart rather than reviving the stale session. The two statements
+  are:
   1. `DELETE FROM cart_sessions WHERE last_seen < now - ttl`.
   2. `DELETE FROM cart_items WHERE owner_id NOT IN (SELECT id FROM cart_sessions)`
      — removes lines of expired sessions and any orphaned rows.
+- A session touched within the TTL survives the purge and is then refreshed by
+  the same request.
 - No background job and no throttle: at this app's scale these are small,
   indexed deletes.
 
