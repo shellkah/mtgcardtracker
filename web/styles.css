@@ -190,7 +190,7 @@ a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
   opacity: 0.6;
 }
 
-.brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+.brand { display: flex; align-items: center; gap: 14px; min-width: 0; flex: 0 1 auto; }
 
 .brand__sigil {
   width: 42px; height: 42px;
@@ -213,7 +213,10 @@ a:hover { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
   line-height: 1.1;
   color: var(--ink);
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
+.brand__name-short { display: none; }
 .brand__tag {
   font-size: 0.76rem;
   color: var(--faint);
@@ -1233,7 +1236,7 @@ textarea:focus {
 
 /* ── responsive: tablet ─────────────────────────────────────── */
 @media (max-width: 1080px) {
-  .shell { grid-template-columns: 1fr; max-width: 760px; }
+  .shell { grid-template-columns: minmax(0, 1fr); max-width: 760px; }
   .controls { order: 1; }
   .workspace { order: 2; }
 }
@@ -1241,7 +1244,15 @@ textarea:focus {
 /* ── responsive: phone ──────────────────────────────────────── */
 @media (max-width: 620px) {
   .brand__tag { display: none; }
-  .topbar { padding: 12px 16px; }
+  .brand__name-full { display: none; }
+  .brand__name-short { display: inline; }
+  .topbar { padding: 10px 12px; gap: 10px; }
+  .brand { gap: 10px; }
+  .brand__sigil { width: 34px; height: 34px; }
+  .topbar__status { gap: 8px; }
+  .gh-link { width: 34px; height: 34px; }
+  .gh-link .ico { width: 17px; height: 17px; }
+  .cart-btn { padding: 7px 12px; }
   .panel { padding: 15px; border-radius: 14px; }
 
   .card__main {
@@ -1274,6 +1285,13 @@ textarea:focus {
   .stats { grid-template-columns: repeat(2, 1fr); }
 }
 
+/* ── responsive: small phone ────────────────────────────────── */
+@media (max-width: 400px) {
+  .cart-btn__label { display: none; }
+  .cart-btn { padding: 7px 10px; }
+  .status { padding: 7px 11px 7px 9px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .art-modal,
   .offer__preview { animation: none; transition: none; }
@@ -1290,7 +1308,27 @@ textarea:focus {
 }
 
 /* ── the satchel ────────────────────────────────────────────── */
-.topbar__status { display: flex; align-items: center; gap: 12px; }
+.topbar__status { display: flex; align-items: center; gap: 12px; flex: none; }
+
+.gh-link {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: none;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.025);
+  color: var(--muted);
+  transition: border-color 0.2s, background 0.2s, color 0.2s, transform 0.15s;
+}
+.gh-link:hover {
+  border-color: var(--line-strong);
+  background: rgba(255, 255, 255, 0.06);
+  color: var(--ink);
+  transform: translateY(-1px);
+}
+.gh-link .ico { width: 19px; height: 19px; fill: currentColor; stroke: none; }
 
 .cart-btn {
   position: relative;

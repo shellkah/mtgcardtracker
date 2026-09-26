@@ -1,6 +1,6 @@
 [project]
 name = "mtgcardtracker"
-version = "0.3.0"
+version = "0.3.1"
 description = "Local web app that compares Magic: The Gathering card prices across local stores"
 readme = "README.md"
 requires-python = ">=3.11"
